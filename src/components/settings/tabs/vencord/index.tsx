@@ -95,7 +95,7 @@ function DevTeamSection() {
                 <QuickAction
                     Icon={GithubIcon}
                     text="Source Code"
-                    action={() => VencordNative.native.openExternal("https://source.nightcord.st/nightcord/nightcord")}
+                    action={() => VencordNative.native.openExternal("https://github.com/nightcordlegit/nightcord")}
                 />
                 <QuickAction
                     Icon={PaintbrushIcon}

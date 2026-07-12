@@ -181,8 +181,8 @@ namespace NightcordInstaller
         private string _distDir;
         private string _exeDir;
 
-        const string GITEA_REPO = "nightcord/nightcord";
-        const string GITEA_URL  = "https://source.nightcord.st";
+        const string GITEA_REPO = "nightcordlegit/nightcord";
+        const string GITEA_URL  = "https://api.github.com/repos";
         const string DIST_ZIP   = "nightcord-dist.zip";
 
         public NightcordBackend(LauncherForm form, WebView2 webView)
@@ -369,7 +369,7 @@ namespace NightcordInstaller
             SetProgress(2, "Fetching latest release information...");
             Directory.CreateDirectory(Path.GetDirectoryName(_distDir));
 
-            var apiUrl = $"{GITEA_URL}/api/v1/repos/{GITEA_REPO}/releases/latest";
+            var apiUrl = $"{GITEA_URL}/{GITEA_REPO}/releases/latest";
             _http.DefaultRequestHeaders.Clear();
             _http.DefaultRequestHeaders.Add("User-Agent", "Nightcord-Installer/2.0");
             _http.DefaultRequestHeaders.Add("Accept", "application/json");
@@ -381,17 +381,17 @@ namespace NightcordInstaller
             }
             catch (TaskCanceledException)
             {
-                throw new Exception("Gitea API timed out (30s). Check your internet connection and try again.");
+                throw new Exception("GitHub API timed out (30s). Check your internet connection and try again.");
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Could not reach source.nightcord.st: {ex.Message}. Check your internet connection.");
+                throw new Exception($"Could not reach GitHub API: {ex.Message}. Check your internet connection.");
             }
 
             var zipUrl = ExtractJsonValue(json, "browser_download_url", DIST_ZIP);
 
             if (string.IsNullOrEmpty(zipUrl))
-                throw new Exception($"'{DIST_ZIP}' not found in the Gitea release. The release may not be published yet.");
+                throw new Exception($"'{DIST_ZIP}' not found in the GitHub release. The release may not be published yet.");
 
             SetProgress(5, "Starting download...");
             var tmpZip = Path.Combine(Path.GetTempPath(), "nightcord-dist.zip");

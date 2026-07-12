@@ -11,8 +11,8 @@
     onMount(async () => {
         const https = require("https");
         const options = {
-            hostname: "source.nightcord.st",
-            path: "/api/v1/repos/nightcord/nightcord/releases/latest",
+            hostname: "api.github.com",
+            path: "/repos/nightcordlegit/nightcord/releases/latest",
             method: "GET",
             rejectUnauthorized: false,
             headers: {"User-Agent": "nightcord-installer"}

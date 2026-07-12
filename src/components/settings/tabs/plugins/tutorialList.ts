@@ -6,7 +6,7 @@
 
 /**
  * Maps a plugin's `name` to the basename (without extension) of its tutorial
- * video in https://source.nightcord.st/nightcord/nightcord-tutorials/src/branch/main/videos
+ * video in https://github.com/nightcordlegit/nightcord-tutorials
  *
  * These are NOT always identical: several videos were uploaded with a different
  * casing (or, in one case, a completely different name) than the plugin's actual

@@ -8,8 +8,6 @@ import https from "https";
 import {execSync} from "child_process";
 import {killDiscord, startDiscord} from "./utils/kill";
 import {log, lognewline} from "./utils/log";
-import {domain} from "../../../../DOMAIN.json"
-
 const MAKE_DIR_PROGRESS = 5;
 const FETCH_RELEASE_PROGRESS = 15;
 const DOWNLOAD_PACKAGE_PROGRESS = 75;
@@ -18,7 +16,7 @@ const INJECT_SHIM_PROGRESS = 98;
 const RESTART_DISCORD_PROGRESS = 100;
 
 
-const RELEASE_API = `https://source.${domain}/api/v1/repos/nightcord/nightcord/releases/latest`;
+const RELEASE_API = `https://api.github.com/repos/nightcordlegit/nightcord/releases/latest`;
 const DIST_ZIP = "nightcord-dist.zip";
 const distDir = path.join(process.env.LOCALAPPDATA, "Nightcord", "dist");
 

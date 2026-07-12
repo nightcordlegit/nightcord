@@ -25,8 +25,8 @@
 ### Current status
 - `pnpm buildDesktop` -> SUCCESS
 - `pnpm buildStandalone` -> SUCCESS  
-- `pnpm testTsc` -> 326 pre-existing type errors (code bugs, not dependency issues)
+- `pnpm testTsc` -> 279 pre-existing type errors (code bugs, not dependency issues)
 - `pnpm lint` -> 0 errors, 198 warnings
 
 ### Remaining
-- 326 pre-existing TS errors (TS2339, TS2769, TS2345, TS2322) - build works, typecheck fails
+- 279 pre-existing TS errors (TS2339, TS2769, TS2345, TS2322) - build works, typecheck fails

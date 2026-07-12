@@ -4,7 +4,7 @@
     "name": "Nightcord Web",
     "description": "The other cutest Discord mod now in your browser",
     "author": "Nightcord",
-    "homepage_url": "https://source.nightcord.st/nightcord/nightcord",
+    "homepage_url": "https://github.com/nightcordlegit/nightcord",
     "icons": {
         "128": "icon.png"
     },

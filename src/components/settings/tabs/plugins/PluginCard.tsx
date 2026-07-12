@@ -220,8 +220,8 @@ export function PluginCard({ plugin, disabled, onRestartNeeded, onMouseEnter, on
                 </ModalHeader>
                 <ModalContent style={{ padding: "16px", display: "flex", flexDirection: "column", gap: "16px", alignItems: "center" } as any}>
                     {isNightcord ? (
-                        <a href="https://source.nightcord.st/nightcord/nightcord" target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "12px", textDecoration: "none", color: "var(--text-normal)", fontSize: "20px", fontWeight: 600 }}>
-                            <img src="https://source.nightcord.st/assets/img/logo.svg" alt="Nightcord" style={{ width: 64, height: 64, borderRadius: "50%" }} />
+                        <a href="https://github.com/nightcordlegit/nightcord" target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "12px", textDecoration: "none", color: "var(--text-normal)", fontSize: "20px", fontWeight: 600 }}>
+                            <img src="https://github.com/nightcordlegit/nightcord/raw/main/.github/logo.svg" alt="Nightcord" style={{ width: 64, height: 64, borderRadius: "50%" }} />
                             Nightcord
                         </a>
                     ) : (
