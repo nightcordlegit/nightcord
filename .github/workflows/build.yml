@@ -58,10 +58,12 @@ jobs:
 
                   # legacy un-asared files
                   cp desktop/* release
-                  for file in equibop/*; do
-                    filename=$(basename "$file")
-                    cp "$file" "release/equibop${filename^}"
-                  done
+                  if ls equibop/* > /dev/null 2>&1; then
+                    for file in equibop/*; do
+                      filename=$(basename "$file")
+                      cp "$file" "release/equibop${filename^}"
+                    done
+                  fi
 
                   find release -size 0 -delete
                   rm release/package.json
