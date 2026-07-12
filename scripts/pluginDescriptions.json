@@ -6012,20 +6012,6 @@
       "file": "\\src\\nightcordplugins\\themeLibrary\\index.tsx"
     },
     {
-      "name": "TokenImporter",
-      "descriptions": [
-        "Automatically scan local Discord installations for tokens on startup (Windows only)",
-        "Import and verify Discord tokens."
-      ],
-      "settingKeys": [
-        "Auto Scan On Startup"
-      ],
-      "translationKeys": [
-        "Search accounts..."
-      ],
-      "file": "\\src\\nightcordplugins\\tokenImporter\\index.tsx"
-    },
-    {
       "name": "Translate",
       "descriptions": [
         "Translate messages with Google Translate or DeepL"
