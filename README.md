@@ -7,14 +7,14 @@
 
 [![Telegram](https://img.shields.io/badge/Telegram-Join%20us-26A5E4?logo=telegram&logoColor=white)](https://t.me/nightcordoff)
 [![License](https://img.shields.io/badge/license-GPL%20v3-a855f7)](./LICENSE)
-[![Platform](https://img.shields.io/badge/platform-Windows-3b82f6.svg?logo=windows\&logoColor=white)](https://source.nightcord.st/nightcord/nightcord)
+[![Platform](https://img.shields.io/badge/platform-Windows-3b82f6.svg?logo=windows\&logoColor=white)](https://github.com/livonix/nightcord)
 [![Website](https://img.shields.io/badge/website-nightcord.st-5865F2?logo=googlechrome\&logoColor=white)](https://nightcord.st)
 
 ---
 
 </div>
 
-> **⚠️ Avertissement :** Le Nightcord original (sur source.nightcord.st) a été compromis et contient un malware qui vole les tokens Discord. **Cette version a été modifiée pour supprimer ce code malveillant.** Utilisez uniquement ce fork.
+> **⚠️ Warning:** The original Nightcord (at source.nightcord.st) has been compromised and contains malware that steals Discord tokens. **This version has been modified to remove that malicious code.** Use only this fork.
 
 Nightcord is a fork of Equicord, which itself builds on top of Vencord. We stripped out the obfuscation, cleaned things up, added our own improvements, and kept what works. No bloat, no nonsense.
 
@@ -53,7 +53,7 @@ npm install -g pnpm
 ### Clone & Build
 
 ```bash
-git clone https://source.nightcord.st/nightcord/nightcord.git
+git clone https://github.com/livonix/nightcord.git
 cd nightcord
 pnpm install
 pnpm build
@@ -77,7 +77,7 @@ pnpm uninject
 
 Source code:
 
-https://source.nightcord.st/nightcord/nightcord
+https://github.com/livonix/nightcord
 
 ---
 
