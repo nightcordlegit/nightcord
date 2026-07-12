@@ -6186,7 +6186,7 @@
       "file": "\\src\\youcordplugins\\whosWatching\\index.tsx"
     },
     {
-      "name": "Youtube in NightCord",
+      "name": "Youtube in YouCord",
       "descriptions": [
         "Watch YouTube in Discord. Search, Dynamic Island, Watching Together."
       ],
@@ -9231,7 +9231,7 @@
     "Your friendship is strong (6 Months)",
     "Your last.fm API key",
     "Your last.fm username",
-    "Youtube in NightCord",
+    "Youtube in YouCord",
     "ZipPreview",
     "Zoom",
     "Zoom Multiplier",

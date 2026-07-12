@@ -60,7 +60,7 @@ export function SecurityModal(props: ModalProps) {
                     marginBottom: "16px"
                 }}>
                     <Paragraph style={{ fontWeight: "bold", marginBottom: "6px", color: "var(--text-normal)" }}>
-                        NightCordFr is a 100% Free product.
+                        YouCordFr is a 100% Free product.
                     </Paragraph>
                     <Paragraph style={{ color: "var(--text-muted)" }}>
                         If you paid to obtain this application, you have been the victim of a <strong style={{ color: "var(--text-danger)" }}>scam</strong>. We never request money for access to our core services.
@@ -99,7 +99,7 @@ export function SecurityModal(props: ModalProps) {
                     paddingTop: "12px"
                 }}>
                     <Paragraph style={{ color: "var(--text-muted)", fontStyle: "italic", fontSize: "13px" }}>
-                        <strong>Note:</strong> Only download NightCordFr via our official channels to ensure your security.
+                        <strong>Note:</strong> Only download YouCordFr via our official channels to ensure your security.
                     </Paragraph>
                 </div>
             </ModalContent>

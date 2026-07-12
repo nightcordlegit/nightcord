@@ -179,7 +179,7 @@ const translations: Record<string, Partial<Record<Language, string>>> = {
     "Enable Online Themes": { fr: "Activer les thÃ¨mes en ligne", es: "Habilitar temas en lÃ­nea", ru: "Ð’ÐºÐ»ÑŽÑ‡Ð¸Ñ‚ÑŒ Ð¾Ð½Ð»Ð°Ð¹Ð½ Ñ‚ÐµÐ¼Ñ‹", zh: "å¯ç”¨åœ¨çº¿ä¸»é¢˜" },
     "Toggle online theme loading. When disabled, all online themes will be turned off and you won't be able to add new ones.": { fr: "Activer le chargement des thÃ¨mes en ligne.", es: "Alternar la carga de temas en lÃ­nea.", ru: "ÐŸÐµÑ€ÐµÐºÐ»ÑŽÑ‡Ð¸Ñ‚ÑŒ Ð·Ð°Ð³Ñ€ÑƒÐ·ÐºÑƒ Ð¾Ð½Ð»Ð°Ð¹Ð½-Ñ‚ÐµÐ¼.", zh: "åˆ‡æ¢åœ¨çº¿ä¸»é¢˜åŠ è½½ã€‚" },
     "Looking for themes? Check out": { fr: "Vous cherchez des thÃ¨mes ? Consultez", es: "Â¿Buscas temas? Echa un vistazo a", ru: "Ð˜Ñ‰ÐµÑ‚Ðµ Ñ‚ÐµÐ¼Ñ‹? Ð—Ð°Ð³Ð»ÑÐ½Ð¸Ñ‚Ðµ Ð²", zh: "å¯»æ‰¾ä¸»é¢˜ï¼ŸæŸ¥çœ‹" },
-    "NightCord Themes": { fr: "ThÃ¨mes NightCord", es: "Temas NightCord", ru: "Ð¢ÐµÐ¼Ñ‹ NightCord", zh: "NightCord ä¸»é¢˜" },
+    "YouCord Themes": { fr: "ThÃ¨mes YouCord", es: "Temas YouCord", ru: "Ð¢ÐµÐ¼Ñ‹ YouCord", zh: "YouCord ä¸»é¢˜" },
     "or search on": { fr: "ou cherchez sur", es: "o busca en", ru: "Ð¸Ð»Ð¸ Ð¸Ñ‰Ð¸Ñ‚Ðµ Ð½Ð°", zh: "æˆ–åœ¨...æœç´¢" },
     "When downloading from BetterDiscord, click \"Download\" and place the .theme.css file into your themes folder.": { fr: "Lors du tÃ©lÃ©chargement depuis BetterDiscord...", es: "Al descargar desde BetterDiscord...", ru: "ÐŸÑ€Ð¸ Ð·Ð°Ð³Ñ€ÑƒÐ·ÐºÐµ Ñ BetterDiscord Ð½Ð°Ð¶Ð¼Ð¸Ñ‚Ðµ Â«DownloadÂ»...", zh: "ä»Ž BetterDiscord ä¸‹è½½æ—¶..." },
     "Installed Themes": { fr: "ThÃ¨mes installÃ©s", es: "Temas instalados", ru: "Ð£ÑÑ‚Ð°Ð½Ð¾Ð²Ð»ÐµÐ½Ð½Ñ‹Ðµ Ñ‚ÐµÐ¼Ñ‹", zh: "å·²å®‰è£…çš„ä¸»é¢˜" },

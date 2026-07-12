@@ -16061,11 +16061,11 @@
     "ru": "WebRichPresence (arRPC)",
     "zh": "WebRichPresence (arRPC)"
   },
-  "Youtube in NightCord": {
-    "fr": "Youtube dans NightCord",
-    "es": "Youtube en NightCord",
-    "ru": "Youtube Ð² NightCord",
-    "zh": "NightCord ä¸­çš„ YouTube"
+  "Youtube in YouCord": {
+    "fr": "Youtube dans YouCord",
+    "es": "Youtube en YouCord",
+    "ru": "Youtube Ð² YouCord",
+    "zh": "YouCord ä¸­çš„ YouTube"
   },
   "${user.globalName || user.username} saved successfully!": {
     "fr": "${user.globalName || user.username} enregistrÃ© avec succÃ¨sÂ !",

@@ -3003,7 +3003,7 @@ const pluginTranslations: Record<string, LangMap> = {
     "Your friendship is strong (6 Months)": { fr: "Votre amitiÃ© est forte (6 mois)", es: "Tu amistad es fuerte (6 Meses)", ru: "Ð’Ð°ÑˆÐ° Ð´Ñ€ÑƒÐ¶Ð±Ð° ÑÐ¸Ð»ÑŒÐ½Ð° (6 Ð¼ÐµÑÑÑ†ÐµÐ²)", zh: "ä½ ä»¬çš„å‹è°Šå¾ˆç‰¢å›ºï¼ˆ6ä¸ªæœˆï¼‰" },
     "Your last.fm API key": { fr: "Votre clÃ© API last.fm", es: "Tu clave API de last.fm", ru: "Ð’Ð°Ñˆ ÐºÐ»ÑŽÑ‡ API Last.fm", zh: "æ‚¨çš„last.fm API å¯†é’¥" },
     "Your last.fm username": { fr: "Votre nom d'utilisateur last.fm", es: "Tu nombre de usuario de last.fm", ru: "Ð’Ð°ÑˆÐµ Ð¸Ð¼Ñ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ Ð½Ð° Last.fm", zh: "æ‚¨æœ€åŽçš„.fm ç”¨æˆ·å" },
-    "Youtube in NightCord": { fr: "Youtube dans NightCord", es: "Youtube en NightCord", ru: "Youtube Ð² NightCord", zh: "NightCord ä¸­çš„ YouTube" },
+    "Youtube in YouCord": { fr: "Youtube dans YouCord", es: "Youtube en YouCord", ru: "Youtube Ð² YouCord", zh: "YouCord ä¸­çš„ YouTube" },
     "ZipPreview": { fr: "AperÃ§u Zip", es: "Vista previa zip", ru: "ZipÐŸÑ€ÐµÐ´Ð²Ð°Ñ€Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ñ‹Ð¹ Ð¿Ñ€Ð¾ÑÐ¼Ð¾Ñ‚Ñ€", zh: "åŽ‹ç¼©é¢„è§ˆ" },
     "Zoom": { fr: "Zoomer", es: "Ampliar", ru: "Ð£Ð²ÐµÐ»Ð¸Ñ‡Ð¸Ñ‚ÑŒ", zh: "é£žæ¶¨" },
     "Zoom Multiplier": { fr: "Multiplicateur de zoom", es: "Multiplicador de zoom", ru: "ÐœÐ½Ð¾Ð¶Ð¸Ñ‚ÐµÐ»ÑŒ Ð¼Ð°ÑÑˆÑ‚Ð°Ð±Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ", zh: "å˜ç„¦å€æ•°" },
