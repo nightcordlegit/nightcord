@@ -64,6 +64,7 @@
         "monaco-editor": "^0.54.0",
         "nanoid": "^5.1.16",
         "native-file-system-adapter": "^3.0.1",
+        "p-limit": "^7.3.0",
         "usercss-meta": "^0.12.0",
         "virtual-merge": "^1.0.2",
         "yaml-js": "^0.3.1"
@@ -117,32 +118,6 @@
         "zip-local": "^0.3.5"
     },
     "packageManager": "pnpm@11.11.0",
-    "pnpm": {
-        "patchedDependencies": {
-            "@types/less@3.0.8": "patches/@types__less@3.0.8.patch"
-        },
-        "peerDependencyRules": {
-            "ignoreMissing": [
-                "eslint-plugin-import",
-                "eslint"
-            ]
-        },
-        "allowedDeprecatedVersions": {
-            "source-map-resolve": "*",
-            "resolve-url": "*",
-            "source-map-url": "*",
-            "urix": "*",
-            "q": "*"
-        },
-        "onlyBuiltDependencies": [
-            "esbuild"
-        ],
-        "overrides": {
-            "@eslint/plugin-kit@<0.3.4": ">=0.3.4",
-            "@electron/asar>minimatch": "^10.2.4",
-            "html-minifier-terser>clean-css": "^5.3.3"
-        }
-    },
     "engines": {
         "node": ">=18"
     },

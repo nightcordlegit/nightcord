@@ -3,4 +3,20 @@ packages:
 allowBuilds:
   electron: false
   electron-winstaller: false
-  esbuild: false
+  esbuild: true
+patchedDependencies:
+  "@types/less@3.0.8": "patches/@types__less@3.0.8.patch"
+peerDependencyRules:
+  ignoreMissing:
+    - eslint-plugin-import
+    - eslint
+allowedDeprecatedVersions:
+  source-map-resolve: "*"
+  resolve-url: "*"
+  source-map-url: "*"
+  urix: "*"
+  q: "*"
+overrides:
+  "@eslint/plugin-kit@<0.3.4": ">=0.3.4"
+  "@electron/asar>minimatch": "^10.2.4"
+  "html-minifier-terser>clean-css": "^5.3.3"
