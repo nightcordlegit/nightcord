@@ -10,7 +10,7 @@ import ErrorBoundary from "@components/ErrorBoundary";
 import { sendMessage } from "@utils/discord";
 import definePlugin from "@utils/types";
 import { findByPropsLazy } from "@webpack";
-import { createRoot, React, ReactDOM } from "@webpack/common";
+import { createRoot, React } from "@webpack/common";
 
 // ── Stores ─────────────────────────────────────────────────────────────────
 
@@ -177,12 +177,8 @@ function ensurePortal() {
     container.id = "nc-pm-root";
     document.body.appendChild(container);
 
-    if (createRoot) {
-        const root = createRoot(container);
-        renderFn = node => root.render(node as any);
-    } else if (ReactDOM?.render) {
-        renderFn = node => ReactDOM.render(node, container);
-    }
+    const root = createRoot(container);
+    renderFn = node => root.render(node as any);
 }
 
 function show(channelId: string, rect: DOMRect) {

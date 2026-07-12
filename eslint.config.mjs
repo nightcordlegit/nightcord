@@ -7,6 +7,7 @@
 import stylistic from "@stylistic/eslint-plugin";
 import { defineConfig } from "eslint/config";
 import react from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
 import header from "eslint-plugin-simple-header";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import unusedImports from "eslint-plugin-unused-imports";
@@ -36,6 +37,7 @@ export default defineConfig(
             "simple-header": header,
             "@stylistic": stylistic,
             "@typescript-eslint": tseslint.plugin,
+            "react-hooks": reactHooks,
             "simple-import-sort": simpleImportSort,
             "unused-imports": unusedImports
         },
@@ -140,6 +142,9 @@ export default defineConfig(
             "no-restricted-globals": ["error", "event", "name"],
 
             // Plugin Rules
+            ...reactHooks.configs.recommended.rules,
+            "react-hooks/rules-of-hooks": "warn",
+            "react-hooks/exhaustive-deps": "warn",
             "simple-import-sort/imports": "error",
             "simple-import-sort/exports": "error",
             "unused-imports/no-unused-imports": "error"

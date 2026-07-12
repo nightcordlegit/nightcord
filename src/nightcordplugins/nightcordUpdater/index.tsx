@@ -206,12 +206,12 @@ function mountBanner() {
         bannerContainer.id = "nightcord-updater-root";
         document.body.appendChild(bannerContainer);
         try {
-            if (ReactDOM?.createRoot) {
-                bannerRoot = ReactDOM.createRoot(bannerContainer);
-                bannerRoot.render(React.createElement(UpdateBanner));
-            } else if (ReactDOM?.render) {
-                ReactDOM.render(React.createElement(UpdateBanner), bannerContainer);
-            }
+    if (ReactDOM?.createRoot) {
+            bannerRoot = ReactDOM.createRoot(bannerContainer);
+            bannerRoot.render(React.createElement(UpdateBanner));
+        } else {
+            console.warn("[NightcordUpdater] ReactDOM.createRoot not available");
+        }
         } catch (e) {
             console.error("[NightcordUpdater] Error mounting banner:", e);
             bannerContainer?.remove();

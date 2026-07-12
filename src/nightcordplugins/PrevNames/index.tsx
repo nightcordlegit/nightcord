@@ -113,7 +113,7 @@ function formatRelativeDate(date: Date): string {
 function HighlightText({ text, search }: { text: string; search: string }) {
     const cleanSearch = search.trim();
     if (!cleanSearch) return <span>{text}</span>;
-    const escaped = cleanSearch.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+    const escaped = cleanSearch.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
     const regex = new RegExp(`(${escaped})`, "gi");
     const parts = text.split(regex);
     return (

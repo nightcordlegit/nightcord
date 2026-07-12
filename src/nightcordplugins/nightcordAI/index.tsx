@@ -7,8 +7,7 @@
 import "./styles.css";
 
 import { findGroupChildrenByChildId } from "@api/ContextMenu";
-import { t } from "@api/i18n";
-import { t as tUI } from "@api/i18n";
+import { t, t as tUI } from "@api/i18n";
 import { DataStore } from "@api/index";
 import { definePluginSettings } from "@api/Settings";
 import { LinkButton } from "@components/Button";

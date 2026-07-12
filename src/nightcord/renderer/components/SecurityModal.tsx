@@ -15,7 +15,7 @@ function WarningIcon() {
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
             <path d="M12 2L1 21h22L12 2z" fill="#f5a623" stroke="#f5a623" strokeWidth="0" />
             <path d="M12 2L1 21h22L12 2z" fill="none" stroke="#e08c00" strokeWidth="1" />
-            <text x="12" y="17.5" textAnchor="middle" fill="#1a1a1a" fontSize="11" fontWeight="bold" fontFfriendly="sans-serif">!</text>
+            <text x="12" y="17.5" textAnchor="middle" fill="#1a1a1a" fontSize="11" fontWeight="bold" fontFamily="sans-serif">!</text>
         </svg>
     );
 }

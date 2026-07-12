@@ -6,8 +6,7 @@
 
 import definePlugin from "@utils/types";
 import { findByPropsLazy, findStoreLazy } from "@webpack";
-import { ChannelStore,PermissionsBits, PermissionStore, UserStore } from "@webpack/common";
-import { Constants,RestAPI } from "@webpack/common";
+import { ChannelStore, Constants, PermissionsBits, PermissionStore, RestAPI, UserStore } from "@webpack/common";
 
 const VoiceStateStore = findStoreLazy("VoiceStateStore");
 const VoiceActions = findByPropsLazy("toggleSelfMute");

@@ -17,8 +17,7 @@ import { Span } from "@components/Span";
 import { Margins } from "@utils/margins";
 import { relaunch } from "@utils/native";
 import { changes, checkForUpdates, rebuild, update, UpdateLogger } from "@utils/updater";
-import { React, useState } from "@webpack/common";
-import { Toasts } from "@webpack/common";
+import { React, Toasts, useState } from "@webpack/common";
 
 import { domain } from "../../../../../DOMAIN.json";
 

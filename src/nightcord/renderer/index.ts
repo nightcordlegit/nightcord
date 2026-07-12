@@ -16,8 +16,7 @@ export * as Components from "./components";
 
 import { openModal } from "@Nightcord/types/utils";
 import { onceReady } from "@Nightcord/types/webpack";
-import { VoiceActions } from "@Nightcord/types/webpack/common";
-import { React } from "@Nightcord/types/webpack/common";
+import { React, VoiceActions } from "@Nightcord/types/webpack/common";
 
 import { SecurityModal } from "./components/SecurityModal";
 import SettingsUi from "./components/settings/Settings";

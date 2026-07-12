@@ -13,8 +13,7 @@ import { FormSwitch } from "@components/FormSwitch";
 import { ModalCloseButton, ModalContent, ModalHeader, ModalRoot, openModal } from "@utils/modal";
 import definePlugin, { OptionType } from "@utils/types";
 import { findStoreLazy } from "@webpack";
-import { Button, GuildStore, IconUtils,Menu, React, RestAPI, Select, Toasts, useMemo, useRef, UserStore, useState } from "@webpack/common";
-import { Forms } from "@webpack/common";
+import { Button, Forms, GuildStore, IconUtils, Menu, React, RestAPI, Select, Toasts, useMemo, useRef, UserStore, useState } from "@webpack/common";
 const F = Forms as any;
 
 const PermissionStore = findStoreLazy("PermissionStore");
