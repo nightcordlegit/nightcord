@@ -7,7 +7,6 @@
 import { findGroupChildrenByChildId, NavContextMenuPatchCallback } from "@api/ContextMenu";
 import { showNotification } from "@api/Notifications";
 import { definePluginSettings } from "@api/Settings";
-import { React } from "@webpack/common";
 
 const SurveillanceIcon = ({ width = 20, height = 20 }: { width?: number; height?: number; }) => (
     <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="none" viewBox="0 0 24 24">
@@ -22,7 +21,7 @@ import { removeFromArray } from "@utils/misc";
 import definePlugin, { OptionType } from "@utils/types";
 import type { Activity, Channel, Guild, GuildMember, Message, OnlineStatus, Role, User } from "@vencord/discord-types";
 import { ActivityType } from "@vencord/discord-types/enums";
-import { ChannelStore, GuildStore, Menu, PresenceStore, RelationshipStore, SettingsRouter, UserStore, VoiceStateStore } from "@webpack/common";
+import { ChannelStore, GuildStore, Menu, PresenceStore, React, RelationshipStore, SettingsRouter, UserStore, VoiceStateStore } from "@webpack/common";
 
 import { recordEvent, trimEvents } from "./store";
 import type { MessageSnapshot, SurveillanceEvent, SurveillanceEventType, SurveillanceScope, VoiceParticipant, VoiceState, VoiceStateFlag } from "./types";
