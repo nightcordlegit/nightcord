@@ -43,8 +43,4 @@ jobs:
                   pnpm generateVencordPluginJson dist/vencordplugins.json
                   pnpm generateDevsList dist/devs.json
 
-            - name: Upload Equicord Stable
-              run: |
-                  gh release upload latest --clobber dist/release/*
-
 
