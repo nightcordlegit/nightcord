@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a Discord client mod
  * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
@@ -14,7 +14,7 @@ import { getCloudUrl } from "./cloudSetup";
 
 const logger = new Logger("SettingsSync:PluginSync", "#39b7e0");
 
-const PLUGIN_TOKEN_KEY = "Nightcord_pluginSyncToken";
+const PLUGIN_TOKEN_KEY = "YouCord_pluginSyncToken";
 
 export async function getPluginSyncToken(): Promise<string | undefined> {
     return await DataStore.get<string>(PLUGIN_TOKEN_KEY);

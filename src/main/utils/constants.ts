@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a modification for Discord's desktop app
  * Copyright (c) 2022 Vendicated and contributors
  *
@@ -22,10 +22,10 @@ import { join } from "path";
 
 const suffix = IS_DEV ? "dev" : "";
 
-export const DATA_DIR = process.env.NIGHTCORD_USER_DATA_DIR ?? (
+export const DATA_DIR = process.env.YOUCORD_USER_DATA_DIR ?? (
     process.env.DISCORD_USER_DATA_DIR
-        ? join(process.env.DISCORD_USER_DATA_DIR, "..", "NightcordData", suffix)
-        : join(app.getPath("userData"), "..", "Nightcord", suffix)
+        ? join(process.env.DISCORD_USER_DATA_DIR, "..", "YouCordData", suffix)
+        : join(app.getPath("userData"), "..", "YouCord", suffix)
 );
 
 export const SETTINGS_DIR = join(DATA_DIR, "settings");
@@ -66,7 +66,7 @@ if (IS_DEV) {
                 app.relaunch();
                 app.exit(0);
             } catch (err) {
-                console.error("[Nightcord] Failed to copy prod data:", err);
+                console.error("[YouCord] Failed to copy prod data:", err);
             }
         }, 5000);
     }

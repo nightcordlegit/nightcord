@@ -1,14 +1,14 @@
-CC=gcc
-# GStreamer est optionnel — détecté automatiquement
+﻿CC=gcc
+# GStreamer est optionnel â€” dÃ©tectÃ© automatiquement
 GST_OK     := $(shell pkg-config --exists gstreamer-1.0 gstreamer-app-1.0 gstreamer-video-1.0 2>/dev/null && echo yes || echo no)
 ifeq ($(GST_OK),yes)
   GST_CFLAGS := $(shell pkg-config --cflags gstreamer-1.0 gstreamer-app-1.0 gstreamer-video-1.0) -DHAVE_GSTREAMER
   GST_LIBS   := $(shell pkg-config --libs   gstreamer-1.0 gstreamer-app-1.0 gstreamer-video-1.0)
-  $(info GStreamer détecté — décodage vidéo activé)
+  $(info GStreamer dÃ©tectÃ© â€” dÃ©codage vidÃ©o activÃ©)
 else
   GST_CFLAGS :=
   GST_LIBS   :=
-  $(info GStreamer non trouvé — décodage vidéo désactivé)
+  $(info GStreamer non trouvÃ© â€” dÃ©codage vidÃ©o dÃ©sactivÃ©)
 endif
 
 FLAGS=`pkg-config --cflags gtk+-3.0 libsoup-2.4 rtaudio json-glib-1.0 opus libsodium libsecret-1` $(GST_CFLAGS)
@@ -16,8 +16,8 @@ LIBS=`pkg-config --libs gtk+-3.0 libsoup-2.4 rtaudio json-glib-1.0 opus libsodiu
 PREFIX=/usr
 BUILD_DIR=build
 SRCS = $(shell find ./src/*.c | grep -v updater.c)
-# Ressource Windows (icône)
-RC_OBJ = $(BUILD_DIR)/nightcord_rc.o
+# Ressource Windows (icÃ´ne)
+RC_OBJ = $(BUILD_DIR)/youcord_rc.o
 OBJS = $(patsubst %.c, $(BUILD_DIR)/%.o, $(SRCS))
 OPTS=-O3
 ifdef CACHE
@@ -29,7 +29,7 @@ ifeq ($(RTAUDIO_BELOW_6_0), yes)
 	OPTS+= -D RTAUDIO_BELOW_6_0
 endif
 
-all: $(BUILD_DIR)/nightcord $(BUILD_DIR)/updater.exe
+all: $(BUILD_DIR)/youcord $(BUILD_DIR)/updater.exe
 
 $(BUILD_DIR)/assets/: assets/
 	mkdir -p $(dir $@)
@@ -47,20 +47,20 @@ $(BUILD_DIR)/resources.c: resources.xml $(BUILD_DIR)/assets/gschemas.compiled
 $(BUILD_DIR)/resources.o: $(BUILD_DIR)/resources.c
 	$(CC) -c -o $@ $^ $(FLAGS) $(OPTS)
 
-# Compiler les ressources Windows (.rc → .o)
-$(BUILD_DIR)/nightcord_rc.o: nightcord.rc assets/nightcord.ico
+# Compiler les ressources Windows (.rc â†’ .o)
+$(BUILD_DIR)/youcord_rc.o: youcord.rc assets/youcord.ico
 	mkdir -p $(BUILD_DIR)
-	windres nightcord.rc -o $@
+	windres youcord.rc -o $@
 
 $(BUILD_DIR)/%.o: %.c
 	mkdir -p $(dir $@)
 	$(CC) -c -o $@ $(FLAGS) $< -Wall -Wno-unused-function -Wno-misleading-indentation $(OPTS)
 
-$(BUILD_DIR)/nightcord: $(OBJS) $(BUILD_DIR)/resources.o $(RC_OBJ) $(BUILD_DIR)/themes/ $(BUILD_DIR)/sounds/
+$(BUILD_DIR)/youcord: $(OBJS) $(BUILD_DIR)/resources.o $(RC_OBJ) $(BUILD_DIR)/themes/ $(BUILD_DIR)/sounds/
 	$(CC) -o $@ $(OBJS) $(BUILD_DIR)/resources.o $(RC_OBJ) $(LIBS) -liphlpapi -lcrypt32 $(OPTS) -mwindows
 
 
-# ── Updater ──────────────────────────────────────────────────────────────
+# â”€â”€ Updater â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 $(BUILD_DIR)/updater.exe: src/updater.c
 	$(CC) -o $@ $< `pkg-config --cflags --libs gtk+-3.0 libsoup-2.4 json-glib-1.0` -lm $(OPTS) -mwindows
 
@@ -68,18 +68,18 @@ clean:
 	rm -rf build
 
 uninstall:
-	rm -f $(PREFIX)/share/applications/nightcord.desktop
-	rm -f $(PREFIX)/share/pixmaps/nightcord.png
-	rm -f $(PREFIX)/share/pixmaps/nightcord.svg
-	rm -f $(PREFIX)/bin/nightcord
+	rm -f $(PREFIX)/share/applications/youcord.desktop
+	rm -f $(PREFIX)/share/pixmaps/youcord.png
+	rm -f $(PREFIX)/share/pixmaps/youcord.svg
+	rm -f $(PREFIX)/bin/youcord
 
 install: uninstall
-	cp nightcord.desktop $(PREFIX)/share/applications/nightcord.desktop
-	cp assets/icon.svg $(PREFIX)/share/pixmaps/nightcord.svg
-	cp $(BUILD_DIR)/nightcord $(PREFIX)/bin/nightcord
+	cp youcord.desktop $(PREFIX)/share/applications/youcord.desktop
+	cp assets/icon.svg $(PREFIX)/share/pixmaps/youcord.svg
+	cp $(BUILD_DIR)/youcord $(PREFIX)/bin/youcord
 
 run: all
-	cp assets/nightcord.gschema.xml $(BUILD_DIR)/assets/nightcord.gschema.xml
+	cp assets/youcord.gschema.xml $(BUILD_DIR)/assets/youcord.gschema.xml
 	glib-compile-schemas $(BUILD_DIR)/assets/
-	./build/nightcord
+	./build/youcord
 	

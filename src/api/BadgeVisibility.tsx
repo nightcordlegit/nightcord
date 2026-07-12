@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a Discord client mod
  * Copyright (c) 2026 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
@@ -7,7 +7,7 @@
 import { beginDiscordOAuth, getStoredToken, storeToken } from "./OAuth2";
 import { getPublicPluginConfig, saveOwnPluginConfig } from "./PluginSync";
 
-export type BadgeSource = "vencord" | "equicord" | "nightcord" | "globalbadges" | "illegalcord";
+export type BadgeSource = "vencord" | "equicord" | "youcord" | "globalbadges" | "illegalcord";
 
 const PLUGIN_KEY = "badge-visibility";
 
@@ -36,7 +36,7 @@ function setCache(userId: string, entry: CacheEntry) {
 /**
  * Returns the hidden badge sources for a given user, fetching from the public
  * sync endpoint if needed. Returns [] immediately while loading (badges will
- * pop in once fetched — consistent with how CustomProfile does it).
+ * pop in once fetched â€” consistent with how CustomProfile does it).
  */
 export function getHiddenBadgeSources(userId: string): BadgeSource[] {
     if (myUserId && userId === myUserId) {
@@ -74,9 +74,9 @@ async function fetchHiddenBadgeSources(userId: string) {
 export async function loadOwnHiddenBadgeSources(userId: string) {
     myUserId = userId;
 
-    // 1. Charge la sauvegarde locale en premier pour éviter que ça clignote ou disparaisse sans compte
+    // 1. Charge la sauvegarde locale en premier pour Ã©viter que Ã§a clignote ou disparaisse sans compte
     try {
-        const localData = localStorage.getItem("nightcord_hidden_badges");
+        const localData = localStorage.getItem("youcord_hidden_badges");
         if (localData) {
             const parsed = JSON.parse(localData);
             if (Array.isArray(parsed)) {
@@ -95,13 +95,13 @@ export async function loadOwnHiddenBadgeSources(userId: string) {
         const result = await getOwnPluginConfig(PLUGIN_KEY, token);
         const hidden: BadgeSource[] = Array.isArray(result?.config?.settings?.hidden) ? result.config.settings.hidden : [];
 
-        // La version cloud a priorité si elle existe (et on met à jour le local)
+        // La version cloud a prioritÃ© si elle existe (et on met Ã  jour le local)
         if (result?.config?.settings?.hidden !== undefined) {
             myHiddenSources = hidden;
-            localStorage.setItem("nightcord_hidden_badges", JSON.stringify(hidden));
+            localStorage.setItem("youcord_hidden_badges", JSON.stringify(hidden));
         }
     } catch (e) {
-        // no-op — keep defaults or local version
+        // no-op â€” keep defaults or local version
     } finally {
         loaded = true;
         emitBadgeVisibilityChange();
@@ -115,9 +115,9 @@ export async function loadOwnHiddenBadgeSources(userId: string) {
 export async function setOwnHiddenBadgeSources(hidden: BadgeSource[]) {
     myHiddenSources = hidden;
 
-    // Sauvegarde locale immédiate
+    // Sauvegarde locale immÃ©diate
     try {
-        localStorage.setItem("nightcord_hidden_badges", JSON.stringify(hidden));
+        localStorage.setItem("youcord_hidden_badges", JSON.stringify(hidden));
     } catch { }
 
     emitBadgeVisibilityChange();

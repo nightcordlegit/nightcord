@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a Discord client mod
  * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
@@ -133,12 +133,12 @@ export function PluginCard({ plugin, disabled, onRestartNeeded, onMouseEnter, on
         // through the mapping instead of assuming they are identical. Also always
         // URL-encode the segment since some filenames contain spaces (e.g. "Fake Voice Option.mp4").
         const videoName = getTutorialVideoName(plugin.name) ?? plugin.name;
-        const videoUrl = `https://git.${domain}/nightcord/nightcord-tutorials/raw/branch/main/videos/${encodeURIComponent(videoName)}.mp4`;
+        const videoUrl = `https://git.${domain}/youcord/youcord-tutorials/raw/branch/main/videos/${encodeURIComponent(videoName)}.mp4`;
         openModal(props => (
             <ModalRoot {...props} size={ModalSize.DYNAMIC} className="nc-tutorial-modal">
                 <ModalHeader separator={false}>
                     <Text variant="heading-xl/bold" style={{ flex: 1, color: "#fff" }}>
-                        {plugin.name} – Tutorial
+                        {plugin.name} â€“ Tutorial
                     </Text>
                     <ModalCloseButton onClick={props.onClose} />
                 </ModalHeader>
@@ -208,8 +208,8 @@ export function PluginCard({ plugin, disabled, onRestartNeeded, onMouseEnter, on
     );
 
     const tooltip = t("Show Tutorial");
-    const isNightcord = !PluginMeta[plugin.name]?.userPlugin;
-    const iconType = isNightcord ? "nightcord" : "other";
+    const isYouCord = !PluginMeta[plugin.name]?.userPlugin;
+    const iconType = isYouCord ? "youcord" : "other";
 
     function openCreditsModal() {
         openModal(props => (
@@ -219,10 +219,10 @@ export function PluginCard({ plugin, disabled, onRestartNeeded, onMouseEnter, on
                     <ModalCloseButton onClick={props.onClose} />
                 </ModalHeader>
                 <ModalContent style={{ padding: "16px", display: "flex", flexDirection: "column", gap: "16px", alignItems: "center" } as any}>
-                    {isNightcord ? (
-                        <a href="https://github.com/nightcordlegit/nightcord" target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "12px", textDecoration: "none", color: "var(--text-normal)", fontSize: "20px", fontWeight: 600 }}>
-                            <img src="https://github.com/nightcordlegit/nightcord/raw/main/.github/logo.svg" alt="Nightcord" style={{ width: 64, height: 64, borderRadius: "50%" }} />
-                            Nightcord
+                    {isYouCord ? (
+                        <a href="https://github.com/nightcordlegit/youcord" target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "12px", textDecoration: "none", color: "var(--text-normal)", fontSize: "20px", fontWeight: 600 }}>
+                            <img src="https://i.ibb.co/R4HWcpYH/Chat-GPT-Image-12-juil-2026-19-31-03-removebg-preview.png" alt="YouCord" style={{ width: 64, height: 64, borderRadius: "50%" }} />
+                            YouCord
                         </a>
                     ) : (
                         plugin.authors?.map(a => {
@@ -265,7 +265,7 @@ export function PluginCard({ plugin, disabled, onRestartNeeded, onMouseEnter, on
             infoButton={
                 <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
                     {(plugin.name === "DynamicIslande" || plugin.name === "StereoInstaller" || plugin.name === "ClientDiagnostics" || plugin.name === "SecureBookmarks" || plugin.name === "StatusCycler" || plugin.name === "Surveillance") && (
-                        <Tooltip text="This plugin comes from our partner (Illegalcord) then was modified by Nightcord.">
+                        <Tooltip text="This plugin comes from our partner (Illegalcord) then was modified by YouCord.">
                             {({ onMouseEnter, onMouseLeave }) => (
                                 <button
                                     role="button"

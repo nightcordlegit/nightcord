@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a modification for Discord's desktop app
  * Copyright (c) 2023 Vendicated and contributors
  *
@@ -42,7 +42,7 @@ interface Props {
     infoButton?: ReactNode;
     footer?: ReactNode;
     author?: ReactNode;
-    iconType?: "nightcord" | "other";
+    iconType?: "youcord" | "other";
     customIcon?: ComponentType<any>;
 }
 

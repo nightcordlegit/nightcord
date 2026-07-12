@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
@@ -111,14 +111,14 @@ function VencordChatBarButtons(props: ChatBarProps) {
         const listener = () => forceUpdate(n => n + 1);
         addStealthListener(listener);
         addCompactListener(listener);
-        window.addEventListener("nightcord-stealth-change", listener);
-        window.addEventListener("nightcord-compact-change", listener);
+        window.addEventListener("youcord-stealth-change", listener);
+        window.addEventListener("youcord-compact-change", listener);
         backpackListeners.add(listener);
         return () => {
             removeStealthListener(listener);
             removeCompactListener(listener);
-            window.removeEventListener("nightcord-stealth-change", listener);
-            window.removeEventListener("nightcord-compact-change", listener);
+            window.removeEventListener("youcord-stealth-change", listener);
+            window.removeEventListener("youcord-compact-change", listener);
             backpackListeners.delete(listener);
         };
     }, []);
@@ -195,7 +195,7 @@ export const ChatBarButton = ErrorBoundary.wrap((props: ChatBarButtonProps) => {
     );
 }, { noop: true });
 
-/* Vencord Buttons context menu removed — managed by Backpack plugin */
+/* Vencord Buttons context menu removed â€” managed by Backpack plugin */
 
 function CompactChatPopout({ chatBarProps, closePopout }: any) {
     const { chatBarButtons } = useSettings(["uiElements.chatBarButtons.*"]).uiElements;
@@ -230,10 +230,10 @@ function CompactChatBarToggle({ chatBarProps }: any) {
     useEffect(() => {
         const listener = () => forceUpdate(n => n + 1);
         addCompactListener(listener);
-        window.addEventListener("nightcord-compact-change", listener);
+        window.addEventListener("youcord-compact-change", listener);
         return () => {
             removeCompactListener(listener);
-            window.removeEventListener("nightcord-compact-change", listener);
+            window.removeEventListener("youcord-compact-change", listener);
         };
     }, []);
 

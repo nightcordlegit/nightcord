@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a Discord client mod
  * Copyright (c) 2026 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
@@ -6,7 +6,7 @@
 
 /**
  * Maps a plugin's `name` to the basename (without extension) of its tutorial
- * video in https://github.com/nightcordlegit/nightcord-tutorials
+ * video in https://github.com/nightcordlegit/youcord-tutorials
  *
  * These are NOT always identical: several videos were uploaded with a different
  * casing (or, in one case, a completely different name) than the plugin's actual
@@ -65,7 +65,7 @@ export const TUTORIAL_VIDEOS: ReadonlyMap<string, string> = new Map([
     ["MessageLoggerEnhanced", "MessageLoggerEnhanced"],
     ["MultiInstance", "MultiInstance"],
     ["MuteAllServers", "MuteAllServers"],
-    ["NightcordAI", "nightcordai"],
+    ["YouCordAI", "youcordai"],
     ["PasscodeLock", "passcodeLock"],
     ["PlatformIndicators", "PlatformIndicators"],
     ["PrevNames", "prevnames"],
@@ -97,7 +97,7 @@ export const TUTORIAL_VIDEOS: ReadonlyMap<string, string> = new Map([
 ]);
 
 /**
- * Set of plugin names that have a tutorial video available in nightcord-tutorials.
+ * Set of plugin names that have a tutorial video available in youcord-tutorials.
  * Derived from TUTORIAL_VIDEOS so there's a single source of truth.
  */
 export const TUTORIAL_PLUGIN_NAMES: ReadonlySet<string> = new Set(TUTORIAL_VIDEOS.keys());
@@ -114,7 +114,7 @@ export function getTutorialVideoName(pluginName: string): string | undefined {
 
 /**
  * Synchronously populates the cache from the static list and calls onProgress.
- * No network requests — instant, no CORS issues.
+ * No network requests â€” instant, no CORS issues.
  */
 export function loadTutorials(_pluginNames: string[], onProgress: (found: Set<string>) => void) {
     onProgress(new Set(TUTORIAL_PLUGIN_NAMES));

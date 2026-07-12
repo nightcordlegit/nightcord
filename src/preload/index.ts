@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a Discord client mod
  * Copyright (c) 2026 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
@@ -11,7 +11,7 @@ import { VesktopNative } from "./VesktopNative";
 
 contextBridge.exposeInMainWorld("VesktopNative", VesktopNative);
 contextBridge.exposeInMainWorld("VencordNative", VesktopNative);
-contextBridge.exposeInMainWorld("NightcordNative", VesktopNative);
+contextBridge.exposeInMainWorld("YouCordNative", VesktopNative);
 
 // TODO: remove this legacy workaround once some time has passed
 const isSandboxed = typeof __dirname === "undefined";

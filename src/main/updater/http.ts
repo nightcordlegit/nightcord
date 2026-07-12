@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a Discord client mod
  * Copyright (c) 2026 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
@@ -16,11 +16,11 @@ import { domain } from "../../../DOMAIN.json";
 import { serializeErrors } from "./common";
 
 const GITEA_BASE = `https://source.${domain}`;
-const API_BASE = `${GITEA_BASE}/api/v1/repos/nightcord/nightcord`;
-const REPO_URL = `${GITEA_BASE}/nightcord/nightcord`;
+const API_BASE = `${GITEA_BASE}/api/v1/repos/youcord/youcord`;
+const REPO_URL = `${GITEA_BASE}/youcord/youcord`;
 declare const VERSION: string;
 const CURRENT_VERSION = `v${VERSION}`;
-const ZIP_FILE = "nightcord-dist.zip";
+const ZIP_FILE = "youcord-dist.zip";
 
 let pendingDownloadUrl: string | null = null;
 let pendingVersion: string | null = null;
@@ -66,7 +66,7 @@ async function getUpdates() {
     if (!outdated) return [];
     return [{
         hash:    pendingVersion ?? "new",
-        author:  "Nightcord",
+        author:  "YouCord",
         message: `Nouvelle version disponible : ${pendingVersion}`
     }];
 }
@@ -80,7 +80,7 @@ async function applyUpdates(): Promise<boolean> {
         const data = await fetchBuffer(pendingDownloadUrl);
 
         // Save zip to temp
-        const zipPath = join(app.getPath("temp"), `nightcord-update-${Date.now()}.zip`);
+        const zipPath = join(app.getPath("temp"), `youcord-update-${Date.now()}.zip`);
         writeFileSync(zipPath, data, { flush: true });
 
         // The zip was created from dist/desktop/ with includeBaseDirectory=false,
@@ -90,10 +90,10 @@ async function applyUpdates(): Promise<boolean> {
 
         // Extract using PowerShell Expand-Archive (reliable ZIP support on all Windows 10/11)
         // We extract to a temp folder first, then move files over to avoid half-extracted state
-        const tmpExtract = join(app.getPath("temp"), `nightcord-extract-${Date.now()}`);
+        const tmpExtract = join(app.getPath("temp"), `youcord-extract-${Date.now()}`);
 
         return await new Promise<boolean>((resolve, reject) => {
-            // Step 1 — extract zip to temp folder
+            // Step 1 â€” extract zip to temp folder
             const psExtract = `Expand-Archive -LiteralPath '${zipPath}' -DestinationPath '${tmpExtract}' -Force`;
             exec(`powershell -NoProfile -NonInteractive -Command "${psExtract}"`, err => {
                 if (err) {
@@ -101,7 +101,7 @@ async function applyUpdates(): Promise<boolean> {
                     return reject(new Error("ZIP extraction failed: " + err.message));
                 }
 
-                // Step 2 — copy extracted files into dist/desktop/ (= __dirname), overwriting existing ones
+                // Step 2 â€” copy extracted files into dist/desktop/ (= __dirname), overwriting existing ones
                 const psMove = `Copy-Item -Path '${tmpExtract}\\*' -Destination '${destPath}' -Recurse -Force`;
                 exec(`powershell -NoProfile -NonInteractive -Command "${psMove}"`, err2 => {
                     // Cleanup temp files regardless of outcome

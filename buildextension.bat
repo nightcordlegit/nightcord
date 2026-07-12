@@ -1,8 +1,8 @@
-@echo off
+﻿@echo off
 setlocal enabledelayedexpansion
 
 echo ========================================================
-echo BUILDER EXTENSION FIREFOX NIGHTCORD
+echo BUILDER EXTENSION FIREFOX YOUCORD
 echo ========================================================
 echo.
 echo Liste des plugins ignores lue depuis blacklist.txt
@@ -27,7 +27,7 @@ call pnpm buildWeb
 echo.
 echo ========================================================
 echo TERMINE ! L'extension est prete dans :
-echo   dist\browser\firefox-unpacked  (extension non packagée)
+echo   dist\browser\firefox-unpacked  (extension non packagÃ©e)
 echo   dist\extension-firefox.zip     (zip pour publication)
 echo ========================================================
 pause

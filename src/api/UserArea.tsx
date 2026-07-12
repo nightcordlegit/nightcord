@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a Discord client mod
  * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
@@ -68,10 +68,10 @@ function UserAreaButtons({ props }: { props: UserAreaRenderProps; }) {
     useEffect(() => {
         const listener = () => forceUpdate(n => n + 1);
         addStealthListener(listener);
-        window.addEventListener("nightcord-stealth-change", listener);
+        window.addEventListener("youcord-stealth-change", listener);
         return () => {
             removeStealthListener(listener);
-            window.removeEventListener("nightcord-stealth-change", listener);
+            window.removeEventListener("youcord-stealth-change", listener);
         };
     }, []);
 

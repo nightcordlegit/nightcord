@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a Discord client mod
  * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
@@ -71,11 +71,11 @@ export async function authorizeCloud() {
     let scopes: string[];
 
     const cloudUrl = getCloudUrl();
-    const isNightcord = cloudUrl.hostname.includes("nightcord");
+    const isYouCord = cloudUrl.hostname.includes("youcord");
 
     try {
-        if (isNightcord) {
-            // Nightcord API uses /api/oauth2/signing
+        if (isYouCord) {
+            // YouCord API uses /api/oauth2/signing
             const signingRes = await fetch(new URL("/api/oauth2/signing", cloudUrl));
             const signingData = await signingRes.json();
             // Extract clientId from the authorization URL
@@ -120,7 +120,7 @@ export async function authorizeCloud() {
                 });
                 const data = await res.json();
 
-                // Nightcord returns { token }, Vencord/Equicord returns { secret }
+                // YouCord returns { token }, Vencord/Equicord returns { secret }
                 const credential = data.token ?? data.secret;
                 if (credential) {
                     logger.info("Authorized with cloud");

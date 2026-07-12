@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * Vencord, a modification for Discord's desktop app
  * Copyright (c) 2022 Vendicated and contributors
  *
@@ -18,7 +18,7 @@
 
 // DO NOT REMOVE UNLESS YOU WISH TO FACE THE WRATH OF THE CIRCULAR DEPENDENCY DEMON!!!!!!!
 import "~plugins";
-console.log("%c[Nightcord]", "color: #5865f2; font-weight: bold;", "Injection successful! Starting services...");
+console.log("%c[YouCord]", "color: #5865f2; font-weight: bold;", "Injection successful! Starting services...");
 
 export * as Api from "./api";
 export * as Plugins from "./api/PluginManager";
@@ -128,10 +128,10 @@ async function syncSettings() {
 let notifiedForUpdatesThisSession = false;
 
 function showGreenUpdateBanner() {
-    if (document.getElementById("nightcord-core-updater-root")) return;
+    if (document.getElementById("youcord-core-updater-root")) return;
 
     const banner = document.createElement("div");
-    banner.id = "nightcord-core-updater-root";
+    banner.id = "youcord-core-updater-root";
     Object.assign(banner.style, {
         position: "fixed",
         top: "0", left: "0", right: "0",
@@ -164,7 +164,7 @@ function showGreenUpdateBanner() {
     titleSpan.style.fontWeight = "600";
     titleSpan.style.color = "#ffffff";
     titleSpan.style.flexShrink = "0";
-    titleSpan.textContent = "Nightcord Update Available";
+    titleSpan.textContent = "YouCord Update Available";
 
     const statusSpan = document.createElement("span");
     statusSpan.style.opacity = "0.7";
@@ -261,13 +261,13 @@ function showGreenUpdateBanner() {
     });
     closeBtn.onmouseenter = () => closeBtn.style.color = "#dbdee1";
     closeBtn.onmouseleave = () => closeBtn.style.color = "#b5bac1";
-    closeBtn.textContent = "✕";
+    closeBtn.textContent = "âœ•";
     closeBtn.title = "Dismiss (will auto-install when Discord closes)";
     closeBtn.addEventListener("click", () => {
         if (installing) return; // do not close if installing
         if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
         banner.remove();
-        UpdateLogger.info("Update banner dismissed — will auto-apply on Discord quit.");
+        UpdateLogger.info("Update banner dismissed â€” will auto-apply on Discord quit.");
     });
 
     rightContent.appendChild(updateBtn);
@@ -281,7 +281,7 @@ function showGreenUpdateBanner() {
 
 // Allow triggering from console for testing
 // @ts-ignore
-window.showNightcordUpdateBanner = showGreenUpdateBanner;
+window.showYouCordUpdateBanner = showGreenUpdateBanner;
 
 async function runUpdateCheck() {
     if (IS_UPDATER_DISABLED) return;
@@ -294,7 +294,7 @@ async function runUpdateCheck() {
         if (notifiedForUpdatesThisSession) return;
         notifiedForUpdatesThisSession = true;
 
-        // Affiche la bannière verte avec auto-install (compte à rebours 10s)
+        // Affiche la banniÃ¨re verte avec auto-install (compte Ã  rebours 10s)
         setTimeout(() => showGreenUpdateBanner(), 8_000);
     } catch (err) {
         UpdateLogger.error("Failed to check for updates", err);
@@ -310,7 +310,7 @@ function initTrayIpc() {
             VencordNative.tray.setUpdateState(isOutdated);
 
             if (isOutdated) {
-                showNotice("A Nightcord update is available!", "View Update", () => openSettingsTabModal(UpdaterTab!));
+                showNotice("A YouCord update is available!", "View Update", () => openSettingsTabModal(UpdaterTab!));
             } else {
                 showNotice("No updates available, you're on the latest version!", "OK", popNotice);
             }
@@ -325,7 +325,7 @@ function initTrayIpc() {
             await update();
             relaunch();
         } catch (err) {
-            UpdateLogger.error("Failed to repair Nightcord", err);
+            UpdateLogger.error("Failed to repair YouCord", err);
         }
     });
 
@@ -340,20 +340,20 @@ async function init() {
     syncSettings();
     initTrayIpc();
 
-    const hasOpened = localStorage.getItem("nightcord_telegram_opened");
+    const hasOpened = localStorage.getItem("youcord_telegram_opened");
     if (!hasOpened) {
-        localStorage.setItem("nightcord_telegram_opened", "true");
+        localStorage.setItem("youcord_telegram_opened", "true");
         setTimeout(() => {
             Alerts.show({
-                title: t("Welcome to Nightcord!"),
-                body: t("Thank you for installing Nightcord. Would you like to join our official Telegram channel to stay updated?"),
+                title: t("Welcome to YouCord!"),
+                body: t("Thank you for installing YouCord. Would you like to join our official Discord server to stay updated?"),
                 confirmText: t("Open link"),
                 cancelText: t("Cancel"),
                 onConfirm: () => {
-                    if (window.nightcord && typeof window.nightcord.openUrl === "function") {
-                        window.nightcord.openUrl("https://t.me/nightcordoff");
+                    if (window.youcord && typeof window.youcord.openUrl === "function") {
+                        window.youcord.openUrl("https://discord.gg/remHHJQRXg");
                     } else {
-                        VencordNative.native.openExternal("https://t.me/nightcordoff");
+                        VencordNative.native.openExternal("https://t.me/youcordoff");
                     }
                 }
             });
@@ -372,7 +372,7 @@ async function init() {
                 "Webpack has finished initialising, but some patches haven't been applied yet.",
                 "This might be expected since some Modules are lazy loaded, but please verify",
                 "that all plugins are working as intended.",
-                "You are seeing this warning because this is a Development build of Nightcord.",
+                "You are seeing this warning because this is a Development build of YouCord.",
                 "\nThe following patches have not been applied:",
                 "\n\n" + pendingPatches.map(p => `${p.plugin}: ${p.find}`).join("\n")
             );
@@ -389,8 +389,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Reposition Discord's titlebar to the left by default (90px)
     // When stealth mode or compact mode is enabled, it falls back to Discord's default center position.
-    createAndAppendStyle("nightcord-titlebar-position", coreStyleRootNode).textContent = `
-        body:not(.nightcord-stealth):not(.nightcord-compact) [class*="title_c38"] {
+    createAndAppendStyle("youcord-titlebar-position", coreStyleRootNode).textContent = `
+        body:not(.youcord-stealth):not(.youcord-compact) [class*="title_c38"] {
             position: absolute !important;
             left: 90px !important;
             right: auto !important;

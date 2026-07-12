@@ -1,6 +1,6 @@
-# ==============================================================================
-#  Nightcord — Script d'injection Post-Installation
-#  Utilisé par l'installateur Inno Setup pour injecter Nightcord dans Discord.
+﻿# ==============================================================================
+#  YouCord â€” Script d'injection Post-Installation
+#  UtilisÃ© par l'installateur Inno Setup pour injecter YouCord dans Discord.
 # ==============================================================================
 
 param(
@@ -15,7 +15,7 @@ if (-not (Test-Path $DiscordPath)) {
     exit 0
 }
 
-# Trouver la version la plus récente (app-*)
+# Trouver la version la plus rÃ©cente (app-*)
 $LatestApp = Get-ChildItem $DiscordPath -Filter "app-*" | Sort-Object Name -Descending | Select-Object -First 1
 if (-not $LatestApp) {
     exit 0
@@ -24,12 +24,12 @@ if (-not $LatestApp) {
 $CoreDir = Join-Path $LatestApp.FullName "resources"
 $InjectDir = Join-Path $CoreDir "app"
 
-# 2. Créer l'injection
+# 2. CrÃ©er l'injection
 if (-not (Test-Path $InjectDir)) {
     New-Item -ItemType Directory -Path $InjectDir -Force | Out-Null
 }
 
-# Générer le package.json d'injection
+# GÃ©nÃ©rer le package.json d'injection
 $PackageJson = @{
     name = "discord"
     main = "index.js"
@@ -37,21 +37,21 @@ $PackageJson = @{
 
 Set-Content -Path (Join-Path $InjectDir "package.json") -Value $PackageJson
 
-# Générer le index.js d'injection
-# On pointe vers le patcher.js dans le dossier d'installation de Nightcord
-$NightcordPatcher = Join-Path $AppDir "dist\desktop\patcher.js"
-$NightcordPatcher = $NightcordPatcher.Replace("\", "\\")
+# GÃ©nÃ©rer le index.js d'injection
+# On pointe vers le patcher.js dans le dossier d'installation de YouCord
+$YouCordPatcher = Join-Path $AppDir "dist\desktop\patcher.js"
+$YouCordPatcher = $YouCordPatcher.Replace("\", "\\")
 
 $IndexJs = @"
 \"use strict\";
 const path = require(\"path\");
 const fs = require(\"fs\");
 
-// Injection Nightcord
+// Injection YouCord
 try {
-    require(\"$NightcordPatcher\");
+    require(\"$YouCordPatcher\");
 } catch (e) {
-    console.error(\"Nightcord injection failed:\", e);
+    console.error(\"YouCord injection failed:\", e);
     // Fallback sur Discord original si possible
     const originalAsar = path.join(__dirname, \"..\", \"_app.asar\");
     if (fs.existsSync(originalAsar)) {

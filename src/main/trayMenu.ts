@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a Discord client mod
  * Copyright (c) 2026 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
@@ -91,21 +91,21 @@ function openAboutWindow() {
     });
 }
 
-function createNightcordMenuItems(): MenuItemConstructorOptions[] {
+function createYouCordMenuItems(): MenuItemConstructorOptions[] {
     return [
         {
-            label: "Nightcord",
+            label: "YouCord",
             submenu: [
                 {
-                    label: "About Nightcord",
+                    label: "About YouCord",
                     click: () => openAboutWindow()
                 },
                 {
-                    label: cachedUpdateAvailable ? "Update Nightcord" : "Check for Updates",
+                    label: cachedUpdateAvailable ? "Update YouCord" : "Check for Updates",
                     click: () => sendToRenderer(IpcEvents.TRAY_CHECK_UPDATES)
                 },
                 {
-                    label: "Repair Nightcord",
+                    label: "Repair YouCord",
                     click: () => sendToRenderer(IpcEvents.TRAY_REPAIR)
                 },
                 { type: "separator" },
@@ -124,5 +124,5 @@ function createNightcordMenuItems(): MenuItemConstructorOptions[] {
 }
 
 export function patchTrayMenu(): void {
-    // No longer patching tray menu — Nightcord manages its own tray in patcher.ts
+    // No longer patching tray menu â€” YouCord manages its own tray in patcher.ts
 }

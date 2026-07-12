@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a modification for Discord's desktop app
  * Copyright (c) 2022 Vendicated and contributors
  *
@@ -138,7 +138,7 @@ window.VencordNative = {
         getSources: async () => [],
     },
 
-    nightcord: {
+    youcord: {
         getInstallerPrefs: () => ({ defaultPlugins: true, autoUpdate: true }),
         relaunch: NOOP_ASYNC,
     },

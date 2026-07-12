@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Reflection;
 
-namespace NightcordInstaller
+namespace YouCordInstaller
 {
     static class Program
     {
@@ -30,16 +30,16 @@ namespace NightcordInstaller
     public class LauncherForm : Form
     {
         private WebView2 _webView;
-        private NightcordBackend _backend;
+        private YouCordBackend _backend;
 
         public LauncherForm()
         {
-            this.Text = "Nightcord Installer";
+            this.Text = "YouCord Installer";
             this.Size = new Size(740, 620); // Enlarged to prevent text clipping
             this.FormBorderStyle = FormBorderStyle.None;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.BackColor = Color.FromArgb(11, 11, 24); // matching HTML root
-            var iconStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("NightcordInstaller.icon.ico");
+            var iconStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("YouCordInstaller.icon.ico");
             if (iconStream != null) this.Icon = new Icon(iconStream);
 
             _webView = new WebView2
@@ -69,7 +69,7 @@ namespace NightcordInstaller
 
         private async void InitializeWebView()
         {
-            var userDataFolder = Path.Combine(Path.GetTempPath(), "NightcordInstaller_WebView2");
+            var userDataFolder = Path.Combine(Path.GetTempPath(), "YouCordInstaller_WebView2");
             CoreWebView2Environment env;
             try
             {
@@ -87,9 +87,9 @@ namespace NightcordInstaller
                 if (isWebView2Missing)
                 {
                     MessageBox.Show(
-                        "Microsoft Edge WebView2 Runtime is required to run the Nightcord Installer but was not found on your system.\n\n" +
+                        "Microsoft Edge WebView2 Runtime is required to run the YouCord Installer but was not found on your system.\n\n" +
                         "Please download and install it from:\nhttps://aka.ms/webview2\n\n" +
-                        "After installing, restart the Nightcord Installer.",
+                        "After installing, restart the YouCord Installer.",
                         "WebView2 Runtime Required",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error
@@ -110,12 +110,12 @@ namespace NightcordInstaller
                 return;
             }
 
-            _backend = new NightcordBackend(this, _webView);
+            _backend = new YouCordBackend(this, _webView);
             _webView.CoreWebView2.AddHostObjectToScript("backend", _backend);
 
             // Wrap COM proxy into exactly what index.html expects, and add drag support
             await _webView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(@"
-                window.nightcord = {
+                window.youcord = {
                     detectDiscord: async () => JSON.parse(await chrome.webview.hostObjects.backend.DetectDiscord()),
                     isInjected: async (path) => await chrome.webview.hostObjects.backend.IsInjected(path),
                     hasThirdPartyMod: async (path) => await chrome.webview.hostObjects.backend.HasThirdPartyMod(path),
@@ -147,14 +147,14 @@ namespace NightcordInstaller
             _webView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
 
             // Load HTML from embedded resource and inject Icon
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("NightcordInstaller.index.html"))
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("YouCordInstaller.index.html"))
             using (var reader = new StreamReader(stream))
             {
                 var html = reader.ReadToEnd();
 
                 // Convert Icon to Base64 PNG for HTML
                 try {
-                    using (var iconStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("NightcordInstaller.icon.ico"))
+                    using (var iconStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("YouCordInstaller.icon.ico"))
                     {
                         var icon = new Icon(iconStream);
                         using (var bmp = icon.ToBitmap())
@@ -173,7 +173,7 @@ namespace NightcordInstaller
     }
 
     [ComVisible(true)]
-    public class NightcordBackend
+    public class YouCordBackend
     {
         private LauncherForm _form;
         private WebView2 _webView;
@@ -181,18 +181,18 @@ namespace NightcordInstaller
         private string _distDir;
         private string _exeDir;
 
-        const string GITEA_REPO = "nightcordlegit/nightcord";
+        const string GITEA_REPO = "youcordlegit/youcord";
         const string GITEA_URL  = "https://api.github.com/repos";
-        const string DIST_ZIP   = "nightcord-dist.zip";
+        const string DIST_ZIP   = "youcord-dist.zip";
 
-        public NightcordBackend(LauncherForm form, WebView2 webView)
+        public YouCordBackend(LauncherForm form, WebView2 webView)
         {
             _form = form;
             _webView = webView;
             _http = new HttpClient();
             _http.Timeout = TimeSpan.FromSeconds(30);
             _exeDir = Path.GetDirectoryName(Application.ExecutablePath);
-            _distDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Nightcord", "dist");
+            _distDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "YouCord", "dist");
         }
 
         public void MinimizeApp() { _form.Invoke(new Action(() => _form.WindowState = FormWindowState.Minimized)); }
@@ -241,13 +241,13 @@ namespace NightcordInstaller
             return await Task.Run(() => {
                 var appDir = System.IO.Path.Combine(path, "app");
                 var pkgPath = System.IO.Path.Combine(appDir, "package.json");
-                return Directory.Exists(appDir) && File.Exists(pkgPath) && File.ReadAllText(pkgPath).Contains("\"nightcord\"");
+                return Directory.Exists(appDir) && File.Exists(pkgPath) && File.ReadAllText(pkgPath).Contains("\"youcord\"");
             });
         }
 
         /// <summary>
         /// Returns true if a third-party mod (Vencord, Equicord, OpenAsar) is detected
-        /// but Nightcord is NOT yet injected.
+        /// but YouCord is NOT yet injected.
         /// </summary>
         public async Task<bool> HasThirdPartyMod(string path)
         {
@@ -256,8 +256,8 @@ namespace NightcordInstaller
                 var pkgPath = System.IO.Path.Combine(appDir, "package.json");
                 if (!Directory.Exists(appDir) || !File.Exists(pkgPath)) return false;
                 var content = File.ReadAllText(pkgPath);
-                // Already Nightcord → not a third-party mod
-                if (content.Contains("\"nightcord\"")) return false;
+                // Already YouCord â†’ not a third-party mod
+                if (content.Contains("\"youcord\"")) return false;
                 return content.Contains("vencord", StringComparison.OrdinalIgnoreCase)
                     || content.Contains("equicord", StringComparison.OrdinalIgnoreCase)
                     || content.Contains("openasar", StringComparison.OrdinalIgnoreCase);
@@ -371,7 +371,7 @@ namespace NightcordInstaller
 
             var apiUrl = $"{GITEA_URL}/{GITEA_REPO}/releases/latest";
             _http.DefaultRequestHeaders.Clear();
-            _http.DefaultRequestHeaders.Add("User-Agent", "Nightcord-Installer/2.0");
+            _http.DefaultRequestHeaders.Add("User-Agent", "YouCord-Installer/2.0");
             _http.DefaultRequestHeaders.Add("Accept", "application/json");
 
             string json;
@@ -394,7 +394,7 @@ namespace NightcordInstaller
                 throw new Exception($"'{DIST_ZIP}' not found in the GitHub release. The release may not be published yet.");
 
             SetProgress(5, "Starting download...");
-            var tmpZip = Path.Combine(Path.GetTempPath(), "nightcord-dist.zip");
+            var tmpZip = Path.Combine(Path.GetTempPath(), "youcord-dist.zip");
 
             using (var response = await _http.GetAsync(zipUrl, HttpCompletionOption.ResponseHeadersRead))
             {
@@ -421,7 +421,7 @@ namespace NightcordInstaller
                             double overallPercent = 5.0 + (percent * 0.70);
                             double totalMB = (double)totalBytes / (1024.0 * 1024.0);
                             double readMB  = (double)totalRead  / (1024.0 * 1024.0);
-                            SetProgress(overallPercent, "Downloading Nightcord...", readMB, totalMB);
+                            SetProgress(overallPercent, "Downloading YouCord...", readMB, totalMB);
                         }
                     }
                 }
@@ -518,7 +518,7 @@ namespace NightcordInstaller
 
             CleanModulePatches(resPath);
 
-            SetProgress(92, "Configuring Nightcord loader...");
+            SetProgress(92, "Configuring YouCord loader...");
 
             if (!File.Exists(appAsar) && !File.Exists(backup))
             {
@@ -647,7 +647,7 @@ namespace NightcordInstaller
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[Nightcord] CleanModulePatches warning: {ex.Message}");
+                Console.WriteLine($"[YouCord] CleanModulePatches warning: {ex.Message}");
             }
         }
 
@@ -664,7 +664,7 @@ namespace NightcordInstaller
             if (Directory.Exists(appDir))
             {
                 var pkg = Path.Combine(appDir, "package.json");
-                if (File.Exists(pkg) && File.ReadAllText(pkg).Contains("\"nightcord\""))
+                if (File.Exists(pkg) && File.ReadAllText(pkg).Contains("\"youcord\""))
                 {
                     Directory.Delete(appDir, true);
                 }
@@ -718,9 +718,9 @@ namespace NightcordInstaller
         private void WriteLoader(string appDir)
         {
             var patcher = Path.Combine(_distDir, "patcher.js").Replace("\\", "/");
-            File.WriteAllText(Path.Combine(appDir, "package.json"), "{\"name\":\"nightcord\",\"main\":\"index.js\"}");
+            File.WriteAllText(Path.Combine(appDir, "package.json"), "{\"name\":\"youcord\",\"main\":\"index.js\"}");
             File.WriteAllText(Path.Combine(appDir, "index.js"),
-                $"// Nightcord Injector\n" +
+                $"// YouCord Injector\n" +
                 $"\"use strict\";\n" +
                 $"const fs = require('fs');\n" +
                 $"const path = require('path');\n" +
@@ -729,7 +729,7 @@ namespace NightcordInstaller
                 $"const fallback = path.join(exeDir, 'resources', 'dist', 'patcher.js');\n" +
                 $"const fallback2 = path.join(exeDir, 'dist', 'patcher.js');\n" +
                 $"const patcherPath = fs.existsSync(primary) ? primary : fs.existsSync(fallback) ? fallback : fallback2;\n" +
-                $"if (!fs.existsSync(patcherPath)) throw new Error('[Nightcord] patcher.js not found. Expected at: ' + primary);\n" +
+                $"if (!fs.existsSync(patcherPath)) throw new Error('[YouCord] patcher.js not found. Expected at: ' + primary);\n" +
                 $"require(patcherPath);\n"
             );
         }

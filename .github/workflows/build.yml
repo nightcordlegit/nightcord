@@ -1,4 +1,4 @@
-name: Build & Release Latest
+﻿name: Build & Release Latest
 
 on:
     push:
@@ -14,7 +14,7 @@ permissions:
 
 jobs:
     Build:
-        name: Build Nightcord
+        name: Build YouCord
         runs-on: windows-latest
 
         steps:
@@ -41,10 +41,10 @@ jobs:
                   pnpm generateVencordPluginJson dist/vencordplugins.json
                   pnpm generateDevsList dist/devs.json
 
-            - name: Package nightcord-dist.zip
+            - name: Package youcord-dist.zip
               shell: pwsh
               run: |
-                  $staging = "nightcord-dist-staging"
+                  $staging = "youcord-dist-staging"
                   New-Item -ItemType Directory -Path $staging -Force | Out-Null
 
                   # Compiled files (patcher.js, renderer.js, preload.js, renderer.css)
@@ -63,8 +63,8 @@ jobs:
                       exit 1
                   }
 
-                  Compress-Archive -Path "$staging\*" -DestinationPath "nightcord-dist.zip" -Force
-                  Write-Host "nightcord-dist.zip created ($($(Get-Item nightcord-dist.zip).Length / 1MB) MB)"
+                  Compress-Archive -Path "$staging\*" -DestinationPath "youcord-dist.zip" -Force
+                  Write-Host "youcord-dist.zip created ($($(Get-Item youcord-dist.zip).Length / 1MB) MB)"
 
             - name: Upload other build artifacts
               shell: pwsh
@@ -97,7 +97,7 @@ jobs:
                   gh release create $tag --title "Latest Build" --notes "Automated build from main branch ($env:GITHUB_SHA)" --latest=false 2>$null
 
                   # Upload artifacts (--clobber overwrites existing files)
-                  gh release upload $tag --clobber "nightcord-dist.zip"
+                  gh release upload $tag --clobber "youcord-dist.zip"
 
                   if (Test-Path "dist\release") {
                       Get-ChildItem "dist\release\*" -File | ForEach-Object {

@@ -1,4 +1,4 @@
-{
+﻿{
     "compilerOptions": {
         "resolveJsonModule": true,
         "allowSyntheticDefaultImports": true,
@@ -86,45 +86,45 @@
             "@equicord/types/plugins/*": [
                 "../packages/vencord-types/plugins/*"
             ],
-            "@Nightcord/types": [
+            "@YouCord/types": [
                 "../packages/vencord-types/index"
             ],
-            "@Nightcord/types/webpack": [
+            "@YouCord/types/webpack": [
                 "../packages/vencord-types/webpack-types"
             ],
-            "@Nightcord/types/webpack/common": [
+            "@YouCord/types/webpack/common": [
                 "../packages/vencord-types/webpack-common"
             ],
-            "@Nightcord/types/utils": [
+            "@YouCord/types/utils": [
                 "../packages/vencord-types/utils-types"
             ],
-            "@Nightcord/types/utils/types": [
+            "@YouCord/types/utils/types": [
                 "../packages/vencord-types/utils-types/types"
             ],
-            "@Nightcord/types/components": [
+            "@YouCord/types/components": [
                 "../packages/vencord-types/components-types"
             ],
-            "@Nightcord/types/api/*": [
+            "@YouCord/types/api/*": [
                 "../packages/vencord-types/api/*"
             ],
-            "@Nightcord/types/plugins/*": [
+            "@YouCord/types/plugins/*": [
                 "../packages/vencord-types/plugins/*"
             ],
-            "@nightcordplugins/*": [
-                "./nightcordplugins/*"
+            "@youcordplugins/*": [
+                "./youcordplugins/*"
             ],
             "@illegalcordplugins/*": [
                 "./illegalcordplugins/*"
             ],
             "main/*": [
-                "./nightcord/main/*"
+                "./youcord/main/*"
             ],
             "shared/*": [
-                "./nightcord/shared/*",
+                "./youcord/shared/*",
                 "./shared/*"
             ],
             "renderer/*": [
-                "./nightcord/renderer/*"
+                "./youcord/renderer/*"
             ]
         },
         "plugins": [

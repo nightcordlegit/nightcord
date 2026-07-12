@@ -1,4 +1,4 @@
-import {progress, status} from "../stores/installation";
+﻿import {progress, status} from "../stores/installation";
 import {promises as fs} from "fs";
 import path from "path";
 import {killDiscord, startDiscord} from "./utils/kill";
@@ -21,7 +21,7 @@ const safeDelete = async (p) => {
 
 async function shouldAutoRestart() {
     try {
-        const prefsPath = path.join(process.env.APPDATA, "Nightcord", "settings", "installer-prefs.json");
+        const prefsPath = path.join(process.env.APPDATA, "YouCord", "settings", "installer-prefs.json");
         const raw = JSON.parse(await fs.readFile(prefsPath, "utf-8"));
         return raw.autoRestart !== false;
     } catch { return true; }
@@ -31,7 +31,7 @@ async function deleteShims(paths) {
     process.noAsar = true;
     const progressPerLoop = (DELETE_SHIM_PROGRESS - progress.value) / paths.length;
     for (const resPath of paths) {
-        log(`Removing Nightcord from: ${resPath}`);
+        log(`Removing YouCord from: ${resPath}`);
         try {
             const appDir = path.join(resPath, "app");
             const backup = path.join(resPath, "_app.asar");
@@ -45,7 +45,7 @@ async function deleteShims(paths) {
                 const pkg = path.join(appDir, "package.json");
                 if (await safeExists(pkg)) {
                     const content = await fs.readFile(pkg, "utf-8");
-                    if (content.includes('"nightcord"')) {
+                    if (content.includes('"youcord"')) {
                         try { await fs.rm(appDir, { recursive: true, force: true }); } catch {}
                     }
                 }
@@ -99,11 +99,11 @@ async function deleteShims(paths) {
                 log("4. Skipping Discord restart (disabled in options).");
             }
 
-            log("✅ Uninstallation successful!");
+            log("âœ… Uninstallation successful!");
             progress.set(progress.value + progressPerLoop);
         } catch (err) {
-            log(`❌ Could not remove Nightcord from ${resPath}`);
-            log(`❌ ${err.message}`);
+            log(`âŒ Could not remove YouCord from ${resPath}`);
+            log(`âŒ ${err.message}`);
             return err;
         }
     }
@@ -112,7 +112,7 @@ async function deleteShims(paths) {
 export default async function(paths) {
     try {
         log("Starting Uninstall...");
-        lognewline("Deleting Nightcord loader and restoring files...");
+        lognewline("Deleting YouCord loader and restoring files...");
         
         const err = await deleteShims(Object.values(paths));
         if (err) return false;
@@ -121,8 +121,8 @@ export default async function(paths) {
         lognewline("Uninstall complete!");
         return true;
     } catch (err) {
-        lognewline("❌ Uninstallation failed");
-        log(`❌ ${err.message}`);
+        lognewline("âŒ Uninstallation failed");
+        log(`âŒ ${err.message}`);
         return false;
     }
 }

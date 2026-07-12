@@ -1,10 +1,10 @@
-{
+﻿{
     "manifest_version": 3,
     "minimum_chrome_version": "111",
-    "name": "Nightcord Web",
+    "name": "YouCord Web",
     "description": "The other cutest Discord mod now in your browser",
-    "author": "Nightcord",
-    "homepage_url": "https://github.com/nightcordlegit/nightcord",
+    "author": "YouCord",
+    "homepage_url": "https://github.com/nightcordlegit/youcord",
     "icons": {
         "128": "icon.png"
     },

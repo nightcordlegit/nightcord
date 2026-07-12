@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a modification for Discord's desktop app
  * Copyright (c) 2023 Vendicated and contributors
  *
@@ -39,7 +39,7 @@ export const enum IpcEvents {
     BUILD = "VencordBuild",
     OPEN_MONACO_EDITOR = "VencordOpenMonacoEditor",
     GET_MONACO_THEME = "VencordGetMonacoTheme",
-    GET_INSTALLER_PREFS = "NightcordGetInstallerPrefs",
+    GET_INSTALLER_PREFS = "YouCordGetInstallerPrefs",
 
     GET_PLUGIN_IPC_METHOD_MAP = "VencordGetPluginIpcMethodMap",
 
@@ -60,17 +60,17 @@ export const enum IpcEvents {
 
     GET_DESKTOP_SOURCES = "VencordGetDesktopSources",
 
-    SET_WINDOW_BACKGROUND_MATERIAL = "NightcordSetWindowBackgroundMaterial",
+    SET_WINDOW_BACKGROUND_MATERIAL = "YouCordSetWindowBackgroundMaterial",
 
-    // SoundCord Player â€” thumbnail toolbar Windows
+    // SoundCord Player Ã¢â‚¬â€ thumbnail toolbar Windows
     SET_THUMBAR_BUTTONS = "SoundCordSetThumbarButtons",
     THUMBAR_BUTTON_CLICK = "SoundCordThumbarButtonClick",
 
-    // Nightcord Updater â€” tÃ©lÃ©charge un exe depuis une URL et le lance
-    NIGHTCORD_DOWNLOAD_AND_RUN = "NightcordDownloadAndRun",
+    // YouCord Updater Ã¢â‚¬â€ tÃƒÂ©lÃƒÂ©charge un exe depuis une URL et le lance
+    YOUCORD_DOWNLOAD_AND_RUN = "YouCordDownloadAndRun",
 
     // Relaunch de l'app Electron
-    RELAUNCH_APP = "NightcordRelaunchApp",
+    RELAUNCH_APP = "YouCordRelaunchApp",
 
     // Vesktop/Vencord preload events
     GET_VENCORD_PRELOAD_SCRIPT = "VencordGetPreloadScript",

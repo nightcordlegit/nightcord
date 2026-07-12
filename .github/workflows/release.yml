@@ -1,12 +1,12 @@
-name: Build & Release Nightcord
+﻿name: Build & Release YouCord
 
 on:
   push:
     tags:
-      - "v*"          # déclenché sur : git tag v1.0.0 && git push --tags
+      - "v*"          # dÃ©clenchÃ© sur : git tag v1.0.0 && git push --tags
 
 permissions:
-  contents: write    # nécessaire pour créer la GitHub Release
+  contents: write    # nÃ©cessaire pour crÃ©er la GitHub Release
 
 jobs:
   build:
@@ -39,16 +39,16 @@ jobs:
           node electron-builder.config.cjs || true
           npx electron-builder --config electron-builder.config.cjs --win --publish always
 
-      - name: Package nightcord-dist.zip
+      - name: Package youcord-dist.zip
         shell: pwsh
         run: |
-          # nightcord-dist.zip — structure attendue par l'installeur (Program.cs EnsureDistAsync) :
-          # la racine du zip = _distDir (%LOCALAPPDATA%\Nightcord\dist\)
-          # => patcher.js DOIT être à la racine, pas dans un sous-dossier dist\desktop\
-          $staging = "nightcord-dist-staging"
+          # youcord-dist.zip â€” structure attendue par l'installeur (Program.cs EnsureDistAsync) :
+          # la racine du zip = _distDir (%LOCALAPPDATA%\YouCord\dist\)
+          # => patcher.js DOIT Ãªtre Ã  la racine, pas dans un sous-dossier dist\desktop\
+          $staging = "youcord-dist-staging"
           New-Item -ItemType Directory -Path $staging -Force | Out-Null
 
-          # Fichiers JS compilés : on copie le CONTENU de dist\desktop\ à la racine du staging
+          # Fichiers JS compilÃ©s : on copie le CONTENU de dist\desktop\ Ã  la racine du staging
           # (patcher.js, renderer.js, preload.js, etc. directement accessibles)
           if (Test-Path "dist\desktop") {
             Copy-Item "dist\desktop\*" "$staging\" -Recurse -Force
@@ -62,30 +62,30 @@ jobs:
             Copy-Item "ghost-server" "$staging\ghost-server" -Recurse
           }
 
-          # Static assets from release/nightcord-dist (ffmpeg.dll, modules, mac/, multi-instance-icons/, etc.)
-          if (Test-Path "release\nightcord-dist") {
-            Copy-Item "release\nightcord-dist\*" "$staging\" -Recurse -Force
+          # Static assets from release/youcord-dist (ffmpeg.dll, modules, mac/, multi-instance-icons/, etc.)
+          if (Test-Path "release\youcord-dist") {
+            Copy-Item "release\youcord-dist\*" "$staging\" -Recurse -Force
           }
 
           # Entry-point files
-          foreach ($f in @("nightcord-index.js", "nightcord-preload.js")) {
+          foreach ($f in @("youcord-index.js", "youcord-preload.js")) {
             if (Test-Path $f) { Copy-Item $f "$staging\" }
           }
 
-          # Sanity-check : patcher.js doit être à la racine
+          # Sanity-check : patcher.js doit Ãªtre Ã  la racine
           if (-not (Test-Path "$staging\patcher.js")) {
-            Write-Error "BUILD ERROR: patcher.js absent de la racine du staging — l'installeur ne pourra pas fonctionner."
+            Write-Error "BUILD ERROR: patcher.js absent de la racine du staging â€” l'installeur ne pourra pas fonctionner."
             exit 1
           }
 
-          Compress-Archive -Path "$staging\*" -DestinationPath "nightcord-dist.zip" -Force
-          Write-Host "nightcord-dist.zip created ($($(Get-Item nightcord-dist.zip).Length / 1MB) MB)"
+          Compress-Archive -Path "$staging\*" -DestinationPath "youcord-dist.zip" -Force
+          Write-Host "youcord-dist.zip created ($($(Get-Item youcord-dist.zip).Length / 1MB) MB)"
 
-      - name: Upload nightcord-dist.zip to Release
+      - name: Upload youcord-dist.zip to Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            nightcord-dist.zip
+            youcord-dist.zip
             dist/desktop.asar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

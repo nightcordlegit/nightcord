@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
-# ─── Nightcord — Publier une nouvelle release sur Gitea ──────────────────────
+﻿#!/usr/bin/env bash
+# â”€â”€â”€ YouCord â€” Publier une nouvelle release sur Gitea â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Usage : ./publish-release.sh 1.18.1 "Description des changements"
 # Necessite : pnpm, node, dotnet SDK, curl, zip, git
 #
@@ -17,14 +17,14 @@ if [[ -z "$VERSION" ]]; then
     exit 1
 fi
 
-[[ -z "$NOTES" ]] && NOTES="Nightcord $VERSION"
+[[ -z "$NOTES" ]] && NOTES="YouCord $VERSION"
 
-# ── Config Gitea ──────────────────────────────────────────────────────────────
-GITEA_URL="https://source.nightcord.st"
-GITEA_REPO="nightcord/nightcord"
+# â”€â”€ Config Gitea â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+GITEA_URL="https://source.youcord.st"
+GITEA_REPO="youcord/youcord"
 GITEA_API="$GITEA_URL/api/v1"
 
-# ── Lecture du token depuis le fichier local (non versionne) ──────────────────
+# â”€â”€ Lecture du token depuis le fichier local (non versionne) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 TOKEN_FILE="$HOME/.gitea_token"
 if [[ ! -f "$TOKEN_FILE" ]]; then
     echo "[ERREUR] Fichier de token introuvable : $TOKEN_FILE"
@@ -40,21 +40,21 @@ if [[ -z "$GITEA_TOKEN" ]]; then
     exit 1
 fi
 
-# ── Chemins de sortie ─────────────────────────────────────────────────────────
+# â”€â”€ Chemins de sortie â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 DIST_DIR="dist/desktop"
 OUT_DIR="release/installer"
-DIST_ZIP="$OUT_DIR/nightcord-dist.zip"
-INSTALLER_EXE="$OUT_DIR/Nightcord-Installer.exe"
+DIST_ZIP="$OUT_DIR/youcord-dist.zip"
+INSTALLER_EXE="$OUT_DIR/YouCord-Installer.exe"
 VERSION_JSON="$OUT_DIR/version.json"
 DESKTOP_ASAR="dist/desktop.asar"
 
 echo ""
-echo " ╔═══════════════════════════════════════════════════╗"
-echo " ║    NIGHTCORD — Publication release v$VERSION"
-echo " ╚═══════════════════════════════════════════════════╝"
+echo " â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—"
+echo " â•‘    YOUCORD â€” Publication release v$VERSION"
+echo " â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•"
 echo ""
 
-# ── 1. Mise à jour des versions dans les fichiers ─────────────────────────────
+# â”€â”€ 1. Mise Ã  jour des versions dans les fichiers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 echo " [1/8] Mise a jour de la version vers $VERSION..."
 
 node -e "
@@ -66,7 +66,7 @@ fs.writeFileSync('package.json', JSON.stringify(pkg, null, 4) + '\n', 'utf8');
 
 echo " [1/8] Version mise a jour."
 
-# ── 2. Envoi du code source sur Gitea ─────────────────────────────────────────
+# â”€â”€ 2. Envoi du code source sur Gitea â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 echo ""
 echo " [2/8] Committer et pusher le code source..."
 
@@ -85,7 +85,7 @@ fi
 
 echo " [2/8] Code source synchronise avec Gitea."
 
-# ── 3. Build JS (avec obfuscation automatique) ────────────────────────────────
+# â”€â”€ 3. Build JS (avec obfuscation automatique) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 echo ""
 echo " [3/8] Build + obfuscation en cours..."
 
@@ -99,7 +99,7 @@ fi
 
 echo " [3/8] Build + obfuscation termines !"
 
-# ── 4. Preparer les assets supplementaires ────────────────────────────────────
+# â”€â”€ 4. Preparer les assets supplementaires â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 echo ""
 echo " [4/8] Copie des assets (ffmpeg, node, modules...) vers $DIST_DIR..."
 
@@ -107,9 +107,9 @@ node scripts/build/collect-assets.mjs
 
 echo " [4/8] Assets copies."
 
-# ── 5. Compiler Nightcord-Installer.exe ──────────────────────────────────────
+# â”€â”€ 5. Compiler YouCord-Installer.exe â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 echo ""
-echo " [5/8] Compilation de Nightcord-Installer.exe..."
+echo " [5/8] Compilation de YouCord-Installer.exe..."
 
 mkdir -p "$OUT_DIR"
 
@@ -125,16 +125,16 @@ else
 fi
 
 if [[ ! -f "$INSTALLER_EXE" ]]; then
-    echo " [ERREUR] Nightcord-Installer.exe introuvable apres compilation."
+    echo " [ERREUR] YouCord-Installer.exe introuvable apres compilation."
     exit 1
 fi
 
 INSTALLER_SIZE=$(stat -c%s "$INSTALLER_EXE" 2>/dev/null || stat -f%z "$INSTALLER_EXE")
-echo " [5/8] Nightcord-Installer.exe cree ($INSTALLER_SIZE octets)"
+echo " [5/8] YouCord-Installer.exe cree ($INSTALLER_SIZE octets)"
 
-# ── 6. Créer nightcord-dist.zip ──────────────────────────────────────────────
+# â”€â”€ 6. CrÃ©er youcord-dist.zip â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 echo ""
-echo " [6/8] Creation de nightcord-dist.zip..."
+echo " [6/8] Creation de youcord-dist.zip..."
 
 if [[ ! -f "$DIST_DIR/patcher.js" ]]; then
     echo " [ERREUR] dist/desktop/patcher.js introuvable."
@@ -154,14 +154,14 @@ fi
 (cd "$DIST_DIR" && zip -r -9 "../../$DIST_ZIP" .)
 
 if [[ ! -f "$DIST_ZIP" ]]; then
-    echo " [ERREUR] Impossible de creer nightcord-dist.zip"
+    echo " [ERREUR] Impossible de creer youcord-dist.zip"
     exit 1
 fi
 
 DIST_ZIP_SIZE=$(stat -c%s "$DIST_ZIP" 2>/dev/null || stat -f%z "$DIST_ZIP")
-echo " [6/8] nightcord-dist.zip cree ($DIST_ZIP_SIZE octets)"
+echo " [6/8] youcord-dist.zip cree ($DIST_ZIP_SIZE octets)"
 
-# ── 7. Mettre à jour version.json ─────────────────────────────────────────────
+# â”€â”€ 7. Mettre Ã  jour version.json â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 echo ""
 echo " [7/8] Mise a jour de version.json..."
 
@@ -171,8 +171,8 @@ cat > "$VERSION_JSON" <<EOF
 {
   "version": "$VERSION",
   "releaseDate": "$ISO_DATE",
-  "installerUrl": "$GITEA_URL/$GITEA_REPO/releases/download/v$VERSION/Nightcord-Installer.exe",
-  "distUrl": "$GITEA_URL/$GITEA_REPO/releases/download/v$VERSION/nightcord-dist.zip",
+  "installerUrl": "$GITEA_URL/$GITEA_REPO/releases/download/v$VERSION/YouCord-Installer.exe",
+  "distUrl": "$GITEA_URL/$GITEA_REPO/releases/download/v$VERSION/youcord-dist.zip",
   "downloadUrl": "$GITEA_URL/$GITEA_REPO/releases/download/v$VERSION/desktop.asar",
   "changelog": "$NOTES"
 }
@@ -194,7 +194,7 @@ else
     git push origin "$TAG_NAME"
 fi
 
-# ── 8. Publier sur Gitea Releases ─────────────────────────────────────────────
+# â”€â”€ 8. Publier sur Gitea Releases â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 echo ""
 echo " [8/8] Creation de la release v$VERSION sur Gitea..."
 
@@ -206,14 +206,14 @@ RELEASE_ID=$(printf '%s' "$EXISTING_RELEASE_RESPONSE" | node -e "let d=''; proce
 if [[ -n "$RELEASE_ID" ]]; then
     echo " Release Gitea deja presente (ID: $RELEASE_ID)"
 else
-    # 8a. Créer la release via API Gitea
+    # 8a. CrÃ©er la release via API Gitea
     RELEASE_RESPONSE=$(curl -s -X POST "$GITEA_API/repos/$GITEA_REPO/releases" \
         -H "Authorization: token $GITEA_TOKEN" \
         -H "Content-Type: application/json" \
         -d "{
   \"tag_name\": \"$TAG_NAME\",
   \"target_commitish\": \"master\",
-  \"name\": \"Nightcord v$VERSION\",
+  \"name\": \"YouCord v$VERSION\",
   \"body\": \"$NOTES\",
   \"draft\": false,
   \"prerelease\": false
@@ -259,22 +259,22 @@ upload_asset() {
 }
 
 # 8c. Upload des assets
-upload_asset "$INSTALLER_EXE" "Nightcord-Installer.exe" "application/octet-stream"
-upload_asset "$DIST_ZIP"      "nightcord-dist.zip"      "application/zip"
+upload_asset "$INSTALLER_EXE" "YouCord-Installer.exe" "application/octet-stream"
+upload_asset "$DIST_ZIP"      "youcord-dist.zip"      "application/zip"
 upload_asset "$DESKTOP_ASAR"  "desktop.asar"            "application/octet-stream"
 upload_asset "$VERSION_JSON"  "version.json"            "application/json"
 
-# ── Done ───────────────────────────────────────────────────────────────────────
+# â”€â”€ Done â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 echo ""
-echo " ╔═══════════════════════════════════════════════════════════════════════╗"
-echo " ║  Nightcord v$VERSION publie avec succes sur Gitea !"
-echo " ║"
-echo " ║  URL : $GITEA_URL/$GITEA_REPO/releases/tag/v$VERSION"
-echo " ║"
-echo " ║  Fichiers publies :"
-echo " ║    Nightcord-Installer.exe    — installeur .exe avec GUI"
-echo " ║    nightcord-dist.zip         — JS obfusques (pour l'injec.)"
-echo " ║    desktop.asar               — asar Discord patcher"
-echo " ║    version.json               — metadonnees de version"
-echo " ╚═══════════════════════════════════════════════════════════════════════╝"
+echo " â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—"
+echo " â•‘  YouCord v$VERSION publie avec succes sur Gitea !"
+echo " â•‘"
+echo " â•‘  URL : $GITEA_URL/$GITEA_REPO/releases/tag/v$VERSION"
+echo " â•‘"
+echo " â•‘  Fichiers publies :"
+echo " â•‘    YouCord-Installer.exe    â€” installeur .exe avec GUI"
+echo " â•‘    youcord-dist.zip         â€” JS obfusques (pour l'injec.)"
+echo " â•‘    desktop.asar               â€” asar Discord patcher"
+echo " â•‘    version.json               â€” metadonnees de version"
+echo " â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•"
 echo ""

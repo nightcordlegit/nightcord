@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
-# ─── Nightcord Installer — Build ─────────────────────────────────────────────
+﻿#!/usr/bin/env bash
+# â”€â”€â”€ YouCord Installer â€” Build â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Equivalent bash de build-installer.ps1 (converti depuis build-installer.bat)
 
 set -euo pipefail
@@ -8,23 +8,23 @@ cd "$(dirname "$0")"
 
 echo ""
 echo " ================================"
-echo "  Nightcord Installer - Build"
+echo "  YouCord Installer - Build"
 echo " ================================"
 echo ""
 
-# ── Vérifie que node est disponible ──────────────────────────────────────────
+# â”€â”€ VÃ©rifie que node est disponible â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 if ! command -v node &>/dev/null; then
     echo " [ERREUR] Node.js introuvable. Installez Node.js depuis https://nodejs.org"
     exit 1
 fi
 
-# ── Crée le dossier de sortie si besoin ──────────────────────────────────────
+# â”€â”€ CrÃ©e le dossier de sortie si besoin â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 mkdir -p "release/installer"
 
-# ── Entre dans le dossier installer-src ──────────────────────────────────────
+# â”€â”€ Entre dans le dossier installer-src â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 cd installer-src
 
-# ── 1. Installe les dépendances si node_modules absent ───────────────────────
+# â”€â”€ 1. Installe les dÃ©pendances si node_modules absent â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 if [[ ! -d "node_modules" ]]; then
     echo " [1/3] Installation des dependances npm..."
     if ! npm install --legacy-peer-deps; then
@@ -37,7 +37,7 @@ else
     echo " [1/3] Dependances deja presentes, on passe."
 fi
 
-# ── 2. Compile avec electron-webpack ─────────────────────────────────────────
+# â”€â”€ 2. Compile avec electron-webpack â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 echo ""
 echo " [2/3] Compilation webpack (electron-webpack)..."
 
@@ -49,7 +49,7 @@ fi
 
 echo " [2/3] Compilation webpack reussie."
 
-# ── 3. Packaging electron-builder ────────────────────────────────────────────
+# â”€â”€ 3. Packaging electron-builder â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 echo ""
 echo " [3/3] Packaging electron-builder..."
 
@@ -61,17 +61,17 @@ fi
 
 cd ..
 
-# ── Vérification ─────────────────────────────────────────────────────────────
-if [[ ! -f "release/installer/Nightcord-Installer.exe" ]]; then
+# â”€â”€ VÃ©rification â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+if [[ ! -f "release/installer/YouCord-Installer.exe" ]]; then
     echo ""
-    echo " [ERREUR] Nightcord-Installer.exe introuvable apres build."
+    echo " [ERREUR] YouCord-Installer.exe introuvable apres build."
     exit 1
 fi
 
-SIZE=$(stat -c%s "release/installer/Nightcord-Installer.exe" 2>/dev/null \
-    || stat -f%z "release/installer/Nightcord-Installer.exe")
+SIZE=$(stat -c%s "release/installer/YouCord-Installer.exe" 2>/dev/null \
+    || stat -f%z "release/installer/YouCord-Installer.exe")
 
 echo ""
 echo " [OK] Build reussi !"
-echo " Fichier : release/installer/Nightcord-Installer.exe  ($SIZE octets)"
+echo " Fichier : release/installer/YouCord-Installer.exe  ($SIZE octets)"
 echo ""

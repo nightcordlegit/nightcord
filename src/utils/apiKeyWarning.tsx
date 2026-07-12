@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a Discord client mod
  * Copyright (c) 2026 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
@@ -24,7 +24,7 @@ function ApiKeyWarningModal({ pluginName, onClose }: { pluginName: string; onClo
                     <div style={{ fontSize: 14, color: "#fff", lineHeight: 1.5 }}>
                         <strong style={{ color: "#fff" }}>{pluginName}</strong> requires a Groq API Key to function.
                         <br /><br />
-                        Configure it once in the <strong style={{ color: "#fff" }}>NightcordAI</strong> settings.
+                        Configure it once in the <strong style={{ color: "#fff" }}>YouCordAI</strong> settings.
                     </div>
                 </div>
             </ModalContent>
@@ -43,11 +43,11 @@ function ApiKeyWarningModal({ pluginName, onClose }: { pluginName: string; onClo
                         }}
                         onClick={() => {
                             onClose();
-                            const plugin = Plugins.NightcordAI;
+                            const plugin = Plugins.YouCordAI;
                             if (plugin) openPluginModal(plugin);
                         }}
                     >
-                        Configure NightcordAI
+                        Configure YouCordAI
                     </button>
                     <button
                         style={{

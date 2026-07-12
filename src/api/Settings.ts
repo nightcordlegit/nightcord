@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a modification for Discord's desktop app
  * Copyright (c) 2022 Vendicated and contributors
  *
@@ -170,8 +170,8 @@ const DefaultSettings: Settings = {
 const settings = !IS_REPORTER ? VencordNative.settings.get() : {} as Settings;
 mergeDefaults(settings, DefaultSettings);
 
-// Nightcord native defaults — defaultPlugins is always enabled, no external prefs file
-const NIGHTCORD_PREFS = { defaultPlugins: true, autoUpdate: true } as const;
+// YouCord native defaults â€” defaultPlugins is always enabled, no external prefs file
+const YOUCORD_PREFS = { defaultPlugins: true, autoUpdate: true } as const;
 
 // Force enabledByDefault plugins to be enabled, even if they were previously saved as disabled.
 // This runs at load time so it works even for plugins already present in the settings file.

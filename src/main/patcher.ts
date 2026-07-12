@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a modification for Discord's desktop app
  * Copyright (c) 2022 Vendicated and contributors
  *
@@ -21,12 +21,12 @@ import electron, { app, BrowserWindowConstructorOptions, Menu, session } from "e
 import { existsSync as fsExistsSync, statSync as fsStatSync } from "original-fs";
 import { dirname, join } from "path";
 
-import { registerMediaPermissionsForSession } from "../nightcord/main/mediaPermissions";
+import { registerMediaPermissionsForSession } from "../youcord/main/mediaPermissions";
 import { RendererSettings } from "./settings";
 import { patchTrayMenu } from "./trayMenu";
 import { IS_VANILLA } from "./utils/constants";
 
-console.log("[Nightcord] Starting up...");
+console.log("[YouCord] Starting up...");
 
 // Our injector file at app/index.js
 const injectorPath = require.main!.filename;
@@ -76,19 +76,19 @@ if (!IS_VANILLA) {
 
     class BrowserWindow extends electron.BrowserWindow {
         constructor(options: BrowserWindowConstructorOptions) {
-            // On n'injecte le preload Nightcord QUE dans les fenêtres Discord/Nightcord légitimes.
+            // On n'injecte le preload YouCord QUE dans les fenÃªtres Discord/YouCord lÃ©gitimes.
             // Toutes les autres (overlay in-game, popups OAuth/connexion Spotify/Steam/GitHub/etc.,
-            // fenêtres de profil tierces) passent en super() sans modification pour éviter
-            // l'écran blanc / la fenêtre bloquée.
+            // fenÃªtres de profil tierces) passent en super() sans modification pour Ã©viter
+            // l'Ã©cran blanc / la fenÃªtre bloquÃ©e.
             //
-            // Règle : on injecte SEULEMENT si le preload vient de nous (pointe vers notre preload.js).
-            // Toute fenêtre créée par Discord avec son propre preload ou un preload tiers est laissée intacte.
+            // RÃ¨gle : on injecte SEULEMENT si le preload vient de nous (pointe vers notre preload.js).
+            // Toute fenÃªtre crÃ©Ã©e par Discord avec son propre preload ou un preload tiers est laissÃ©e intacte.
             const ourPreload = join(__dirname, "preload.js");
             const preloadIsOurs = options.webPreferences.preload === ourPreload;
-            // Exception : la fenêtre principale Discord a un preload à elle (l'original Discord),
-            // et c'est précisément ce qu'on veut remplacer — donc on accepte aussi le cas où
-            // le titre est une fenêtre Nightcord/Equicord/Discord connue.
-            const KNOWN_TITLES = /^(Discord|Vesktop|Equibop)$|^(Nightcord|Equicord)/;
+            // Exception : la fenÃªtre principale Discord a un preload Ã  elle (l'original Discord),
+            // et c'est prÃ©cisÃ©ment ce qu'on veut remplacer â€” donc on accepte aussi le cas oÃ¹
+            // le titre est une fenÃªtre YouCord/Equicord/Discord connue.
+            const KNOWN_TITLES = /^(Discord|Vesktop|Equibop)$|^(YouCord|Equicord)/;
             const isTrustedTitle = !!(options.title && KNOWN_TITLES.test(options.title));
             if (options?.webPreferences?.preload && (isTrustedTitle || preloadIsOurs)) {
                 const original = options.webPreferences.preload;
@@ -193,10 +193,10 @@ if (!IS_VANILLA) {
                     return superIsFullScreen();
                 };
 
-                // ── Fullscreen via HTML5 (vidéo plein écran, etc.) ──
+                // â”€â”€ Fullscreen via HTML5 (vidÃ©o plein Ã©cran, etc.) â”€â”€
                 // On branche enter/leave-html-full-screen dans les deux modes pour que
-                // les vrais plein écrans HTML5 fonctionnent correctement.
-                // DISCORD_WINDOW_TOGGLE_FULLSCREEN est neutralisé plus bas — il ne
+                // les vrais plein Ã©crans HTML5 fonctionnent correctement.
+                // DISCORD_WINDOW_TOGGLE_FULLSCREEN est neutralisÃ© plus bas â€” il ne
                 // passera JAMAIS par setFullScreen natif.
                 if (isTransparent) {
                     this.on("enter-html-full-screen", () => {
@@ -214,9 +214,9 @@ if (!IS_VANILLA) {
                     });
                 }
 
-                // ── F11 géré ici, côté main process ──
+                // â”€â”€ F11 gÃ©rÃ© ici, cÃ´tÃ© main process â”€â”€
                 // On intercepte F11 via before-input-event pour basculer le fullscreen
-                // utilisateur. C'est la SEULE source légitime de toggle fullscreen manuel.
+                // utilisateur. C'est la SEULE source lÃ©gitime de toggle fullscreen manuel.
                 this.webContents.on("before-input-event", (event, input) => {
                     if (input.type === "keyDown" && input.key === "F11" && !input.control && !input.shift && !input.alt && !input.meta) {
                         event.preventDefault();
@@ -239,10 +239,10 @@ if (!IS_VANILLA) {
                             applied = true;
                         }
                         if (!applied) {
-                            console.warn("[Nightcord] No background material API available on this system");
+                            console.warn("[YouCord] No background material API available on this system");
                         }
                     } catch (e) {
-                        console.error("[Nightcord] setBackgroundMaterial failed:", e);
+                        console.error("[YouCord] setBackgroundMaterial failed:", e);
                     }
                 }
 
@@ -251,9 +251,9 @@ if (!IS_VANILLA) {
                 }
 
                 // NOTE : le setWindowOpenHandler / will-navigate pour les liens externes
-                // est géré exclusivement par nightcord-index.js (app.on("web-contents-created"))
-                // afin d'éviter qu'un second handler ici n'écrase la logique did-create-window
-                // qui patche les fenêtres enfants about:blank (popups TikTok, settings, etc.).
+                // est gÃ©rÃ© exclusivement par youcord-index.js (app.on("web-contents-created"))
+                // afin d'Ã©viter qu'un second handler ici n'Ã©crase la logique did-create-window
+                // qui patche les fenÃªtres enfants about:blank (popups TikTok, settings, etc.).
             } else {
                 super(options);
             }
@@ -277,26 +277,26 @@ if (!IS_VANILLA) {
         });
     }
 
-    process.env.DATA_DIR = join(app.getPath("userData"), "..", "Nightcord");
+    process.env.DATA_DIR = join(app.getPath("userData"), "..", "YouCord");
 
     app.whenReady().then(() => {
         registerMediaPermissionsForSession(session.defaultSession);
     });
 
-    // ── Neutralisation de DISCORD_WINDOW_TOGGLE_FULLSCREEN ──
+    // â”€â”€ Neutralisation de DISCORD_WINDOW_TOGGLE_FULLSCREEN â”€â”€
     //
-    // PROBLÈME RACINE : Discord émet cet IPC automatiquement à chaque démarrage
-    // ET à chaque rechargement de thème pour "synchroniser" son état interne.
-    // L'ancien handler faisait `win.setFullScreen(!win.isFullScreen())` — un toggle
-    // aveugle. Résultat : fenêtre maximisée + isFullScreen()=false → setFullScreen(true)
-    // → overlay OS fullscreen → tous les inputs bloqués, app figée. F11 sortait du
-    // fullscreen et débloquait. Le fix du délai de 2s ne suffisait pas car les thèmes
-    // rechargent Discord après ce délai.
+    // PROBLÃˆME RACINE : Discord Ã©met cet IPC automatiquement Ã  chaque dÃ©marrage
+    // ET Ã  chaque rechargement de thÃ¨me pour "synchroniser" son Ã©tat interne.
+    // L'ancien handler faisait `win.setFullScreen(!win.isFullScreen())` â€” un toggle
+    // aveugle. RÃ©sultat : fenÃªtre maximisÃ©e + isFullScreen()=false â†’ setFullScreen(true)
+    // â†’ overlay OS fullscreen â†’ tous les inputs bloquÃ©s, app figÃ©e. F11 sortait du
+    // fullscreen et dÃ©bloquait. Le fix du dÃ©lai de 2s ne suffisait pas car les thÃ¨mes
+    // rechargent Discord aprÃ¨s ce dÃ©lai.
     //
     // SOLUTION : on intercepte le handler Discord et on le remplace par un no-op
-    // complet. Le fullscreen utilisateur est désormais géré exclusivement via F11
-    // intercepté dans before-input-event ci-dessus — ce qui est à la fois plus propre
-    // et impossible à déclencher accidentellement par Discord.
+    // complet. Le fullscreen utilisateur est dÃ©sormais gÃ©rÃ© exclusivement via F11
+    // interceptÃ© dans before-input-event ci-dessus â€” ce qui est Ã  la fois plus propre
+    // et impossible Ã  dÃ©clencher accidentellement par Discord.
     {
         const _originalHandle = electron.ipcMain.handle.bind(electron.ipcMain);
         const FULLSCREEN_CHANNEL = "DISCORD_WINDOW_TOGGLE_FULLSCREEN";
@@ -307,8 +307,8 @@ if (!IS_VANILLA) {
                 if (_fullscreenPatched) return;
                 _fullscreenPatched = true;
                 // No-op : on enregistre un handler vide pour que Discord ne crash pas
-                // ("no handler registered"), mais on ne fait RIEN — le fullscreen est
-                // géré par before-input-event (F11) côté main process.
+                // ("no handler registered"), mais on ne fait RIEN â€” le fullscreen est
+                // gÃ©rÃ© par before-input-event (F11) cÃ´tÃ© main process.
                 _originalHandle(FULLSCREEN_CHANNEL, (_event: electron.IpcMainInvokeEvent) => {
                     // Intentionnellement vide.
                 });
@@ -318,7 +318,7 @@ if (!IS_VANILLA) {
                 return _originalHandle(channel, listener);
             } catch (e: any) {
                 if (e?.message?.includes?.("Attempted to register a second handler")) {
-                    console.warn(`[Nightcord] Ignored duplicate IPC handler for '${channel}'`);
+                    console.warn(`[YouCord] Ignored duplicate IPC handler for '${channel}'`);
                     return;
                 }
                 throw e;
@@ -341,8 +341,8 @@ if (!IS_VANILLA) {
     app.commandLine.appendSwitch("disable-background-timer-throttling");
     app.commandLine.appendSwitch("disable-backgrounding-occluded-windows");
 } else {
-    console.log("[Nightcord] Running in vanilla mode. Not loading Nightcord");
+    console.log("[YouCord] Running in vanilla mode. Not loading YouCord");
 }
 
-console.log("[Nightcord] Loading original Discord app.asar");
+console.log("[YouCord] Loading original Discord app.asar");
 require(require.main!.filename);

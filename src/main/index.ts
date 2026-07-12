@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a modification for Discord's desktop app
  * Copyright (c) 2023 Vendicated and contributors
  *
@@ -99,8 +99,8 @@ if (!IS_VANILLA && !IS_EXTENSION) {
         try {
             if (RendererSettings.store.enableReactDevtools)
                 installExt("fmkadmapgofadopljbjfkapdkoienihi")
-                    .then(() => console.info("[Nightcord] Installed React Developer Tools"))
-                    .catch(err => console.error("[Nightcord] Failed to install React Developer Tools", err));
+                    .then(() => console.info("[YouCord] Installed React Developer Tools"))
+                    .catch(err => console.error("[YouCord] Failed to install React Developer Tools", err));
         } catch { }
 
         initCsp();

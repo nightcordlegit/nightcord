@@ -1,4 +1,4 @@
-.rules
+﻿.rules
 
 ## Project State (Jul 12 2026)
 
@@ -17,10 +17,10 @@
 - `src/shared/IpcEvents.ts`: added all Vesktop/Vencord preload events (40+ entries)
 - `packages/discord-types/src/components.d.ts`: added `RenderModalProps`, `ModalSize`
 - `src/components/Icons.tsx`: added `SkullIcon`
-- `tsconfig.json`: added `@webpack/types`, `@equicord/types/*`, `@Nightcord/types/*` path mappings
-- Created type declaration files for `@Nightcord/types/*` under `packages/vencord-types/`
+- `tsconfig.json`: added `@webpack/types`, `@equicord/types/*`, `@YouCord/types/*` path mappings
+- Created type declaration files for `@YouCord/types/*` under `packages/vencord-types/`
 - Created `src/types/global-modules.d.ts` for `libvesktop`, `discord-types/general`, `@plugins/devCompanion.dev/initWs`
-- Fixed `src/nightcord/renderer/components/settings/ImportLegacySettings.tsx`: `"react"` -> `@Nightcord/types/webpack/common`
+- Fixed `src/youcord/renderer/components/settings/ImportLegacySettings.tsx`: `"react"` -> `@YouCord/types/webpack/common`
 
 ### Current status
 - `pnpm buildDesktop` -> SUCCESS

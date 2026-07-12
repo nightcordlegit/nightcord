@@ -1,10 +1,10 @@
-name: Generate plugins.json
+﻿name: Generate plugins.json
 
 on:
   push:
     branches: [master]
     paths:
-      - "src/nightcordplugins/**"
+      - "src/youcordplugins/**"
       - "src/plugins/**"
       - "src/utils/constants.ts"
       - "scripts/generatePluginList.ts"

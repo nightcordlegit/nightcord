@@ -1,10 +1,10 @@
-{
+﻿{
     "manifest_version": 2,
     "minimum_chrome_version": "91",
-    "name": "Nightcord Web",
+    "name": "YouCord Web",
     "description": "The other cutest Discord mod now in your browser",
-    "author": "Nightcord",
-    "homepage_url": "https://github.com/nightcordlegit/nightcord",
+    "author": "YouCord",
+    "homepage_url": "https://github.com/nightcordlegit/youcord",
     "icons": {
         "128": "icon.png"
     },
@@ -49,7 +49,7 @@
     ],
     "browser_specific_settings": {
         "gecko": {
-            "id": "nightcord@nightcordoff.github.io",
+            "id": "youcord@youcordoff.github.io",
             "strict_min_version": "128.0",
             "data_collection_permissions": {
                 "required": [

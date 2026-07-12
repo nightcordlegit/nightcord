@@ -1,16 +1,16 @@
-import {app, BrowserWindow, shell} from "electron";
+﻿import {app, BrowserWindow, shell} from "electron";
 import path from "path";
 import URL from "url";
 import updateInstaller from "./update_installer";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
-app.name = "Nightcord";
+app.name = "YouCord";
 
 let mainWindow;
 
 function createMainWindow() {
     const window = new BrowserWindow({
-        title: "Nightcord Installer",
+        title: "YouCord Installer",
         frame: false,
         width: 550,
         height: 350,

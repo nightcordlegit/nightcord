@@ -1,4 +1,4 @@
-import {dialog, shell} from "electron";
+﻿import {dialog, shell} from "electron";
 import phin from "phin";
 const semverGreaterThan = require("semver/functions/gt");
 const {version} = require("../../package.json");
@@ -7,14 +7,14 @@ const {domain} = require("../../../DOMAIN.json");
 const getJSON = phin.defaults({
     method: "GET",
     parse: "json",
-    headers: {"User-Agent": `Nightcord Installer/${version}`},
+    headers: {"User-Agent": `YouCord Installer/${version}`},
     followRedirects: true
 });
 
  
 export default async function () {
-    const downloadUrl = `https://source.${domain}/api/v1/repos/nightcord/nightcord/releases/latest`;
-    console.info(`Nightcord Installer ${version}`);
+    const downloadUrl = `https://source.${domain}/api/v1/repos/youcord/youcord/releases/latest`;
+    console.info(`YouCord Installer ${version}`);
 
     try {
         const response = await getJSON(downloadUrl);
@@ -26,7 +26,7 @@ export default async function () {
 
             const result = await dialog.showMessageBox({
                 title: "New Installer Version Available",
-                message: `A new version of the Nightcord installer is available. Click "Download" to download the newest version.`,
+                message: `A new version of the YouCord installer is available. Click "Download" to download the newest version.`,
                 buttons: ["Download", "Later"],
                 defaultId: 0,
                 cancelId: 1

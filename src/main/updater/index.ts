@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a modification for Discord's desktop app
  * Copyright (c) 2022 Vendicated and contributors
  *
@@ -24,7 +24,7 @@ import gitRemote from "~git-remote";
 import { serializeErrors } from "./common";
 
 if (!IS_UPDATER_DISABLED) {
-    // Nightcord utilise toujours le mode HTTP (GitHub Releases)
+    // YouCord utilise toujours le mode HTTP (GitHub Releases)
     // IS_STANDALONE is false when injected into Discord, but we still want http.ts
     require("./http");
 } else {

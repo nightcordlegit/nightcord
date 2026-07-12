@@ -1,8 +1,8 @@
-{
-  "name": "nightcord-installer",
-  "productName": "Nightcord Installer",
-  "description": "A simple standalone program which automates the installation, removal and maintenance of Nightcord.",
-  "author": "Nightcord",
+﻿{
+  "name": "youcord-installer",
+  "productName": "YouCord Installer",
+  "description": "A simple standalone program which automates the installation, removal and maintenance of YouCord.",
+  "author": "YouCord",
   "version": "1.3.0",
   "license": "MIT",
   "scripts": {
@@ -34,14 +34,14 @@
     "webpack-bundle-analyzer": "^4.4.0"
   },
   "build": {
-    "appId": "app.nightcord.installer",
-    "productName": "Nightcord",
-    "copyright": "Copyright © 2026 Nightcord",
+    "appId": "app.youcord.installer",
+    "productName": "YouCord",
+    "copyright": "Copyright Â© 2026 YouCord",
     "directories": {
       "output": "../release/installer"
     },
     "win": {
-      "artifactName": "Nightcord-Installer.${ext}",
+      "artifactName": "YouCord-Installer.${ext}",
       "icon": "assets/icon.ico",
       "target": {
         "target": "portable",

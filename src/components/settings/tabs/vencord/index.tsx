@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
@@ -30,7 +30,7 @@ import { openModal } from "@utils/modal";
 import { relaunch } from "@utils/native";
 import { Avatar, React, Select, UserStore } from "@webpack/common";
 
-import { ContributeModal } from "../../../../nightcord/renderer/components/ContributeModal";
+import { ContributeModal } from "../../../../youcord/renderer/components/ContributeModal";
 import { openNotificationSettingsModal } from "./NotificationSettings";
 
 const cl = classNameFactory("vc-vencord-tab-");
@@ -95,7 +95,7 @@ function DevTeamSection() {
                 <QuickAction
                     Icon={GithubIcon}
                     text="Source Code"
-                    action={() => VencordNative.native.openExternal("https://github.com/nightcordlegit/nightcord")}
+                    action={() => VencordNative.native.openExternal("https://github.com/nightcordlegit/youcord")}
                 />
                 <QuickAction
                     Icon={PaintbrushIcon}
@@ -121,8 +121,8 @@ function DevTeamSection() {
                 />
                 <QuickAction
                     Icon={PlanetIcon}
-                    text="Nightcord Channel"
-                    action={() => VencordNative.native.openExternal("https://t.me/nightcordoff")}
+                    text="YouCord Channel"
+                    action={() => VencordNative.native.openExternal("https://t.me/youcordoff")}
                 />
             </QuickActionCard>
 
@@ -152,8 +152,8 @@ function useCompactActive() {
     const [active, setActive] = React.useState(isCompactModeEnabled);
     React.useEffect(() => {
         const handler = () => setActive(isCompactModeEnabled());
-        window.addEventListener("nightcord-compact-change", handler);
-        return () => window.removeEventListener("nightcord-compact-change", handler);
+        window.addEventListener("youcord-compact-change", handler);
+        return () => window.removeEventListener("youcord-compact-change", handler);
     }, []);
     return active;
 }
@@ -162,8 +162,8 @@ function useStealthActive() {
     const [active, setActive] = React.useState(isStealthModeEnabled);
     React.useEffect(() => {
         const handler = () => setActive(isStealthModeEnabled());
-        window.addEventListener("nightcord-stealth-change", handler);
-        return () => window.removeEventListener("nightcord-stealth-change", handler);
+        window.addEventListener("youcord-stealth-change", handler);
+        return () => window.removeEventListener("youcord-stealth-change", handler);
     }, []);
     return active;
 }
@@ -176,8 +176,8 @@ function StealthModeSection() {
             <Heading className={Margins.top20}>{t("Stealth Mode")}</Heading>
             <Paragraph className={Margins.bottom16}>
                 {enabled
-                    ? "Stealth mode is enabled â€” all Nightcord visual elements are hidden. Shortcut: Ctrl+Shift+H"
-                    : t("Hides all Nightcord visual elements without disabling plugins. Shortcut: Ctrl+Shift+H")}
+                    ? "Stealth mode is enabled Ã¢â‚¬â€ all YouCord visual elements are hidden. Shortcut: Ctrl+Shift+H"
+                    : t("Hides all YouCord visual elements without disabling plugins. Shortcut: Ctrl+Shift+H")}
             </Paragraph>
             <Button
                 onClick={toggleStealthMode}
@@ -197,7 +197,7 @@ function StealthModeButton() {
             onClick={toggleStealthMode}
             variant={enabled ? "dangerPrimary" : "primary"}
         >
-            {enabled ? t("✓ Stealth Mode Enabled — Click to disable") : t("Enable Stealth Mode")}
+            {enabled ? t("âœ“ Stealth Mode Enabled â€” Click to disable") : t("Enable Stealth Mode")}
         </Button>
     );
 }
@@ -306,7 +306,7 @@ function EquicordSettings() {
 
                 <Heading className={Margins.top20}>{t("Client Settings")}</Heading>
                 <Paragraph className={Margins.bottom16}>
-                    {t("Configure how Nightcord behaves and integrates with Discord. These settings affect the Discord client's appearance and behavior.")}
+                    {t("Configure how YouCord behaves and integrates with Discord. These settings affect the Discord client's appearance and behavior.")}
                 </Paragraph>
                 <Notice.Info className={Margins.bottom20} style={{ width: "100%" }}>
                     {t("You can customize where this settings section appears in Discord's settings menu by configuring the")} {" "}
@@ -420,7 +420,7 @@ function EquicordSettings() {
 
                 <Heading className={Margins.top20}>{t("Notifications")}</Heading>
                 <Paragraph className={Margins.bottom16}>
-                    {t("Configure how Nightcord handles notifications. You can customize when and how you receive alerts, or view a history of past notifications.")}
+                    {t("Configure how YouCord handles notifications. You can customize when and how you receive alerts, or view a history of past notifications.")}
                 </Paragraph>
 
                 <Flex gap="16px">
@@ -438,20 +438,20 @@ function EquicordSettings() {
 
             <Heading className={Margins.top20}>{t("Compact Mode")}</Heading>
             <Paragraph className={Margins.bottom16}>
-                {t("Replaces all Nightcord buttons with a single compact toggle icon. Click the icon in the header bar, channel toolbar, or chat bar to restore all buttons.")}
+                {t("Replaces all YouCord buttons with a single compact toggle icon. Click the icon in the header bar, channel toolbar, or chat bar to restore all buttons.")}
             </Paragraph>
             <Button
                 onClick={toggleCompactMode}
                 variant={compactActive ? "dangerPrimary" : "primary"}
             >
-                {compactActive ? t("✓ Compact Mode Enabled — Click to disable") : t("Enable Compact Mode")}
+                {compactActive ? t("âœ“ Compact Mode Enabled â€” Click to disable") : t("Enable Compact Mode")}
             </Button>
 
             <Divider className={Margins.top20} />
 
             <Heading className={Margins.top20}>{t("Stealth Mode")}</Heading>
             <Paragraph className={Margins.bottom16}>
-                {t("Hides all Nightcord visual elements without disabling plugins. Shortcut: Ctrl+Shift+H")}
+                {t("Hides all YouCord visual elements without disabling plugins. Shortcut: Ctrl+Shift+H")}
             </Paragraph>
             <StealthModeButton />
 
@@ -459,4 +459,4 @@ function EquicordSettings() {
     );
 }
 
-export default wrapTab(EquicordSettings, "Nightcord Settings");
+export default wrapTab(EquicordSettings, "YouCord Settings");

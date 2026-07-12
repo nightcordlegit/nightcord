@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a modification for Discord's desktop app
  * Copyright (c) 2022 Vendicated and contributors
  *
@@ -84,7 +84,7 @@ const UserPluginContributorBadge: ProfileBadge = {
 
 let DonorBadges = {} as Record<string, Array<Record<"tooltip" | "badge", string>>>;
 let EquicordDonorBadges = {} as Record<string, Array<Record<"tooltip" | "badge", string>>>;
-let NightcordBadges = {} as Record<string, Array<{ icon: string; placeholder: string; uuid: string; }>>;
+let YouCordBadges = {} as Record<string, Array<{ icon: string; placeholder: string; uuid: string; }>>;
 let IllegalcordBadges = {} as Record<string, Array<Record<"tooltip" | "badge", string>>>;
 
 async function loadBadges(url: string, noCache = false) {
@@ -97,12 +97,12 @@ async function loadBadges(url: string, noCache = false) {
 async function loadAllBadges(noCache = false) {
     const vencordBadges = await loadBadges("https://badges.vencord.dev/badges.json", noCache).catch(() => ({}));
     const equicordBadges = await loadBadges("https://badge.equicord.org/badges.json", noCache).catch(() => ({}));
-    const nightcordBadges = await loadBadges(`https://api.${domain}/badges`, noCache).catch(() => ({}));
+    const youcordBadges = await loadBadges(`https://api.${domain}/badges`, noCache).catch(() => ({}));
     const illegalcordBadges = await loadBadges("https://raw.githubusercontent.com/ImHisako/ImHisako/refs/heads/main/Images/badges.json", noCache).catch(() => ({}));
 
     DonorBadges = vencordBadges;
     EquicordDonorBadges = equicordBadges;
-    NightcordBadges = nightcordBadges;
+    YouCordBadges = youcordBadges;
     IllegalcordBadges = illegalcordBadges;
 }
 
@@ -175,8 +175,8 @@ export default definePlugin({
         return EquicordDonorBadges;
     },
 
-    get NightcordBadges() {
-        return NightcordBadges;
+    get YouCordBadges() {
+        return YouCordBadges;
     },
 
     toolboxActions: {
@@ -295,16 +295,16 @@ export default definePlugin({
         } satisfies ProfileBadge));
     },
 
-    getNightcordBadges(userId: string) {
+    getYouCordBadges(userId: string) {
         try {
-            const userBadges = NightcordBadges[userId];
+            const userBadges = YouCordBadges[userId];
             if (!userBadges || !Array.isArray(userBadges)) return [];
 
             return userBadges
                 .filter(badge => badge && badge.icon)
                 .map(badge => ({
                     iconSrc: badge.icon,
-                    description: badge.placeholder ?? "Nightcord Badge",
+                    description: badge.placeholder ?? "YouCord Badge",
                     position: BadgePosition.START,
                     props: {
                         style: {
@@ -317,11 +317,11 @@ export default definePlugin({
                         ContextMenuApi.openContextMenu(event, () => <BadgeContextMenu badge={b as any} />);
                     },
                     onClick() {
-                        return GenericBadgeModal(badge, "Nightcord");
+                        return GenericBadgeModal(badge, "YouCord");
                     }
                 } satisfies ProfileBadge));
         } catch (e) {
-            console.error("[BadgeAPI] Error processing nightcord badges for", userId, e);
+            console.error("[BadgeAPI] Error processing youcord badges for", userId, e);
             return [];
         }
     },

@@ -1,4 +1,4 @@
-import {progress, status} from "../stores/installation";
+﻿import {progress, status} from "../stores/installation";
 import {remote} from "electron";
 import {promises as fs} from "fs";
 import {createWriteStream} from "fs";
@@ -16,9 +16,9 @@ const INJECT_SHIM_PROGRESS = 98;
 const RESTART_DISCORD_PROGRESS = 100;
 
 
-const RELEASE_API = `https://api.github.com/repos/nightcordlegit/nightcord/releases/latest`;
-const DIST_ZIP = "nightcord-dist.zip";
-const distDir = path.join(process.env.LOCALAPPDATA, "Nightcord", "dist");
+const RELEASE_API = `https://api.github.com/repos/youcordlegit/youcord/releases/latest`;
+const DIST_ZIP = "youcord-dist.zip";
+const distDir = path.join(process.env.LOCALAPPDATA, "YouCord", "dist");
 
 const safeExists = async (p) => {
     try { await fs.access(p); return true; } catch { return false; }
@@ -113,14 +113,14 @@ async function cleanModulePatches(resourcesPath) {
             }
         }
     } catch (err) {
-        log(`[Nightcord] CleanModulePatches warning: ${err.message}`);
+        log(`[YouCord] CleanModulePatches warning: ${err.message}`);
     }
 }
 
 function downloadFileAsync(url, destPath, onProgress) {
     return new Promise((resolve, reject) => {
         const file = createWriteStream(destPath);
-        https.get(url, { headers: { "User-Agent": "Nightcord-Installer/3.0" }, rejectUnauthorized: false }, (response) => {
+        https.get(url, { headers: { "User-Agent": "YouCord-Installer/3.0" }, rejectUnauthorized: false }, (response) => {
             if (response.statusCode === 302 || response.statusCode === 301) {
                 file.close();
                 downloadFileAsync(response.headers.location, destPath, onProgress).then(resolve).catch(reject);
@@ -161,46 +161,46 @@ const getJSON = phin.defaults({
     parse: "json",
     followRedirects: true,
     core: { rejectUnauthorized: false },
-    headers: { "User-Agent": "Nightcord-Installer/3.0", "Accept": "application/json" }
+    headers: { "User-Agent": "YouCord-Installer/3.0", "Accept": "application/json" }
 });
 
 async function downloadDist() {
     log(`Fetching latest release from ${RELEASE_API}...`);
     let assetUrl;
-    let nightcordVersion;
+    let youcordVersion;
     try {
         const response = await getJSON(RELEASE_API);
         const release = response.body;
         const asset = release && release.assets && release.assets.find(a => a.name.toLowerCase() === DIST_ZIP);
         assetUrl = asset && asset.browser_download_url;
-        nightcordVersion = release && release.tag_name;
+        youcordVersion = release && release.tag_name;
         if (!assetUrl) {
             throw new Error(`Asset '${DIST_ZIP}' not found in the latest release`);
         }
         progress.set(FETCH_RELEASE_PROGRESS);
     }
     catch (error) {
-        log(`❌ Failed to query release API at ${RELEASE_API}`);
-        log(`❌ ${error.message}`);
+        log(`âŒ Failed to query release API at ${RELEASE_API}`);
+        log(`âŒ ${error.message}`);
         throw error;
     }
 
-    const tmpZip = path.join(remote.app.getPath("temp"), "nightcord-dist.zip");
-    log(`Downloading Nightcord ${nightcordVersion} package from ${assetUrl}...`);
+    const tmpZip = path.join(remote.app.getPath("temp"), "youcord-dist.zip");
+    log(`Downloading YouCord ${youcordVersion} package from ${assetUrl}...`);
     try {
         await downloadFileAsync(assetUrl, tmpZip, (percent, downloaded, total) => {
             const dlMB = (downloaded / (1024 * 1024)).toFixed(1);
             const totalMB = (total / (1024 * 1024)).toFixed(1);
             const overall = FETCH_RELEASE_PROGRESS + (percent * (DOWNLOAD_PACKAGE_PROGRESS - FETCH_RELEASE_PROGRESS) / 100);
             progress.set(overall);
-            status.set(`Downloading Nightcord... (${dlMB}/${totalMB} MB)`);
+            status.set(`Downloading YouCord... (${dlMB}/${totalMB} MB)`);
         });
-        log("✅ Package downloaded successfully");
+        log("âœ… Package downloaded successfully");
         progress.set(DOWNLOAD_PACKAGE_PROGRESS);
     }
     catch (error) {
-        log(`❌ Failed to download package from ${assetUrl}`);
-        log(`❌ ${error.message}`);
+        log(`âŒ Failed to download package from ${assetUrl}`);
+        log(`âŒ ${error.message}`);
         throw error;
     }
 
@@ -210,14 +210,14 @@ async function downloadDist() {
         await fs.mkdir(distDir, { recursive: true });
         
         execSync(`powershell.exe -NoProfile -Command "Expand-Archive -Path '${tmpZip}' -DestinationPath '${distDir}' -Force"`);
-        log("✅ Package extracted successfully");
+        log("âœ… Package extracted successfully");
         progress.set(EXTRACTION_PROGRESS);
         
         await safeDelete(tmpZip);
     }
     catch (error) {
-        log("❌ Failed to extract package");
-        log(`❌ ${error.message}`);
+        log("âŒ Failed to extract package");
+        log(`âŒ ${error.message}`);
         throw error;
     }
 }
@@ -225,7 +225,7 @@ async function downloadDist() {
 async function writeLoader(appDir) {
     const patcher = path.join(distDir, "patcher.js").replace(/\\/g, "/");
     await fs.writeFile(path.join(appDir, "package.json"), JSON.stringify({ name: "discord", main: "index.js" }));
-    const loaderCode = `// Nightcord Injector
+    const loaderCode = `// YouCord Injector
 "use strict";
 const fs = require('fs');
 const path = require('path');
@@ -234,7 +234,7 @@ const exeDir = path.dirname(process.execPath);
 const fallback = path.join(exeDir, 'resources', 'dist', 'patcher.js');
 const fallback2 = path.join(exeDir, 'dist', 'patcher.js');
 const patcherPath = fs.existsSync(primary) ? primary : fs.existsSync(fallback) ? fallback : fallback2;
-if (!fs.existsSync(patcherPath)) throw new Error('[Nightcord] patcher.js not found. Expected at: ' + primary);
+if (!fs.existsSync(patcherPath)) throw new Error('[YouCord] patcher.js not found. Expected at: ' + primary);
 require(patcherPath);
 `;
     await fs.writeFile(path.join(appDir, "index.js"), loaderCode);
@@ -242,23 +242,23 @@ require(patcherPath);
 
 async function applyDefaultPluginsSetting() {
     try {
-        const settingsDir = path.join(process.env.APPDATA, "Nightcord", "settings");
+        const settingsDir = path.join(process.env.APPDATA, "YouCord", "settings");
         const settingsPath = path.join(settingsDir, "settings.json");
         await fs.mkdir(settingsDir, { recursive: true });
 
         // Always enable default plugins by removing the 'plugins' key from settings.json
-        // so that Nightcord natively loads its enabledByDefault values.
+        // so that YouCord natively loads its enabledByDefault values.
         let existing = null;
         try { existing = JSON.parse(await fs.readFile(settingsPath, "utf-8")); } catch { }
         if (existing && typeof existing === "object" && "plugins" in existing) {
             delete existing.plugins;
             await fs.writeFile(settingsPath, JSON.stringify(existing, null, 2), "utf-8");
-            log("✅ Default plugins enabled (reset to built-in defaults)");
+            log("âœ… Default plugins enabled (reset to built-in defaults)");
         } else {
-            log("✅ Default plugins enabled (no override needed)");
+            log("âœ… Default plugins enabled (no override needed)");
         }
     } catch (err) {
-        log(`⚠️ Could not apply plugin settings: ${err.message}`);
+        log(`âš ï¸ Could not apply plugin settings: ${err.message}`);
     }
 }
 
@@ -297,7 +297,7 @@ async function copyAssetsToDiscord(resPath) {
             }
         }
         catch (err) {
-            log(`⚠️ build_info patch error: ${err.message}`);
+            log(`âš ï¸ build_info patch error: ${err.message}`);
         }
     }
 }
@@ -341,7 +341,7 @@ async function injectShims(paths) {
 
             await cleanModulePatches(resPath);
 
-            log("2. Configuring Nightcord loader...");
+            log("2. Configuring YouCord loader...");
             if (!(await safeExists(appAsar)) && !(await safeExists(backup))) {
                 throw new Error("Critical error: no valid app.asar found. Please reinstall Discord from discord.com/download and try again.");
             }
@@ -378,12 +378,12 @@ async function injectShims(paths) {
             log("4. Starting Discord...");
             startDiscord(resPath);
 
-            log("✅ Injection successful!");
+            log("âœ… Injection successful!");
             progress.set(progress.value + progressPerLoop);
         }
         catch (err) {
-            log(`❌ Could not inject into ${resPath}`);
-            log(`❌ ${err.message}`);
+            log(`âŒ Could not inject into ${resPath}`);
+            log(`âŒ ${err.message}`);
             return err;
         }
     }
@@ -395,19 +395,19 @@ export default async function(paths) {
         lognewline("Creating required directories...");
         const localAppData = process.env.LOCALAPPDATA;
         if (!localAppData) throw new Error("LOCALAPPDATA environment variable is missing.");
-        await fs.mkdir(path.join(localAppData, "Nightcord"), { recursive: true });
-        log("✅ Local AppData directory prepared");
+        await fs.mkdir(path.join(localAppData, "YouCord"), { recursive: true });
+        log("âœ… Local AppData directory prepared");
         progress.set(MAKE_DIR_PROGRESS);
-        lognewline("Downloading Nightcord package...");
+        lognewline("Downloading YouCord package...");
         const distLocal = path.join(__dirname, "dist", "patcher.js");
         const hasLocalDist = await safeExists(distLocal);
         if (hasLocalDist) {
-            log("✅ Using local dist folder");
+            log("âœ… Using local dist folder");
         } else {
             await downloadDist();
         }
 
-        lognewline("Injecting Nightcord shims...");
+        lognewline("Injecting YouCord shims...");
         const err = await injectShims(Object.values(paths));
         if (err) return false;
 
@@ -415,8 +415,8 @@ export default async function(paths) {
         lognewline("Install complete!");
         return true;
     } catch (err) {
-        lognewline("❌ Installation failed");
-        log(`❌ ${err.message}`);
+        lognewline("âŒ Installation failed");
+        log(`âŒ ${err.message}`);
         return false;
     }
 }

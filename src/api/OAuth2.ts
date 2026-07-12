@@ -1,14 +1,14 @@
-/*
+﻿/*
  * Vencord, a Discord client mod
  * Copyright (c) 2026 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-export const API_BASE = "https://api.nightcord.st";
+export const API_BASE = "";
 
 import * as DataStore from "./DataStore";
 
-export const OAUTH_TOKEN_KEY = "nightcord_oauth_token";
+export const OAUTH_TOKEN_KEY = "youcord_oauth_token";
 
 export async function beginDiscordOAuth(state?: string) {
     const url = new URL(`${API_BASE}/api/oauth2/signing`);

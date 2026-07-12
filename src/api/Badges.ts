@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a Discord client mod
  * Copyright (c) 2026 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
@@ -67,13 +67,13 @@ export function removeProfileBadge(badge: ProfileBadge) {
  * You probably don't need to use this.
  */
 export function _getBadges(args: BadgeUserArgs) {
-    // ── Stealth Mode Bypass ──
+    // â”€â”€ Stealth Mode Bypass â”€â”€
     try {
         const { isStealthModeEnabled } = require("./HeaderBar");
         if (isStealthModeEnabled()) return [];
     } catch { }
 
-    // ── Hidden badge sources (per-profile, synced via cloud) ──
+    // â”€â”€ Hidden badge sources (per-profile, synced via cloud) â”€â”€
     const hiddenSources = getHiddenBadgeSources(args.userId);
     const isHidden = (source: string) => hiddenSources.includes(source as any);
 
@@ -110,7 +110,7 @@ export function _getBadges(args: BadgeUserArgs) {
 
     const donorBadges = BadgeAPIPlugin.getDonorBadges(args.userId);
     const equicordDonorBadges = BadgeAPIPlugin.getEquicordDonorBadges(args.userId);
-    const nightcordBadges = (BadgeAPIPlugin as any).getNightcordBadges?.(args.userId);
+    const youcordBadges = (BadgeAPIPlugin as any).getYouCordBadges?.(args.userId);
     const illegalcordBadges = (BadgeAPIPlugin as any).getIllegalcordBadges?.(args.userId);
 
     if (donorBadges && !isHidden("vencord")) {
@@ -121,8 +121,8 @@ export function _getBadges(args: BadgeUserArgs) {
         badges.unshift(...equicordDonorBadges.map(shieldBadge));
     }
 
-    if (nightcordBadges && !isHidden("nightcord")) {
-        badges.unshift(...nightcordBadges.map(shieldBadge));
+    if (youcordBadges && !isHidden("youcord")) {
+        badges.unshift(...youcordBadges.map(shieldBadge));
     }
 
     if (illegalcordBadges && !isHidden("illegalcord")) {

@@ -1,5 +1,5 @@
-@echo off
-:: ─── Nightcord — Publier une nouvelle release sur Gitea ──────────────────────
+﻿@echo off
+:: â”€â”€â”€ YouCord â€” Publier une nouvelle release sur Gitea â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 :: Usage : publish-release.bat 1.18.1 "Description des changements"
 :: Necessite : pnpm, node
 ::             curl (inclus dans Windows 10+)
@@ -19,14 +19,14 @@ if "%VERSION%"=="" (
     exit /b 1
 )
 
-if "%NOTES%"=="" set NOTES=Nightcord %VERSION%
+if "%NOTES%"=="" set NOTES=YouCord %VERSION%
 
-:: ── Config Gitea ──────────────────────────────────────────────────────────────
-set GITEA_URL=https://source.nightcord.st
-set GITEA_REPO=nightcord/nightcord
+:: â”€â”€ Config Gitea â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+set GITEA_URL=https://source.youcord.st
+set GITEA_REPO=youcord/youcord
 set GITEA_API=%GITEA_URL%/api/v1
 
-:: ── Lecture du token depuis le fichier local (non versionne) ──────────────────
+:: â”€â”€ Lecture du token depuis le fichier local (non versionne) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 set TOKEN_FILE=%USERPROFILE%\.gitea_token
 if not exist "%TOKEN_FILE%" (
     echo  [ERREUR] Fichier de token introuvable : %TOKEN_FILE%
@@ -48,23 +48,23 @@ if "%GITEA_TOKEN%"=="" (
 :: Chemins de sortie
 set DIST_DIR=dist\desktop
 set OUT_DIR=release\installer
-set DIST_ZIP=%OUT_DIR%\nightcord-dist.zip
-set INSTALLER_EXE=%OUT_DIR%\Nightcord-Installer.exe
+set DIST_ZIP=%OUT_DIR%\youcord-dist.zip
+set INSTALLER_EXE=%OUT_DIR%\YouCord-Installer.exe
 set VERSION_JSON=%OUT_DIR%\version.json
 set DESKTOP_ASAR=dist\desktop.asar
 
 echo.
-echo  ╔═══════════════════════════════════════════════════╗
-echo  ║    NIGHTCORD — Publication release v%VERSION%
-echo  ╚═══════════════════════════════════════════════════╝
+echo  â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+echo  â•‘    YOUCORD â€” Publication release v%VERSION%
+echo  â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 echo.
 
-:: ── 1. Mise à jour de la version ──────────────────────────────────────────────
+:: â”€â”€ 1. Mise Ã  jour de la version â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 echo  [1/8] Mise a jour de la version vers %VERSION%...
 node -e "const fs = require('fs'); const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8')); pkg.version = '%VERSION%'; fs.writeFileSync('package.json', JSON.stringify(pkg, null, 4) + '\n', 'utf8');"
 echo  [1/8] Version mise a jour.
 
-:: ── 2. Envoi du code source sur Gitea ─────────────────────────────────────────
+:: â”€â”€ 2. Envoi du code source sur Gitea â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 echo.
 echo  [2/8] Committer et pusher le code source...
 git add .
@@ -82,7 +82,7 @@ if errorlevel 1 (
 )
 echo  [2/8] Code source synchronise avec Gitea.
 
-:: ── 3. Build JS ───────────────────────────────────────────────────────────────
+:: â”€â”€ 3. Build JS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 echo.
 echo  [3/8] Build + obfuscation en cours...
 taskkill /F /IM Discord.exe /T >nul 2>&1
@@ -96,15 +96,15 @@ if errorlevel 1 (
 )
 echo  [3/8] Build + obfuscation termines !
 
-:: ── 4. Assets ─────────────────────────────────────────────────────────────────
+:: â”€â”€ 4. Assets â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 echo.
 echo  [4/8] Copie des assets (ffmpeg, node, modules...) vers %DIST_DIR%...
 node scripts\build\collect-assets.mjs
 echo  [4/8] Assets copies.
 
-:: ── 5. Nightcord-Installer.exe ────────────────────────────────────────────────
+:: â”€â”€ 5. YouCord-Installer.exe â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 echo.
-echo  [5/8] Compilation de Nightcord-Installer.exe...
+echo  [5/8] Compilation de YouCord-Installer.exe...
 if not exist "%OUT_DIR%" mkdir "%OUT_DIR%"
 powershell -NoProfile -ExecutionPolicy Bypass -File "build-installer.ps1"
 if errorlevel 1 (
@@ -113,15 +113,15 @@ if errorlevel 1 (
     exit /b 1
 )
 if not exist "%INSTALLER_EXE%" (
-    echo  [ERREUR] Nightcord-Installer.exe introuvable apres compilation.
+    echo  [ERREUR] YouCord-Installer.exe introuvable apres compilation.
     pause
     exit /b 1
 )
-for %%F in ("%INSTALLER_EXE%") do echo  [5/8] Nightcord-Installer.exe cree (%%~zF octets)
+for %%F in ("%INSTALLER_EXE%") do echo  [5/8] YouCord-Installer.exe cree (%%~zF octets)
 
-:: ── 6. nightcord-dist.zip ─────────────────────────────────────────────────────
+:: â”€â”€ 6. youcord-dist.zip â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 echo.
-echo  [6/8] Creation de nightcord-dist.zip...
+echo  [6/8] Creation de youcord-dist.zip...
 if not exist "%DIST_DIR%\patcher.js" (
     echo  [ERREUR] dist\desktop\patcher.js introuvable.
     pause
@@ -136,15 +136,15 @@ if errorlevel 1 (
     pause
     exit /b 1
 )
-powershell -NoProfile -Command "Add-Type -Assembly System.IO.Compression.FileSystem; $src = (Resolve-Path '%DIST_DIR%').Path; $dst = (Join-Path (Resolve-Path 'release\installer').Path 'nightcord-dist.zip'); [System.IO.Compression.ZipFile]::CreateFromDirectory($src, $dst, [System.IO.Compression.CompressionLevel]::Optimal, $false)"
+powershell -NoProfile -Command "Add-Type -Assembly System.IO.Compression.FileSystem; $src = (Resolve-Path '%DIST_DIR%').Path; $dst = (Join-Path (Resolve-Path 'release\installer').Path 'youcord-dist.zip'); [System.IO.Compression.ZipFile]::CreateFromDirectory($src, $dst, [System.IO.Compression.CompressionLevel]::Optimal, $false)"
 if not exist "%DIST_ZIP%" (
-    echo  [ERREUR] Impossible de creer nightcord-dist.zip
+    echo  [ERREUR] Impossible de creer youcord-dist.zip
     pause
     exit /b 1
 )
-for %%F in ("%DIST_ZIP%") do echo  [6/8] nightcord-dist.zip cree (%%~zF octets)
+for %%F in ("%DIST_ZIP%") do echo  [6/8] youcord-dist.zip cree (%%~zF octets)
 
-:: ── 7. version.json ───────────────────────────────────────────────────────────
+:: â”€â”€ 7. version.json â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 echo.
 echo  [7/8] Mise a jour de version.json...
 for /f "usebackq" %%d in (`powershell -NoProfile -Command "Get-Date -Format 'yyyy-MM-dd'"`) do set ISO_DATE=%%d
@@ -152,15 +152,15 @@ for /f "usebackq" %%d in (`powershell -NoProfile -Command "Get-Date -Format 'yyy
     echo {
     echo   "version": "%VERSION%",
     echo   "releaseDate": "%ISO_DATE%",
-    echo   "installerUrl": "%GITEA_URL%/%GITEA_REPO%/releases/download/v%VERSION%/Nightcord-Installer.exe",
-    echo   "distUrl": "%GITEA_URL%/%GITEA_REPO%/releases/download/v%VERSION%/nightcord-dist.zip",
+    echo   "installerUrl": "%GITEA_URL%/%GITEA_REPO%/releases/download/v%VERSION%/YouCord-Installer.exe",
+    echo   "distUrl": "%GITEA_URL%/%GITEA_REPO%/releases/download/v%VERSION%/youcord-dist.zip",
     echo   "downloadUrl": "%GITEA_URL%/%GITEA_REPO%/releases/download/v%VERSION%/desktop.asar",
     echo   "changelog": "%NOTES%"
     echo }
 ) > "%VERSION_JSON%"
 echo  [7/8] version.json mis a jour.
 
-:: ── 8. Publier sur Gitea Releases ─────────────────────────────────────────────
+:: â”€â”€ 8. Publier sur Gitea Releases â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 echo.
 echo  [8/8] Creation de la release v%VERSION% sur Gitea...
 
@@ -169,7 +169,7 @@ set "JSON_TMP=%OUT_DIR%\release_payload.json"
 (
     echo {
     echo   "tag_name": "v%VERSION%",
-    echo   "name": "Nightcord v%VERSION%",
+    echo   "name": "YouCord v%VERSION%",
     echo   "body": "%NOTES%",
     echo   "draft": false,
     echo   "prerelease": false
@@ -197,33 +197,33 @@ if "%RELEASE_ID%"=="" (
 )
 echo  Release Gitea creee (ID: %RELEASE_ID%)
 
-:: 8c. Upload — Nightcord-Installer.exe (via curl, < 100MB)
-echo  Upload de Nightcord-Installer.exe...
-curl -s -X POST "%GITEA_API%/repos/%GITEA_REPO%/releases/%RELEASE_ID%/assets?name=Nightcord-Installer.exe" ^
+:: 8c. Upload â€” YouCord-Installer.exe (via curl, < 100MB)
+echo  Upload de YouCord-Installer.exe...
+curl -s -X POST "%GITEA_API%/repos/%GITEA_REPO%/releases/%RELEASE_ID%/assets?name=YouCord-Installer.exe" ^
     -H "Authorization: token %GITEA_TOKEN%" ^
     -H "Content-Type: application/octet-stream" ^
     --data-binary "@%INSTALLER_EXE%" >nul
-if errorlevel 1 ( echo  [ERREUR] Upload Nightcord-Installer.exe echoue. & pause & exit /b 1 )
+if errorlevel 1 ( echo  [ERREUR] Upload YouCord-Installer.exe echoue. & pause & exit /b 1 )
 
-:: 8d. Upload — nightcord-dist.zip (via curl, < 100MB)
-echo  Upload de nightcord-dist.zip...
-curl -s -X POST "%GITEA_API%/repos/%GITEA_REPO%/releases/%RELEASE_ID%/assets?name=nightcord-dist.zip" ^
+:: 8d. Upload â€” youcord-dist.zip (via curl, < 100MB)
+echo  Upload de youcord-dist.zip...
+curl -s -X POST "%GITEA_API%/repos/%GITEA_REPO%/releases/%RELEASE_ID%/assets?name=youcord-dist.zip" ^
     -H "Authorization: token %GITEA_TOKEN%" ^
     -H "Content-Type: application/zip" ^
     --data-binary "@%DIST_ZIP%" >nul
-if errorlevel 1 ( echo  [ERREUR] Upload nightcord-dist.zip echoue. & pause & exit /b 1 )
+if errorlevel 1 ( echo  [ERREUR] Upload youcord-dist.zip echoue. & pause & exit /b 1 )
 
-:: 8e. Upload — desktop.asar (via PowerShell, contourne limite Cloudflare 100MB)
+:: 8e. Upload â€” desktop.asar (via PowerShell, contourne limite Cloudflare 100MB)
 echo  Upload de desktop.asar...
 powershell -NoProfile -Command ^
     "$token = '%GITEA_TOKEN%';" ^
     "$bytes = [System.IO.File]::ReadAllBytes('dist\desktop.asar');" ^
-    "$uri = 'https://source.nightcord.st/api/v1/repos/nightcord/nightcord/releases/%RELEASE_ID%/assets?name=desktop.asar';" ^
+    "$uri = 'https://source.youcord.st/api/v1/repos/youcord/youcord/releases/%RELEASE_ID%/assets?name=desktop.asar';" ^
     "Invoke-RestMethod -Uri $uri -Method POST -Headers @{Authorization='token '+$token} -ContentType 'application/octet-stream' -Body $bytes | Out-Null;" ^
     "Write-Host 'OK'"
 if errorlevel 1 ( echo  [ERREUR] Upload desktop.asar echoue. & pause & exit /b 1 )
 
-:: 8f. Upload — version.json (via curl, tiny)
+:: 8f. Upload â€” version.json (via curl, tiny)
 echo  Upload de version.json...
 curl -s -X POST "%GITEA_API%/repos/%GITEA_REPO%/releases/%RELEASE_ID%/assets?name=version.json" ^
     -H "Authorization: token %GITEA_TOKEN%" ^
@@ -233,18 +233,18 @@ if errorlevel 1 ( echo  [ERREUR] Upload version.json echoue. & pause & exit /b 1
 
 del /F /Q "%OUT_DIR%\release_response.json" >nul 2>&1
 
-:: ── Done ───────────────────────────────────────────────────────────────────────
+:: â”€â”€ Done â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 echo.
-echo  ╔═══════════════════════════════════════════════════════════════════════╗
-echo  ║  Nightcord v%VERSION% publie avec succes sur Gitea !
-echo  ║
-echo  ║  URL : %GITEA_URL%/%GITEA_REPO%/releases/tag/v%VERSION%
-echo  ║
-echo  ║  Fichiers publies :
-echo  ║    Nightcord-Installer.exe    — installeur .exe avec GUI
-echo  ║    nightcord-dist.zip         — JS obfusques (pour l'injec.)
-echo  ║    desktop.asar               — asar Discord patcher
-echo  ║    version.json               — metadonnees de version
-echo  ╚═══════════════════════════════════════════════════════════════════════╝
+echo  â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+echo  â•‘  YouCord v%VERSION% publie avec succes sur Gitea !
+echo  â•‘
+echo  â•‘  URL : %GITEA_URL%/%GITEA_REPO%/releases/tag/v%VERSION%
+echo  â•‘
+echo  â•‘  Fichiers publies :
+echo  â•‘    YouCord-Installer.exe    â€” installeur .exe avec GUI
+echo  â•‘    youcord-dist.zip         â€” JS obfusques (pour l'injec.)
+echo  â•‘    desktop.asar               â€” asar Discord patcher
+echo  â•‘    version.json               â€” metadonnees de version
+echo  â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 echo.
 pause

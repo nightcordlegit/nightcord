@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a Discord client mod
  * Copyright (c) 2026 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
@@ -21,8 +21,8 @@ async function Unwrap<T>(p: Promise<IpcRes<T>>): Promise<T> {
 }
 
 /**
- * Demande au main process s'il y a une version plus récente.
- * Met à jour isOutdated et changes.
+ * Demande au main process s'il y a une version plus rÃ©cente.
+ * Met Ã  jour isOutdated et changes.
  */
 export async function checkForUpdates(): Promise<boolean> {
     changes = await Unwrap(VencordNative.updater.getUpdates());
@@ -30,8 +30,8 @@ export async function checkForUpdates(): Promise<boolean> {
 }
 
 /**
- * Télécharge le Setup.exe (étape 1).
- * Retourne true si le téléchargement a réussi.
+ * TÃ©lÃ©charge le Setup.exe (Ã©tape 1).
+ * Retourne true si le tÃ©lÃ©chargement a rÃ©ussi.
  */
 export async function update(): Promise<boolean> {
     if (!isOutdated) return true;
@@ -41,8 +41,8 @@ export async function update(): Promise<boolean> {
 }
 
 /**
- * Lance l'installeur téléchargé (étape 2).
- * L'app va se fermer et se relancer automatiquement après installation.
+ * Lance l'installeur tÃ©lÃ©chargÃ© (Ã©tape 2).
+ * L'app va se fermer et se relancer automatiquement aprÃ¨s installation.
  */
 export async function rebuild(): Promise<boolean> {
     return Unwrap(VencordNative.updater.rebuild());
@@ -51,7 +51,7 @@ export async function rebuild(): Promise<boolean> {
 export const getRepo = () => Unwrap(VencordNative.updater.getRepo());
 
 /**
- * Vérifie les mises à jour au démarrage et propose à l'utilisateur de mettre à jour.
+ * VÃ©rifie les mises Ã  jour au dÃ©marrage et propose Ã  l'utilisateur de mettre Ã  jour.
  */
 export async function maybePromptToUpdate(confirmMessage: string, checkForDev = false) {
     if (IS_WEB || IS_UPDATER_DISABLED) return;
@@ -60,12 +60,12 @@ export async function maybePromptToUpdate(confirmMessage: string, checkForDev = 
     try {
         const outdated = await checkForUpdates();
         if (outdated) {
-            // Mise à jour automatique sans confirmation
+            // Mise Ã  jour automatique sans confirmation
             const downloaded = await update();
             if (downloaded) await rebuild();
         }
     } catch (err) {
         UpdateLogger.error(err);
-        alert("La vérification des mises à jour a échoué. Vérifie ta connexion ou réinstalle Nightcord.");
+        alert("La vÃ©rification des mises Ã  jour a Ã©chouÃ©. VÃ©rifie ta connexion ou rÃ©installe YouCord.");
     }
 }

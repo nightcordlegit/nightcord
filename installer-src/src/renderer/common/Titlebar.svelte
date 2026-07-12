@@ -1,4 +1,4 @@
-<script>
+﻿<script>
     import {remote} from "electron";
     import quit from "../actions/quit";
     import {onMount} from "svelte";
@@ -12,10 +12,10 @@
         const https = require("https");
         const options = {
             hostname: "api.github.com",
-            path: "/repos/nightcordlegit/nightcord/releases/latest",
+            path: "/repos/youcordlegit/youcord/releases/latest",
             method: "GET",
             rejectUnauthorized: false,
-            headers: {"User-Agent": "nightcord-installer"}
+            headers: {"User-Agent": "youcord-installer"}
         };
 
         const req = https.request(options, (res) => {
@@ -40,7 +40,7 @@
 </script>
 
 <header class="titlebar {macButtons === true ? "type-mac" : "type-standard"}">
-    <span class="title">Nightcord Installer v{displayVersion}</span>
+    <span class="title">YouCord Installer v{displayVersion}</span>
     <div class="window-controls">
         {#if macButtons === true}
             <button tabindex="-1" on:click={quit} id="close">

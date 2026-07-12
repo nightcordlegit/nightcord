@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vesktop, a desktop app aiming to give you a snappier Discord Experience
  * Copyright (c) 2023 Vendicated and Vencord contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
@@ -17,7 +17,7 @@ const names: Record<string, string> = {
 
 export default globalExternalsWithRegExp({
     getModuleInfo(modulePath) {
-        const path = modulePath.replace(/@Nightcord\/types\/|@nightcord\/types\//i, "");
+        const path = modulePath.replace(/@YouCord\/types\/|@youcord\/types\//i, "");
         let varName = names[path] as string | undefined;
         if (!varName) {
             const altMapping = names[path.split("/")[0]] as string | undefined;

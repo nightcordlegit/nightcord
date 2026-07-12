@@ -1,14 +1,14 @@
-/*
- * Nightcord â€” Installer via EquilotlCli
- * TÃ©lÃ©charge EquilotlCli.exe depuis les releases Equicord et le lance
- * avec les variables d'environnement pointant vers les fichiers Nightcord.
+﻿/*
+ * YouCord Ã¢â‚¬â€ Installer via EquilotlCli
+ * TÃƒÂ©lÃƒÂ©charge EquilotlCli.exe depuis les releases Equicord et le lance
+ * avec les variables d'environnement pointant vers les fichiers YouCord.
  *
  * L'exe affiche une interface graphique permettant de choisir le Discord cible.
  *
  * Usage:
- *   pnpm inject    â†’ installe Nightcord dans le Discord choisi
- *   pnpm uninject  â†’ dÃ©sinstalle Nightcord du Discord choisi
- *   pnpm repair    â†’ rÃ©pare l'installation
+ *   pnpm inject    Ã¢â€ â€™ installe YouCord dans le Discord choisi
+ *   pnpm uninject  Ã¢â€ â€™ dÃƒÂ©sinstalle YouCord du Discord choisi
+ *   pnpm repair    Ã¢â€ â€™ rÃƒÂ©pare l'installation
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -53,14 +53,14 @@ async function ensureBinary() {
         : null;
 
     if (existsSync(outputFile)) {
-        console.log("[Nightcord] Installer already present, using local copy.");
+        console.log("[YouCord] Installer already present, using local copy.");
         return outputFile;
     }
 
-    console.log("[Nightcord] Downloading installer (" + filename + ")...");
+    console.log("[YouCord] Downloading installer (" + filename + ")...");
 
     const res = await fetch(BASE_URL + filename, {
-        headers: { "User-Agent": "Nightcord (https://github.com/nightcordfr/nightcord)" }
+        headers: { "User-Agent": "YouCord (https://github.com/youcordfr/youcord)" }
     });
 
     if (!res.ok)
@@ -82,23 +82,23 @@ async function ensureBinary() {
         try { chmodSync(outputFile, 0o755); } catch { }
     }
 
-    console.log("[Nightcord] Installer downloaded successfully!");
+    console.log("[YouCord] Installer downloaded successfully!");
     return outputFile;
 }
 
-// â”€â”€ VÃ©rifier que le build existe â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬ VÃƒÂ©rifier que le build existe Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 function checkBuild() {
     const patcherPath = join(BASE_DIR, "dist", "desktop", "patcher.js");
     if (!existsSync(patcherPath)) {
-        console.error("\x1b[31m[Nightcord] dist/desktop/patcher.js not found!\x1b[0m");
+        console.error("\x1b[31m[YouCord] dist/desktop/patcher.js not found!\x1b[0m");
         console.error("\x1b[33m           Run 'pnpm build' first, then try again.\x1b[0m");
         process.exit(1);
     }
 }
 
-// ── Suppression des mises à jour Discord incomplètes ─────────────────────────────
-// Quand Discord télécharge une mise à jour mais qu'elle est incomplète (pas d'app.asar),
-// l'installeur essaie d'y injecter et échoue. On supprime ces dossiers cassés.
+// â”€â”€ Suppression des mises Ã  jour Discord incomplÃ¨tes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Quand Discord tÃ©lÃ©charge une mise Ã  jour mais qu'elle est incomplÃ¨te (pas d'app.asar),
+// l'installeur essaie d'y injecter et Ã©choue. On supprime ces dossiers cassÃ©s.
 function cleanIncompleteDiscordUpdates() {
     if (process.platform !== "win32") return;
     const localAppData = process.env.LOCALAPPDATA || "";
@@ -116,18 +116,18 @@ function cleanIncompleteDiscordUpdates() {
             if (existsSync(join(base, ver)) && !existsSync(appAsarPath) && !existsSync(backupPath)) {
                 try {
                     rmSync(join(base, ver), { recursive: true, force: true });
-                    console.log(`[Nightcord] Supprimé le dossier de mise à jour Discord incomplet : ${join(base, ver)}`);
+                    console.log(`[YouCord] SupprimÃ© le dossier de mise Ã  jour Discord incomplet : ${join(base, ver)}`);
                 } catch (e) {
-                    console.warn(`[Nightcord] Impossible de supprimer ${join(base, ver)}: ${e.message}`);
+                    console.warn(`[YouCord] Impossible de supprimer ${join(base, ver)}: ${e.message}`);
                 }
             }
         }
     }
 }
 
-// ── Nettoyage des injections précédentes ─────────────────────────────────────────
-function cleanOldNightcord(isUninstall) {
-    console.log("[Nightcord] Cleaning previous installations...");
+// â”€â”€ Nettoyage des injections prÃ©cÃ©dentes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function cleanOldYouCord(isUninstall) {
+    console.log("[YouCord] Cleaning previous installations...");
     const platform = process.platform;
     const candidates = [];
 
@@ -174,7 +174,7 @@ function cleanOldNightcord(isUninstall) {
                     const pkgFile = join(appDirPath, "package.json");
                     if (existsSync(pkgFile)) {
                         const pkg = JSON.parse(readFileSync(pkgFile, "utf-8"));
-                        if (pkg.name === "nightcord") shouldDelete = true;
+                        if (pkg.name === "youcord") shouldDelete = true;
                     } else if (existsSync(backupPath)) {
                         shouldDelete = true;
                     }
@@ -182,7 +182,7 @@ function cleanOldNightcord(isUninstall) {
 
                 if (shouldDelete) {
                     rmSync(appDirPath, { recursive: true, force: true });
-                    console.log(`[Nightcord] Removed legacy app/ folder in ${resourcesDir}`);
+                    console.log(`[YouCord] Removed legacy app/ folder in ${resourcesDir}`);
                     cleanedAny = true;
                 }
             }
@@ -192,24 +192,24 @@ function cleanOldNightcord(isUninstall) {
                     rmSync(appAsarPath, { recursive: true, force: true });
                 }
                 renameSync(backupPath, appAsarPath);
-                console.log(`[Nightcord] Restored _app.asar â†’ app.asar in ${resourcesDir}`);
+                console.log(`[YouCord] Restored _app.asar Ã¢â€ â€™ app.asar in ${resourcesDir}`);
                 cleanedAny = true;
             }
 
         } catch (e) {
-            console.error(`[Nightcord] Error cleaning ${resourcesDir}:`, e.message);
+            console.error(`[YouCord] Error cleaning ${resourcesDir}:`, e.message);
         }
     }
 
     if (cleanedAny) {
-        console.log("[Nightcord] Cleanup done.");
+        console.log("[YouCord] Cleanup done.");
     } else {
-        console.log("[Nightcord] Nothing to clean.");
+        console.log("[YouCord] Nothing to clean.");
     }
 }
 
-// â”€â”€ Lancer Discord aprÃ¨s injection â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// Cherche quel Discord vient d'Ãªtre injectÃ© (_app.asar prÃ©sent = injectÃ©)
+// Ã¢â€â‚¬Ã¢â€â‚¬ Lancer Discord aprÃƒÂ¨s injection Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// Cherche quel Discord vient d'ÃƒÂªtre injectÃƒÂ© (_app.asar prÃƒÂ©sent = injectÃƒÂ©)
 // et le lance via Update.exe --processStart Discord.exe
 function launchInjectedDiscord() {
     if (process.platform !== "win32") return;
@@ -229,40 +229,40 @@ function launchInjectedDiscord() {
             const resourcesDir = join(base, ver, "resources");
             const backupPath   = join(resourcesDir, "_app.asar");
 
-            // _app.asar prÃ©sent = EquilotlCli vient d'injecter ici
+            // _app.asar prÃƒÂ©sent = EquilotlCli vient d'injecter ici
             if (existsSync(backupPath)) {
                 const exeName   = channel + ".exe";
                 const updateExe = join(base, "Update.exe");
 
                 if (existsSync(updateExe)) {
-                    console.log(`[Nightcord] Launching ${channel}...`);
+                    console.log(`[YouCord] Launching ${channel}...`);
                     exec(`"${updateExe}" --processStart ${exeName}`);
                 } else {
                     // Fallback : lancer l'exe directement
                     const directExe = join(base, ver, channel + ".exe");
                     if (existsSync(directExe)) {
-                        console.log(`[Nightcord] Launching ${channel} (direct)...`);
+                        console.log(`[YouCord] Launching ${channel} (direct)...`);
                         exec(`"${directExe}"`);
                     }
                 }
-                return; // On lance le premier Discord injectÃ© trouvÃ©
+                return; // On lance le premier Discord injectÃƒÂ© trouvÃƒÂ©
             }
         }
     }
 }
 
-// â”€â”€ Main â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Ã¢â€â‚¬Ã¢â€â‚¬ Main Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 const argStart = process.argv.indexOf("--");
 const args = argStart === -1 ? process.argv.slice(2) : process.argv.slice(argStart + 1);
 
 const isUninstall = args.includes("--uninstall");
 cleanIncompleteDiscordUpdates();
-cleanOldNightcord(isUninstall);
+cleanOldYouCord(isUninstall);
 if (!isUninstall) checkBuild();
 
 const installerBin = await ensureBinary();
 
-console.log("[Nightcord] Injecting...");
+console.log("[YouCord] Injecting...");
 
 const mappedArgs = args.map(a => {
     if (a === "--install") return "-install";
@@ -283,15 +283,15 @@ try {
             EQUICORD_USER_DATA_DIR: BASE_DIR,
             EQUICORD_DIRECTORY: join(BASE_DIR, "dist", "desktop"),
             EQUICORD_DEV_INSTALL: "1",
-            NIGHTCORD_DIRECTORY: join(BASE_DIR, "dist", "desktop")
+            YOUCORD_DIRECTORY: join(BASE_DIR, "dist", "desktop")
         }
     });
 } catch {
-    console.error("[Nightcord] Injection failed.");
+    console.error("[YouCord] Injection failed.");
     process.exit(1);
 }
 
-// Lancer Discord uniquement aprÃ¨s une injection rÃ©ussie (pas aprÃ¨s uninject)
+// Lancer Discord uniquement aprÃƒÂ¨s une injection rÃƒÂ©ussie (pas aprÃƒÂ¨s uninject)
 if (!isUninstall) {
     launchInjectedDiscord();
 }

@@ -1,4 +1,4 @@
-$ErrorActionPreference = "Stop"
+﻿$ErrorActionPreference = "Stop"
 $DISCORD = "C:\Users\zzafi\AppData\Local\Discord\app-1.0.9228"
 $OUT = "C:\Users\zzafi\Desktop\equicord\release\win-unpacked"
 $RES = "$OUT\resources"
@@ -42,4 +42,4 @@ Write-Host "=== ETAPE 6 : Creation portable exe ===" -ForegroundColor Cyan
 npx electron-builder --config electron-builder.config.cjs --win portable --x64 --prepackaged release\win-unpacked
 
 Write-Host "=== DONE ===" -ForegroundColor Green
-Write-Host "Fichier : release\Nightcord-1.14.5-portable.exe" -ForegroundColor Green
+Write-Host "Fichier : release\YouCord-1.14.5-portable.exe" -ForegroundColor Green

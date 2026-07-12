@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a Discord client mod
  * Copyright (c) 2025 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
@@ -94,7 +94,7 @@ async function _addCspRule(url: string, directives: string[], callerName: string
     const { checkboxChecked, response } = await dialog.showMessageBox({
         ...getMessage(url, directives, callerName),
         type: callerName ? "info" : "warning",
-        title: "Nightcord Host Permissions",
+        title: "YouCord Host Permissions",
         buttons: ["Cancel", "Allow"],
         defaultId: 0,
         cancelId: 0,

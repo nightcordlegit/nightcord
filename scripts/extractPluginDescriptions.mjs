@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+﻿#!/usr/bin/env node
 /**
  * Extract all plugin names, descriptions, and setting keys from plugin source files.
  * Outputs a JSON file ready for translation.
@@ -11,7 +11,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const PLUGIN_DIRS = [
     join(ROOT, "src/plugins"),
-    join(ROOT, "src/nightcordplugins"),
+    join(ROOT, "src/youcordplugins"),
 ];
 
 const pluginEntries = [];

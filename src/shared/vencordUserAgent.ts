@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a Discord client mod
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
@@ -10,5 +10,5 @@ import gitRemote from "~git-remote";
 export { gitHash, gitRemote };
 
 export const gitHashShort = gitHash.slice(0, 7);
-export const VENCORD_USER_AGENT = `Nightcord/${gitHash}${gitRemote ? ` (https://github.com/${gitRemote})` : ""}`;
-export const VENCORD_USER_AGENT_HASHLESS = `Nightcord${gitRemote ? ` (https://github.com/${gitRemote})` : ""}`;
+export const VENCORD_USER_AGENT = `YouCord/${gitHash}${gitRemote ? ` (https://github.com/${gitRemote})` : ""}`;
+export const VENCORD_USER_AGENT_HASHLESS = `YouCord${gitRemote ? ` (https://github.com/${gitRemote})` : ""}`;

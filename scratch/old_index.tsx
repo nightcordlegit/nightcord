@@ -646,7 +646,7 @@ function DynamicIslandPlayer() {
 
 // ÔöÇÔöÇÔöÇ Rich Presence ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
 
-const RPC_APP_ID = "1108588077900898414"; // Shared Nightcord music/media app ID
+const RPC_APP_ID = "1108588077900898414"; // Shared YouCord music/media app ID
 const RPC_SOCKET_ID = "youtube_in_discord";
 let _rpcLastTitle = "";
 let _rpcLastPlaying = false;
@@ -721,8 +721,8 @@ async function _doRpc() {
                 buttons: ["Watch Together", "Download"],
                 metadata: {
                     button_urls: [
-                        `https://nightcord.st/watch?v=${p.video.id}`,
-                        "https://nightcord.st",
+                        `https://youcord.st/watch?v=${p.video.id}`,
+                        "https://youcord.st",
                     ],
                 },
                 flags: 1,

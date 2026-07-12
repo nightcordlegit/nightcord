@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a modification for Discord's desktop app
  * Copyright (c) 2023 Vendicated and contributors
  *
@@ -27,7 +27,7 @@ import { Flex } from "@components/Flex";
 import { Link } from "@components/Link";
 import { Paragraph } from "@components/Paragraph";
 import { openSettingsTabModal, UpdaterTab } from "@components/settings";
-import { platformName } from "@nightcordplugins/equicordHelper/utils";
+import { platformName } from "@youcordplugins/equicordHelper/utils";
 import { gitHash, gitHashShort } from "@shared/vencordUserAgent";
 import { CONTRIB_ROLE_ID, Devs, DONOR_ROLE_ID, EQUICORD_TEAM, GUILD_ID, SUPPORT_CHANNEL_IDS, VC_CONTRIB_ROLE_ID, VC_DONOR_ROLE_ID, VC_GUILD_ID, VC_REGULAR_ROLE_ID, VENCORD_CONTRIB_ROLE_ID } from "@utils/constants";
 import { sendMessage } from "@utils/discord";
@@ -134,8 +134,8 @@ async function generateDebugInfoMessage() {
     const clientInfo = detectClient();
     let clientString = `${clientInfo.name}`;
     clientString += `${clientInfo.version ? ` v${clientInfo.version}` : ""}`;
-    clientString += `${clientInfo.info ? ` • ${clientInfo.info}` : ""}`;
-    clientString += `${clientInfo.shortHash ? ` • [${clientInfo.shortHash}](<https://github.com/Equicord/Equibop/commit/${clientInfo.hash}>)` : ""}`;
+    clientString += `${clientInfo.info ? ` â€¢ ${clientInfo.info}` : ""}`;
+    clientString += `${clientInfo.shortHash ? ` â€¢ [${clientInfo.shortHash}](<https://github.com/Equicord/Equibop/commit/${clientInfo.hash}>)` : ""}`;
 
     const spoofInfo = IS_EQUIBOP ? tryOrElse(() => VesktopNative.app.getPlatformSpoofInfo?.(), null) : null;
     const platformDisplay = spoofInfo?.spoofed
@@ -144,7 +144,7 @@ async function generateDebugInfoMessage() {
 
     const info = {
         Equicord:
-            `v${VERSION} • [${gitHashShort}](<https://github.com/Equicord/Equicord/commit/${gitHash}>)` +
+            `v${VERSION} â€¢ [${gitHashShort}](<https://github.com/Equicord/Equicord/commit/${gitHash}>)` +
             `${IS_EQUIBOP ? "" : SettingsPlugin.getVersionInfo()} - ${Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(BUILD_TIMESTAMP)}`,
         Client: `${RELEASE_CHANNEL} ~ ${clientString}`,
         Platform: platformDisplay
@@ -175,7 +175,7 @@ async function generateDebugInfoMessage() {
 
     let content = `>>> ${Object.entries(info).map(([k, v]) => `**${k}**: ${v}`).join("\n")}`;
     content += "\n" + Object.entries(commonIssues)
-        .filter(([, v]) => v).map(([k]) => `⚠️ ${k}`)
+        .filter(([, v]) => v).map(([k]) => `âš ï¸ ${k}`)
         .join("\n");
 
     return content.trim();
@@ -192,7 +192,7 @@ async function uploadPluginListFile(channelId: string, fileContent: string, file
                 body: {
                     flags: 0,
                     channel_id: channelId,
-                    content: `⚠️ Plugin list attached as file due to high plugin count (${fileContent.split("\n").filter(l => l.startsWith("  -")).length} plugins enabled)`,
+                    content: `âš ï¸ Plugin list attached as file due to high plugin count (${fileContent.split("\n").filter(l => l.startsWith("  -")).length} plugins enabled)`,
                     nonce: SnowflakeUtils.fromTimestamp(Date.now()),
                     sticker_ids: [],
                     type: 0,
@@ -509,19 +509,19 @@ export default definePlugin({
             "929208515883569182", "848339671629299742"
         ];
 
-        // Groupe 2 : Message "Nightcord developers"
-        const nightcordGroupIds = [
+        // Groupe 2 : Message "YouCord developers"
+        const youcordGroupIds = [
             "1098251321682968597", "1172305545554825259", "407134577748869122",
             "1098251321682968597", "587626543874834463", "1188391631662108752"
         ];
 
         const isOriginalDev = originalDevIds.includes(userId);
-        const isNightcordGroup = nightcordGroupIds.includes(userId);
+        const isYouCordGroup = youcordGroupIds.includes(userId);
 
-        if (!isOriginalDev && !isNightcordGroup) return null;
+        if (!isOriginalDev && !isYouCordGroup) return null;
         if (RelationshipStore.isFriend(userId) || isAnyPluginDev(UserStore.getCurrentUser()?.id)) return null;
 
-        const developerText = isOriginalDev ? "Equicord & Vencord plugin developers" : "Nightcord developers";
+        const developerText = isOriginalDev ? "Equicord & Vencord plugin developers" : "YouCord developers";
 
         return (
             <Card variant="warning" className={Margins.top8} defaultPadding>

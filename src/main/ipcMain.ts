@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a Discord client mod
  * Copyright (c) 2026 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
@@ -17,7 +17,7 @@ import { open, readdir, readFile, unlink } from "fs/promises";
 import { join, normalize } from "path";
 
 import { domain } from "../../DOMAIN.json";
-import { makeLinksOpenExternally } from "../nightcord/main/utils/makeLinksOpenExternally";
+import { makeLinksOpenExternally } from "../youcord/main/utils/makeLinksOpenExternally";
 import { registerCspIpcHandlers } from "./csp/manager";
 import { ALLOWED_PROTOCOLS, DATA_DIR, QUICK_CSS_PATH, SETTINGS_DIR, THEMES_DIR } from "./utils/constants";
 
@@ -208,7 +208,7 @@ ipcMain.handle(IpcEvents.OPEN_MONACO_EDITOR, async event => {
     }
 
     monacoWin = new BrowserWindow({
-        title: "Nightcord QuickCSS Editor",
+        title: "YouCord QuickCSS Editor",
         autoHideMenuBar: true,
         darkTheme: true,
         webPreferences: {
@@ -362,9 +362,9 @@ ipcMain.handle(IpcEvents.RELAUNCH_APP, async event => {
     app.exit(0);
 });
 
-const OFFICIAL_UPDATE_URL = `https://git.${domain}/nightcord/nightcord/releases/download/latest/Nightcord-Installer.exe`;
+const OFFICIAL_UPDATE_URL = `https://git.${domain}/youcord/youcord/releases/download/latest/YouCord-Installer.exe`;
 
-ipcMain.handle(IpcEvents.NIGHTCORD_DOWNLOAD_AND_RUN, async (event, url: string) => {
+ipcMain.handle(IpcEvents.YOUCORD_DOWNLOAD_AND_RUN, async (event, url: string) => {
     if (!validateSender(event)) throw new Error("Unauthorized IPC invocation");
     if (url !== OFFICIAL_UPDATE_URL) {
         throw new Error("Unauthorized update URL");
@@ -376,7 +376,7 @@ ipcMain.handle(IpcEvents.NIGHTCORD_DOWNLOAD_AND_RUN, async (event, url: string) 
     const fs = require("original-fs");
     const crypto = require("crypto");
 
-    const tmpPath = path.join(os.tmpdir(), "NightcordUpdate-Setup.exe");
+    const tmpPath = path.join(os.tmpdir(), "YouCordUpdate-Setup.exe");
 
     await new Promise<void>((resolve, reject) => {
         https.get(url, (res: any) => {
@@ -400,8 +400,8 @@ ipcMain.handle(IpcEvents.NIGHTCORD_DOWNLOAD_AND_RUN, async (event, url: string) 
         type: "info",
         buttons: ["Install update", "Cancel"],
         defaultId: 0,
-        title: "Nightcord Update",
-        message: "A Nightcord update is available.",
+        title: "YouCord Update",
+        message: "A YouCord update is available.",
         detail: "Do you want to install the update now?"
     });
     if (response === 1) return false;

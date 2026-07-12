@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a Discord client mod
  * Copyright (c) 2026 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
@@ -7,16 +7,16 @@
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
 
-const STYLE_ID = "nightcord-hide-native-buttons";
+const STYLE_ID = "youcord-hide-native-buttons";
 
 const CSS = `
-/* ── Nightcord : suppression boutons natifs Discord non désirés ── */
+/* â”€â”€ YouCord : suppression boutons natifs Discord non dÃ©sirÃ©s â”€â”€ */
 [aria-label="Open Logs"],
 [aria-label="Help"],
 [aria-label="Aide"],
 [aria-label="DevTools"],
-[aria-label="Boîte de réception"],
-[aria-label="Boite de réception"],
+[aria-label="BoÃ®te de rÃ©ception"],
+[aria-label="Boite de rÃ©ception"],
 [aria-label="Inbox"],
 [aria-label="Last Meadow Online"] {
     display: none !important;

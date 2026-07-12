@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Vencord, a modification for Discord's desktop app
  * Copyright (c) 2022 Vendicated and contributors
  *
@@ -27,7 +27,7 @@ export const EQUICORD_TEAM = "1173520023239786538";
 export const EQUICORD_HELPERS = "1326406112144265257";
 export const VENCORD_CONTRIB_ROLE_ID = "1173343399470964856";
 export const EQUIBOT_USER_ID = "1243063117852835941";
-export const NIGHTCORD_BOT_USER_ID = "1485437232902049973";
+export const YOUCORD_BOT_USER_ID = "1485437232902049973";
 
 // Vencord
 export const VC_SUPPORT_CHANNEL_ID = "1026515880080842772";
@@ -781,7 +781,7 @@ export const EquicordDevs = Object.freeze({
         id: 703634705152606318n
     },
     Tolgchu: {
-        name: "✨Tolgchu✨",
+        name: "âœ¨Tolgchuâœ¨",
         id: 329671025312923648n
     },
     DaBluLite: {
@@ -1066,7 +1066,7 @@ export const EquicordDevs = Object.freeze({
         id: 707309693449535599n
     },
     seth: {
-        name: "S€th",
+        name: "Sâ‚¬th",
         id: 1273447359417942128n
     },
     SteelTech: {

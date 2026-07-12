@@ -1,4 +1,4 @@
-<script>
+﻿<script>
     import PageHeader from "../common/PageHeader.svelte";
     import page from "../transitions/page.js";
     import Checkbox from "../common/Checkbox.svelte";
@@ -28,7 +28,7 @@
 
     function readLicenseFile() {
         fs.readFile(path.join(__static, "/license.txt"), (err, data) => {
-            if (err) return licenseText = "See license at https://github.com/nightcordlegit/nightcord/blob/main/LICENSE";
+            if (err) return licenseText = "See license at https://github.com/nightcordlegit/youcord/blob/main/LICENSE";
             licenseText = data;
         });
     }
