@@ -1,4 +1,5 @@
-name: Release
+name: Build & Release Latest
+
 on:
     push:
         branches:
@@ -13,8 +14,8 @@ permissions:
 
 jobs:
     Build:
-        name: Build Equicord
-        runs-on: ubuntu-latest
+        name: Build Nightcord
+        runs-on: windows-latest
 
         steps:
             - uses: actions/checkout@v4
@@ -30,10 +31,7 @@ jobs:
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
-            - name: Build web
-              run: pnpm buildWebStandalone
-
-            - name: Build
+            - name: Build standalone
               run: pnpm buildStandalone
 
             - name: Generate plugin lists
@@ -43,23 +41,67 @@ jobs:
                   pnpm generateVencordPluginJson dist/vencordplugins.json
                   pnpm generateDevsList dist/devs.json
 
-            - name: Collect files to be released
+            - name: Package nightcord-dist.zip
+              shell: pwsh
               run: |
-                  cd dist
-                  mkdir release
+                  $staging = "nightcord-dist-staging"
+                  New-Item -ItemType Directory -Path $staging -Force | Out-Null
 
-                  if ls browser/browser.* > /dev/null 2>&1; then cp browser/browser.* release; fi
-                  if ls Equicord.user.{js,js.LEGAL.txt} > /dev/null 2>&1; then cp Equicord.user.{js,js.LEGAL.txt} release; fi
+                  # Compiled files (patcher.js, renderer.js, preload.js, renderer.css)
+                  if (Test-Path "dist\desktop") {
+                      Copy-Item "dist\desktop\*" "$staging\" -Recurse -Force
+                  }
 
-                  cp *.{json,zip,asar} release 2>/dev/null || true
+                  # Ghost-server (voice/stream server)
+                  if (Test-Path "ghost-server") {
+                      Copy-Item "ghost-server" "$staging\ghost-server" -Recurse
+                  }
 
-                  if ls desktop/* > /dev/null 2>&1; then cp desktop/* release; fi
+                  # Sanity-check
+                  if (-not (Test-Path "$staging\patcher.js")) {
+                      Write-Error "BUILD ERROR: patcher.js missing from staging root"
+                      exit 1
+                  }
 
-                  find release -size 0 -delete 2>/dev/null || true
-                  rm -f release/package.json release/*.map
+                  Compress-Archive -Path "$staging\*" -DestinationPath "nightcord-dist.zip" -Force
+                  Write-Host "nightcord-dist.zip created ($($(Get-Item nightcord-dist.zip).Length / 1MB) MB)"
 
-            - name: Upload Equicord Stable
+            - name: Upload other build artifacts
+              shell: pwsh
               run: |
-                  gh release upload latest --clobber dist/release/*
+                  $releaseDir = "dist\release"
+                  New-Item -ItemType Directory -Path $releaseDir -Force | Out-Null
 
+                  # Copy browser extension files
+                  if (Test-Path "dist\browser\browser.*") {
+                      Copy-Item "dist\browser\browser.*" $releaseDir
+                  }
+                  # Copy userscript
+                  Get-ChildItem "dist\Equicord.user.*" -ErrorAction SilentlyContinue | Copy-Item -Destination $releaseDir
+                  # Copy json/asar files
+                  Get-ChildItem "dist\*.json","dist\*.asar","dist\*.zip" -ErrorAction SilentlyContinue | Copy-Item -Destination $releaseDir
+                  # Copy desktop extras
+                  Get-ChildItem "dist\desktop\*" -ErrorAction SilentlyContinue | Copy-Item -Destination $releaseDir
 
+                  # Clean up empty files and package.json
+                  Get-ChildItem $releaseDir -File | Where-Object { $_.Length -eq 0 } | Remove-Item
+                  Remove-Item "$releaseDir\package.json" -ErrorAction SilentlyContinue
+                  Remove-Item "$releaseDir\*.map" -ErrorAction SilentlyContinue
+
+            - name: Create or update latest release
+              shell: pwsh
+              run: |
+                  # Ensure "latest" tag exists
+                  $tag = "latest"
+                  $existing = gh release view $tag --json tagName 2>$null
+                  if (-not $existing) {
+                      gh release create $tag --title "Latest Build" --notes "Automated build from main branch ($env:GITHUB_SHA)" --latest=false
+                  }
+
+                  # Upload nightcord-dist.zip
+                  gh release upload $tag --clobber "nightcord-dist.zip"
+
+                  # Upload other artifacts
+                  Get-ChildItem "dist\release\*" -File | ForEach-Object {
+                      gh release upload $tag --clobber $_.FullName
+                  }
