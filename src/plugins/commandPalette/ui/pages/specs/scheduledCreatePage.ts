@@ -5,9 +5,9 @@
  */
 
 import { isPluginEnabled, plugins } from "@api/PluginManager";
-import { toggleEnabled } from "@youcordplugins/equicordHelper/utils";
 import { addScheduledMessage } from "@plugins/scheduledMessages/utils";
 import { ChannelStore, SelectedChannelStore } from "@webpack/common";
+import { toggleEnabled } from "@youcordplugins/equicordHelper/utils";
 
 import { resolveAllChannels } from "../../../query/resolvers";
 import type { PalettePageSpec, PaletteSuggestion } from "../types";

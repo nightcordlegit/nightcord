@@ -7,9 +7,9 @@
 import ErrorBoundary from "@components/ErrorBoundary";
 import { BackupAndRestoreTab, ChangelogTab, LanguageTab,PluginsTab, SyncTab, ThemesTab, UpdaterTab, VencordTab } from "@components/settings/tabs";
 import { CreateThemeTab } from "@components/settings/tabs/createTheme/CreateThemeTab";
-import IconsTab from "@youcordplugins/iconViewer/components/IconsTab";
 import { ModalContent, ModalProps, ModalRoot, ModalSize, openModal } from "@utils/modal";
 import { React, useState } from "@webpack/common";
+import IconsTab from "@youcordplugins/iconViewer/components/IconsTab";
 
 // â”€â”€ Tab definitions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 

@@ -6,11 +6,11 @@
 
 import { isPluginEnabled, plugins } from "@api/PluginManager";
 import { NotesIcon } from "@components/Icons";
-import { toggleEnabled } from "@youcordplugins/equicordHelper/utils";
 import type { ScheduledMessage } from "@plugins/scheduledMessages/types";
 import { addScheduledMessage, getChannelDisplayInfo, getScheduledMessages, removeScheduledMessage, sendScheduledMessageNow, updateScheduledMessageTime } from "@plugins/scheduledMessages/utils";
 import { sleep } from "@utils/misc";
 import { ChannelActionCreators, ChannelStore, NavigationRouter, SelectedChannelStore, Toasts, UserStore } from "@webpack/common";
+import { toggleEnabled } from "@youcordplugins/equicordHelper/utils";
 
 import { parseQuery } from "../query/parser";
 import { pluginToggleVerb, resolveAllChannels, resolveChannels, resolveGuilds, resolvePlugins, resolveRecentDmUsers, resolveSettingsCommandIds, resolveUsers } from "../query/resolvers";

@@ -6,12 +6,12 @@
 
 import { Button } from "@components/Button";
 import { Heading } from "@components/Heading";
-import { cl, Native, settings } from "@youcordplugins/messageLoggerEnhanced/index";
-import { DEFAULT_IMAGE_CACHE_DIR } from "@youcordplugins/messageLoggerEnhanced/utils/constants";
 import { copyWithToast } from "@utils/discord";
 import { classes } from "@utils/misc";
 import { findCssClassesLazy } from "@webpack";
 import { Toasts } from "@webpack/common";
+import { cl, Native, settings } from "@youcordplugins/messageLoggerEnhanced/index";
+import { DEFAULT_IMAGE_CACHE_DIR } from "@youcordplugins/messageLoggerEnhanced/utils/constants";
 
 const inputClasses = findCssClassesLazy("input", "inputWrapper", "editable") as Record<string, string>;
 

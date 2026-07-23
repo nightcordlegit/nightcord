@@ -12,16 +12,16 @@ import { getUserSettingLazy } from "@api/UserSettings";
 import { Button } from "@components/Button";
 import ErrorBoundary from "@components/ErrorBoundary";
 import { Flex } from "@components/Flex";
-import { settings as musicControlsSettings } from "@youcordplugins/musicControls/settings";
-import { getLyrics } from "@youcordplugins/musicControls/spotify/lyrics/api";
-import type { SyncedLyric } from "@youcordplugins/musicControls/spotify/lyrics/providers/types";
-import { SpotifyStore as SpotifyPlayerStore } from "@youcordplugins/musicControls/spotify/SpotifyStore";
 import { Logger } from "@utils/Logger";
 import definePlugin, { OptionType, type PluginNative } from "@utils/types";
 import { chooseFile } from "@utils/web";
 import type { Channel, SpotifyTrack } from "@vencord/discord-types";
 import { findComponentByCodeLazy } from "@webpack";
 import { Alerts, ChannelStore, Clickable, Popout, SelectedChannelStore, showToast, SpotifyStore as DiscordSpotifyStore, TextArea, Toasts, useRef, UserStore, useStateFromStores } from "@webpack/common";
+import { settings as musicControlsSettings } from "@youcordplugins/musicControls/settings";
+import { getLyrics } from "@youcordplugins/musicControls/spotify/lyrics/api";
+import type { SyncedLyric } from "@youcordplugins/musicControls/spotify/lyrics/providers/types";
+import { SpotifyStore as SpotifyPlayerStore } from "@youcordplugins/musicControls/spotify/SpotifyStore";
 
 interface CustomStatusSetting {
     createdAtMs?: string;

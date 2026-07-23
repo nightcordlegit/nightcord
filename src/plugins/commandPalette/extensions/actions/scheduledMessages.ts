@@ -5,9 +5,9 @@
  */
 
 import { isPluginEnabled, plugins } from "@api/PluginManager";
-import { toggleEnabled } from "@youcordplugins/equicordHelper/utils";
 import { openViewScheduledModal } from "@plugins/scheduledMessages/components/ViewScheduledModal";
 import { Toasts } from "@webpack/common";
+import { toggleEnabled } from "@youcordplugins/equicordHelper/utils";
 
 import { DEFAULT_CATEGORY_ID } from "../../metadata/categories";
 import { TAG_NAVIGATION, TAG_PLUGINS, TAG_UTILITY } from "../../metadata/tags";

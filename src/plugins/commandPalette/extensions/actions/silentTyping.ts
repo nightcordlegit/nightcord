@@ -6,8 +6,8 @@
 
 import { isPluginEnabled, plugins } from "@api/PluginManager";
 import { openPluginModal } from "@components/settings/tabs";
-import { toggleEnabled } from "@youcordplugins/equicordHelper/utils";
 import { SelectedChannelStore, Toasts } from "@webpack/common";
+import { toggleEnabled } from "@youcordplugins/equicordHelper/utils";
 
 import { DEFAULT_CATEGORY_ID } from "../../metadata/categories";
 import { TAG_PLUGINS, TAG_UTILITY } from "../../metadata/tags";

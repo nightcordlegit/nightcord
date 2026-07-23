@@ -8,8 +8,6 @@ import { CodeBlock } from "@components/CodeBlock";
 import { Heading, HeadingTertiary } from "@components/Heading";
 import { Heart } from "@components/Heart";
 import { Paragraph } from "@components/Paragraph";
-import { Theme, ThemeInfoModalProps } from "@youcordplugins/themeLibrary/types";
-import { ClockIcon, DownloadIcon, WarningIcon } from "@youcordplugins/themeLibrary/utils/Icons";
 import { copyToClipboard } from "@utils/clipboard";
 import { openInviteModal } from "@utils/discord";
 import { Margins } from "@utils/margins";
@@ -18,6 +16,8 @@ import { ModalContent, ModalFooter, ModalHeader, ModalRoot, ModalSize, openModal
 import type { PluginNative } from "@utils/types";
 import { findComponentByCodeLazy } from "@webpack";
 import { Button, Parser, React, showToast, Toasts } from "@webpack/common";
+import { Theme, ThemeInfoModalProps } from "@youcordplugins/themeLibrary/types";
+import { ClockIcon, DownloadIcon, WarningIcon } from "@youcordplugins/themeLibrary/utils/Icons";
 
 import { logger } from "./ThemeTab";
 

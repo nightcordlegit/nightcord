@@ -7,10 +7,10 @@
 import * as DataStore from "@api/DataStore";
 import { Button } from "@components/Button";
 import { Margins } from "@components/margins";
+import { useEffect, useRef, useState } from "@webpack/common";
 import type { Theme, ThemeLikeProps } from "@youcordplugins/themeLibrary/types";
 import { isAuthorized } from "@youcordplugins/themeLibrary/utils/auth";
 import { LikeIcon } from "@youcordplugins/themeLibrary/utils/Icons";
-import { useEffect, useRef, useState } from "@webpack/common";
 
 import { logger, themeRequest } from "./ThemeTab";
 

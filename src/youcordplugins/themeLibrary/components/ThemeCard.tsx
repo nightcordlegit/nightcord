@@ -10,12 +10,12 @@ import { Button } from "@components/Button";
 import { Card } from "@components/Card";
 import { HeadingPrimary, HeadingTertiary } from "@components/Heading";
 import { Paragraph } from "@components/Paragraph";
-import type { Theme, ThemeLikeProps } from "@youcordplugins/themeLibrary/types";
 import { proxyLazy } from "@utils/lazy";
 import { Margins } from "@utils/margins";
 import { ModalContent, ModalFooter, ModalHeader, ModalRoot, ModalSize, openModal } from "@utils/modal";
 import { User } from "@vencord/discord-types";
 import { FluxDispatcher, Parser, React, UserStore, UserUtils } from "@webpack/common";
+import type { Theme, ThemeLikeProps } from "@youcordplugins/themeLibrary/types";
 import { Constructor } from "type-fest";
 
 import { LikesComponent } from "./LikesComponent";

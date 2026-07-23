@@ -6,13 +6,13 @@
 
 import { definePluginSettings } from "@api/Settings";
 import { disableStyle, enableStyle } from "@api/Styles";
-import { buildPluginMenuEntries, buildThemeMenuEntries } from "@youcordplugins/equicordToolbox/menu";
 import { Devs } from "@utils/constants";
 import { classNameFactory } from "@utils/css";
 import { Logger } from "@utils/Logger";
 import definePlugin, { OptionType } from "@utils/types";
 import { findCssClassesLazy } from "@webpack";
 import { ComponentDispatch, FocusLock, Menu, useEffect, useRef } from "@webpack/common";
+import { buildPluginMenuEntries, buildThemeMenuEntries } from "@youcordplugins/equicordToolbox/menu";
 import type { HTMLAttributes, ReactNode } from "react";
 
 import fullHeightStyle from "./fullHeightContext.css?managed";

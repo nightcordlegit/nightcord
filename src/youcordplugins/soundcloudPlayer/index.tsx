@@ -10,11 +10,11 @@ import { HeaderBarButton } from "@api/HeaderBar";
 import { DataStore } from "@api/index";
 import { isPluginEnabled } from "@api/PluginManager";
 import { definePluginSettings } from "@api/Settings";
-import { SafeDynamicIsland } from "@youcordplugins/DynamicIslande";
 import { EquicordDevs } from "@utils/constants";
 import { ModalRoot, ModalSize, openModal } from "@utils/modal";
 import definePlugin, { IconComponent, OptionType, PluginNative } from "@utils/types";
 import { ApplicationAssetUtils, FluxDispatcher,MediaEngineStore, React, Select, useEffect, useRef, useState } from "@webpack/common";
+import { SafeDynamicIsland } from "@youcordplugins/DynamicIslande";
 
 import { t } from "../autoTranslateYouCord";
 

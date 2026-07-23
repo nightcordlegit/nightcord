@@ -6,6 +6,7 @@
 
 import "./screenSharePicker.css";
 
+import { Node } from "@vencord/venmic";
 import { classNameFactory } from "@YouCord/types/api/Styles";
 import {
     BaseText,
@@ -32,7 +33,6 @@ import {
 } from "@YouCord/types/utils";
 import { onceReady } from "@YouCord/types/webpack";
 import { FluxDispatcher, MediaEngineStore, Select, UserStore, useState } from "@YouCord/types/webpack/common";
-import { Node } from "@vencord/venmic";
 import type { Dispatch, SetStateAction } from "react";
 import { addPatch } from "renderer/patches/shared";
 import { State, useSettings, useVesktopState } from "renderer/settings";

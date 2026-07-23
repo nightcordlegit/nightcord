@@ -11,8 +11,6 @@ import { definePluginSettings, useSettings } from "@api/Settings";
 import { Button } from "@components/Button";
 import ErrorBoundary from "@components/ErrorBoundary";
 import { HeadphonesIcon, Microphone } from "@components/Icons";
-import { settings as musicControlsSettings } from "@youcordplugins/musicControls/settings";
-import { SpotifyStore } from "@youcordplugins/musicControls/spotify/SpotifyStore";
 import { classNameFactory } from "@utils/css";
 import { useFixedTimer } from "@utils/react";
 import { formatDurationMs } from "@utils/text";
@@ -20,6 +18,8 @@ import definePlugin, { OptionType } from "@utils/types";
 import type { Message, Stream } from "@vencord/discord-types";
 import { findByPropsLazy } from "@webpack";
 import { ApplicationStreamingStore, ChannelStore, Clickable, FluxDispatcher, GuildMemberStore, IconUtils, MediaEngineStore, MessageStore, ReactDOM, RelationshipStore, SelectedChannelStore, useEffect, useRef, UserGuildSettingsStore, UserStore, useState, useStateFromStores, VoiceStateStore } from "@webpack/common";
+import { settings as musicControlsSettings } from "@youcordplugins/musicControls/settings";
+import { SpotifyStore } from "@youcordplugins/musicControls/spotify/SpotifyStore";
 import type { MouseEvent, PointerEvent, ReactNode, SVGProps } from "react";
 
 import { follow, unfollow, useFollowId } from "../followUser";

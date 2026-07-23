@@ -21,13 +21,13 @@ import {
 } from "@components/settings";
 import { CreateThemeTab } from "@components/settings/tabs/createTheme/CreateThemeTab";
 import { PencilSparkleIcon } from "@components/settings/tabs/createTheme/PencilSparkleIcon";
-import IconsTab from "@youcordplugins/iconViewer/components/IconsTab";
 import { gitHashShort } from "@shared/vencordUserAgent";
 import { Devs } from "@utils/constants";
 import { isTruthy } from "@utils/guards";
 import definePlugin, { IconProps, OptionType } from "@utils/types";
 import { waitFor } from "@webpack";
 import { React } from "@webpack/common";
+import IconsTab from "@youcordplugins/iconViewer/components/IconsTab";
 import type { ComponentType, PropsWithChildren, ReactNode } from "react";
 
 const enum LayoutType {

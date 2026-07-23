@@ -5,11 +5,11 @@
  */
 
 import ErrorBoundary from "@components/ErrorBoundary";
+import { classNameFactory } from "@utils/css";
+import { FluxDispatcher, useLayoutEffect, useMemo, useRef, useState } from "@webpack/common";
 import { settings } from "@youcordplugins/imageZoom";
 import { ELEMENT_ID } from "@youcordplugins/imageZoom/constants";
 import { waitFor } from "@youcordplugins/imageZoom/utils/waitFor";
-import { classNameFactory } from "@utils/css";
-import { FluxDispatcher, useLayoutEffect, useMemo, useRef, useState } from "@webpack/common";
 
 interface Vec2 {
     x: number,

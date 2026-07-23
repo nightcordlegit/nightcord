@@ -5,9 +5,9 @@
  */
 
 import { findGroupChildrenByChildId, NavContextMenuPatchCallback } from "@api/ContextMenu";
+import { Menu } from "@webpack/common";
 import { PinOrder, settings } from "@youcordplugins/pinDms";
 import { addChannelToCategory, canMoveChannelInDirection, currentUserCategories, isPinned, moveChannel, removeChannelFromCategory } from "@youcordplugins/pinDms/data";
-import { Menu } from "@webpack/common";
 
 import { openCategoryModal } from "./CreateCategoryModal";
 

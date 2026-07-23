@@ -5,10 +5,10 @@
  */
 
 import { isPluginEnabled } from "@api/PluginManager";
-import anonymiseFileNames, { tarExtMatcher } from "@youcordplugins/antiMoveDeco/antiGroup/anonymiseFileNames";
 import { Devs } from "@utils/constants";
 import definePlugin, { ReporterTestable } from "@utils/types";
 import { CloudUpload } from "@vencord/discord-types";
+import anonymiseFileNames, { tarExtMatcher } from "@youcordplugins/antiMoveDeco/antiGroup/anonymiseFileNames";
 
 const extensionMap = {
     "ogg": [".ogv", ".oga", ".ogx", ".ogm", ".spx", ".aac", ".wma"],

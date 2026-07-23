@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { IconsDef } from "@youcordplugins/iconViewer/types";
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
+import { IconsDef } from "@youcordplugins/iconViewer/types";
 
 export let iconsModule: IconsDef;
 

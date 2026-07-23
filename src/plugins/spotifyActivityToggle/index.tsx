@@ -7,10 +7,10 @@
 import { isPluginEnabled } from "@api/PluginManager";
 import { definePluginSettings } from "@api/Settings";
 import { UserAreaButton, UserAreaRenderProps } from "@api/UserArea";
-import equicordToolbox from "@youcordplugins/equicordToolbox";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
 import { Constants, Menu, RestAPI, useEffect, useState } from "@webpack/common";
+import equicordToolbox from "@youcordplugins/equicordToolbox";
 
 let spotifyId: string | null = null;
 let showActivity = false;

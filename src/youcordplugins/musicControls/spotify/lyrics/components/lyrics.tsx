@@ -6,10 +6,10 @@
 
 import { BaseText } from "@components/BaseText";
 import { TooltipContainer } from "@components/TooltipContainer";
+import { ContextMenuApi, openModal,React, useEffect, useState, useStateFromStores } from "@webpack/common";
 import { settings } from "@youcordplugins/musicControls/settings";
 import { SpotifyLrcStore } from "@youcordplugins/musicControls/spotify/lyrics/providers/store";
 import { SpotifyStore } from "@youcordplugins/musicControls/spotify/SpotifyStore";
-import { ContextMenuApi, openModal,React, useEffect, useState, useStateFromStores } from "@webpack/common";
 
 import { LyricsContextMenu } from "./ctxMenu";
 import { LyricsModal } from "./modal";

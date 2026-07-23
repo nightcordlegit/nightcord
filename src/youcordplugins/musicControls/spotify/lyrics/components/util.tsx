@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+import { classNameFactory } from "@utils/css";
+import { findCssClassesLazy } from "@webpack";
+import { React, useEffect, useState, useStateFromStores } from "@webpack/common";
 import { settings } from "@youcordplugins/musicControls/settings";
 import { SpotifyLrcStore } from "@youcordplugins/musicControls/spotify/lyrics/providers/store";
 import { SyncedLyric } from "@youcordplugins/musicControls/spotify/lyrics/providers/types";
 import { SpotifyStore } from "@youcordplugins/musicControls/spotify/SpotifyStore";
-import { classNameFactory } from "@utils/css";
-import { findCssClassesLazy } from "@webpack";
-import { React, useEffect, useState, useStateFromStores } from "@webpack/common";
 
 export const scrollClasses = findCssClassesLazy("auto", "customTheme");
 

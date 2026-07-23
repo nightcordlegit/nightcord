@@ -38,9 +38,9 @@ import {
     getNewSettingsSize,
     getUpdatedPlugins,
     initializeChangelog,
-    YOUCORD_REPO_URL,
     saveUpdateSession,
     UpdateSession,
+    YOUCORD_REPO_URL,
 } from "./changelogManager";
 import { NewPluginsCompact, NewPluginsSection } from "./NewPluginsSection";
 

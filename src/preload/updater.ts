@@ -6,8 +6,8 @@
 
 import { contextBridge, ipcRenderer } from "electron/renderer";
 import type { UpdateInfo } from "electron-updater";
-import { UpdaterIpcEvents } from "../shared/IpcEvents";
 
+import { UpdaterIpcEvents } from "../shared/IpcEvents";
 import { invoke } from "./typedIpc";
 
 contextBridge.exposeInMainWorld("VesktopUpdaterNative", {

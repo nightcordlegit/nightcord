@@ -5,11 +5,11 @@
  */
 
 import ErrorBoundary from "@components/ErrorBoundary";
-import { openYouCordModal } from "@youcordplugins/compactMode/YouCordModal";
 import { Logger } from "@utils/Logger";
 import { classes } from "@utils/misc";
 import { filters, find, findComponentByCodeLazy } from "@webpack";
 import { Clickable, Popout, Tooltip, useEffect, useRef,useState } from "@webpack/common";
+import { openYouCordModal } from "@youcordplugins/compactMode/YouCordModal";
 import type { ComponentType, JSX, MouseEventHandler, ReactNode } from "react";
 
 const logger = new Logger("HeaderBarAPI");

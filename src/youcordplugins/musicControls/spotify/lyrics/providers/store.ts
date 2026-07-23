@@ -5,11 +5,11 @@
  */
 
 import { showNotification } from "@api/Notifications";
+import { proxyLazyWebpack } from "@webpack";
+import { Flux, FluxDispatcher } from "@webpack/common";
 import { settings } from "@youcordplugins/musicControls/settings";
 import { getLyrics, lyricFetchers, providers, updateLyrics } from "@youcordplugins/musicControls/spotify/lyrics/api";
 import { SpotifyStore, type Track } from "@youcordplugins/musicControls/spotify/SpotifyStore";
-import { proxyLazyWebpack } from "@webpack";
-import { Flux, FluxDispatcher } from "@webpack/common";
 
 import { lyricsAlternativeFetchers } from "./translator";
 import { LyricsData, Provider } from "./types";

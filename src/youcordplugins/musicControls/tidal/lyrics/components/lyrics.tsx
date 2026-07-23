@@ -6,10 +6,10 @@
 
 import { BaseText } from "@components/BaseText";
 import { TooltipContainer } from "@components/TooltipContainer";
+import { ContextMenuApi, openModal,useEffect, useState, useStateFromStores } from "@webpack/common";
 import { settings } from "@youcordplugins/musicControls/settings";
 import { TidalLrcStore } from "@youcordplugins/musicControls/tidal/lyrics/providers/store";
 import { TidalStore } from "@youcordplugins/musicControls/tidal/TidalStore";
-import { ContextMenuApi, openModal,useEffect, useState, useStateFromStores } from "@webpack/common";
 
 import { LyricsContextMenu } from "./ctxMenu";
 import { LyricsModal } from "./modal";

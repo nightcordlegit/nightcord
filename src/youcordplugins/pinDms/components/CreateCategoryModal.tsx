@@ -6,13 +6,13 @@
 
 import { Button } from "@components/Button";
 import { Heading } from "@components/Heading";
-import { DEFAULT_COLOR, SWATCHES } from "@youcordplugins/pinDms/constants";
-import { categoryLen, createCategory, getCategory } from "@youcordplugins/pinDms/data";
 import { classNameFactory } from "@utils/css";
 import { ModalContent, ModalFooter, ModalHeader, ModalRoot, openModalLazy } from "@utils/modal";
 import { RenderModalProps } from "@vencord/discord-types";
 import { extractAndLoadChunksLazy, findComponentByCodeLazy } from "@webpack";
 import { ColorPicker, TextInput, Toasts, useMemo, useState } from "@webpack/common";
+import { DEFAULT_COLOR, SWATCHES } from "@youcordplugins/pinDms/constants";
+import { categoryLen, createCategory, getCategory } from "@youcordplugins/pinDms/data";
 
 interface ColorPickerWithSwatchesProps {
     className?: string;

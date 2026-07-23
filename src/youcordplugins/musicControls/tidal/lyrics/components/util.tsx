@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+import { classNameFactory } from "@utils/css";
+import { findCssClassesLazy } from "@webpack";
+import { React, useEffect, useState, useStateFromStores } from "@webpack/common";
 import { settings } from "@youcordplugins/musicControls/settings";
 import { TidalLrcStore } from "@youcordplugins/musicControls/tidal/lyrics/providers/store";
 import { EnhancedLyric } from "@youcordplugins/musicControls/tidal/lyrics/types";
 import { TidalStore } from "@youcordplugins/musicControls/tidal/TidalStore";
-import { classNameFactory } from "@utils/css";
-import { findCssClassesLazy } from "@webpack";
-import { React, useEffect, useState, useStateFromStores } from "@webpack/common";
 
 export const scrollClasses = findCssClassesLazy("auto", "customTheme");
 

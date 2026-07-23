@@ -5,12 +5,12 @@
  */
 
 import { showNotification } from "@api/Notifications";
+import { proxyLazyWebpack } from "@webpack";
+import { Flux, FluxDispatcher } from "@webpack/common";
 import { settings } from "@youcordplugins/musicControls/settings";
 import { getLyrics } from "@youcordplugins/musicControls/tidal/lyrics/api";
 import { EnhancedLyric } from "@youcordplugins/musicControls/tidal/lyrics/types";
 import { TidalStore } from "@youcordplugins/musicControls/tidal/TidalStore";
-import { proxyLazyWebpack } from "@webpack";
-import { Flux, FluxDispatcher } from "@webpack/common";
 
 function showNotif(title: string, body: string) {
     if (settings.store.showFailedToasts) {
