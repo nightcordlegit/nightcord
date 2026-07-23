@@ -193,11 +193,13 @@ function obfuscateDesktop() {
 
 // â”€â”€â”€ Execution du build â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-killYouCord();
-const discord = findDiscordApp();
-buildEquicord();
-// obfuscateDesktop(); // Optionnel pour l'open source
-buildYouCordFromDiscord(discord);
+if (require.main === module) {
+    killYouCord();
+    const discord = findDiscordApp();
+    buildEquicord();
+    // obfuscateDesktop(); // Optionnel pour l'open source
+    buildYouCordFromDiscord(discord);
+}
 
 module.exports = {
     appId: "com.youcord.app",
