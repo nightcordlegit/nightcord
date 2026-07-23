@@ -126,7 +126,7 @@ async function callUser(userId: string): Promise<void> {
     await new Promise(r => setTimeout(r, 400));
     const channelId = await getDMChannelId(userId);
 
-    // MÃ©thode 1 : startCall via CallActionsLazy
+    // Méthode 1 : startCall via CallActionsLazy
     try {
         if (typeof CallActionsLazy?.startCall === "function") {
             CallActionsLazy.startCall({ channelId });
@@ -134,7 +134,7 @@ async function callUser(userId: string): Promise<void> {
         }
     } catch (_) { /* */ }
 
-    // MÃ©thode 2 : CALL_CONNECT dispatch (dÃ©marre un appel sur un canal DM existant)
+    // Méthode 2 : CALL_CONNECT dispatch (démarre un appel sur un canal DM existant)
     try {
         FluxDispatcher?.dispatch({
             type: "CALL_CONNECT",
@@ -144,7 +144,7 @@ async function callUser(userId: string): Promise<void> {
         return;
     } catch (_) { /* */ }
 
-    // MÃ©thode 3 : naviguer vers le canal DM et dispatcher RING
+    // Méthode 3 : naviguer vers le canal DM et dispatcher RING
     FluxDispatcher?.dispatch({
         type: "CALL_CREATE",
         channelId,
@@ -155,7 +155,7 @@ async function callUser(userId: string): Promise<void> {
 
 function joinVoiceChannel(name: string): void {
     const query = name.toLowerCase().trim();
-    // Extraire uniquement les chiffres/mots du nom (ignorer le serveur mentionnÃ©)
+    // Extraire uniquement les chiffres/mots du nom (ignorer le serveur mentionné)
     // ex: "222 sur shibuya" â†’ on cherche juste "222"
     const queryWords = query.split(/\s+(?:sur|in|on|dans|du|de|le|la|les)\s+/)[0].trim();
 
@@ -193,7 +193,7 @@ function joinVoiceChannel(name: string): void {
     const match = allChannels.find((c: any) => c?.type === 2 && matchesChannel(c.name ?? ""));
     if (match) { VoiceActions.selectVoiceChannel(match.id); return; }
 
-    // Lister les salons disponibles dans l'error pour dÃ©bugger
+    // Lister les salons disponibles dans l'error pour débugger
     const voiceList = allChannels
         .filter((c: any) => c?.type === 2)
         .map((c: any) => c.name)
@@ -202,7 +202,7 @@ function joinVoiceChannel(name: string): void {
     throw new Error(`Voice channel "${queryWords}" not found. Available channels: ${voiceList || "none"}`);
 }
 
-// detectAction est maintenant fusionnÃ© dans callAI pour Ã©conomiser une requÃªte API
+// detectAction est maintenant fusionné dans callAI pour économiser une requête API
 
 async function executeAction(action: DiscordAction): Promise<string> {
     const friend = action.target ? findFriend(action.target) : null;
@@ -255,7 +255,7 @@ async function callAI(messages: Message[]): Promise<string> {
 
     // Groq uniquement via groqManager (rotation + anti rate-limit)
     const forceModel = hasImages
-        ? "meta-llama/llama-4-scout-17b-16e-instruct" // modÃ¨le vision
+        ? "meta-llama/llama-4-scout-17b-16e-instruct" // modèle vision
         : settings.store.model?.trim() || undefined;
 
     return groqChat({
@@ -269,7 +269,7 @@ async function callAI(messages: Message[]): Promise<string> {
     });
 }
 
-// â”€â”€ Markdown lÃ©ger â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â”€â”€ Markdown léger â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function renderMarkdown(text: string): React.ReactNode {
     const nodes: React.ReactNode[] = [];
@@ -334,7 +334,7 @@ function YouCordAIChat({ rootProps, panelMode, initialMessage }: { rootProps?: a
     useEffect(() => {
         if (initialMessage && !didAutoSend.current) {
             didAutoSend.current = true;
-            // Court dÃ©lai pour que le composant soit montÃ©
+            // Court délai pour que le composant soit monté
             setTimeout(() => send(initialMessage), 120);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -401,17 +401,17 @@ function YouCordAIChat({ rootProps, panelMode, initialMessage }: { rootProps?: a
             const apiKey = settings.store.apiKey?.trim() ?? "";
             const provider = settings.store.provider ?? "groq";
 
-            // DÃ©tecte les actions Discord ET gÃ©nÃ¨re la rÃ©ponse en 1 seul appel
-            // (au lieu de 2 appels sÃ©parÃ©s comme avant â€” Ã©conomie de 50% du quota)
+            // Détecte les actions Discord ET génère la réponse en 1 seul appel
+            // (au lieu de 2 appels séparés comme avant â€” économie de 50% du quota)
             let reply: string;
             const lowerText = text.toLowerCase();
-            // DÃ©tection large â€” abrÃ©viations, typos, formulations franÃ§aises courantes
+            // Détection large â€” abréviations, typos, formulations françaises courantes
             const isDiscordAction = text && (
                 // Envoyer message
                 lowerText.includes("envoie") || lowerText.includes("envoyer") ||
                 lowerText.includes("env ") || lowerText.includes("msg") ||
-                lowerText.includes("message Ã ") || lowerText.includes("message a ") ||
-                lowerText.includes("dis Ã ") || lowerText.includes("dis a ") ||
+                lowerText.includes("message à") || lowerText.includes("message a ") ||
+                lowerText.includes("dis à") || lowerText.includes("dis a ") ||
                 lowerText.includes("dm") ||
                 // Appel
                 lowerText.includes("appel") || lowerText.includes("call") ||
@@ -646,7 +646,7 @@ Rules:
                     </div>
                 )}
                 <div className={`nai-input-box${loading || !hasKey ? " nai-input-box--disabled" : ""}`}>
-                    {/* Input file cachÃ© */}
+                    {/* Input file caché */}
                     <input
                         ref={fileInputRef}
                         type="file"
@@ -702,7 +702,7 @@ Rules:
     );
 }
 
-// â”€â”€ Panneau latÃ©ral (mode page) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â”€â”€ Panneau latéral (mode page) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export function YouCordAIPanel() {
     return <YouCordAIChat panelMode={true} />;
@@ -778,11 +778,11 @@ export default definePlugin({
             ]
         },
         {
-            // Patch 2 : Injecter le bouton YouCordAI dans la barre latÃ©rale DM (Ancien systÃ¨me rÃ©activÃ© avec correctif de version)
+            // Patch 2 : Injecter le bouton YouCordAI dans la barre latérale DM (Ancien système réactivé avec correctif de version)
             find: ".FRIENDS},\"friends\"",
             replacement: {
                 // On cible l'injection du bouton Boutique (Shop) dans le composant Sidebar
-                // Le match $1 capture l'expression de sÃ©lection (selected: ...)
+                // Le match $1 capture l'expression de sélection (selected: ...)
                 match: /\(0,\i\.jsx\)\(\i\.\i,\{selected:(\i===\i\.BVt\.COLLECTIBLES_SHOP).{0,400}?\},"discord-shop"\)/,
                 replace: "$self.renderNavButton($1)"
             }
@@ -790,7 +790,7 @@ export default definePlugin({
     ],
 
     start() {
-        // Migration automatique : copier la clÃ© Settings â†’ DataStore la premiÃ¨re fois
+        // Migration automatique : copier la clé Settings â†’ DataStore la première fois
         const keyFromSettings = settings.store.apiKey?.trim();
         if (keyFromSettings) {
             getGroqKey().then(stored => {
@@ -801,7 +801,7 @@ export default definePlugin({
             });
         }
 
-        // SystÃ¨me de secours DOM si le patch Webpack Ã©choue sur cette version de Discord
+        // Système de secours DOM si le patch Webpack échoue sur cette version de Discord
         const findShopNavItem = (): HTMLElement | null => {
             const shop: HTMLElement | null =
                 document.querySelector('[data-list-item-id="private-channels___discord-shop"]') ??
@@ -916,7 +916,7 @@ export default definePlugin({
             const content = message?.content?.trim();
             if (!content) return;
 
-            // InsÃ¨re aprÃ¨s "copy-text"
+            // Insère après "copy-text"
             const group = findGroupChildrenByChildId("copy-text", children);
             const target = group ?? children;
             const idx = group

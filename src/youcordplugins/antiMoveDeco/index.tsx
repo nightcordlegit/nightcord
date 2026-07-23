@@ -23,16 +23,16 @@ function onVoiceStateUpdate({ voiceStates }: { voiceStates: any[]; }) {
     if (!currentUser) return;
     const myId = currentUser.id;
 
-    // Chercher si mon Ã©tat a changÃ© dans cet update
+    // Chercher si mon état a changé dans cet update
     const myState = voiceStates.find(s => s.userId === myId);
 
     // Si on a un update me concernant
     if (myState) {
-        // Si le nouveau channelId est diffÃ©rent de celui qu'on protÃ¨ge (ou null si dÃ©co)
+        // Si le nouveau channelId est différent de celui qu'on protège (ou null si déco)
         if (myState.channelId !== targetChannelId) {
             console.log(`[AntiMoveDeco] Movement or disconnect detected! Returning to channel ${targetChannelId}...`);
 
-            // Petit dÃ©lai pour laisser Discord finir sa dÃ©connexion propre avant de reco
+            // Petit délai pour laisser Discord finir sa déconnexion propre avant de reco
             setTimeout(() => {
                 if (enabled && targetChannelId) {
                     try {
@@ -47,7 +47,7 @@ function onVoiceStateUpdate({ voiceStates }: { voiceStates: any[]; }) {
 }
 
 function AntiMoveDecoIcon({ enabled }: { enabled: boolean; }) {
-    const color = enabled ? "#39FF14" : "currentColor"; // Vert fluo si activÃ©
+    const color = enabled ? "#39FF14" : "currentColor"; // Vert fluo si activé
     return (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="12" cy="12" r="10" stroke={color} strokeWidth="2.5" />

@@ -50,12 +50,12 @@ const settings = definePluginSettings({
 // â”€â”€ Correction via groqManager â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const LANG_PROMPTS: Record<string, string> = {
-    fr: "Tu es un correcteur orthographique. Corrige UNIQUEMENT les fautes d'orthographe et de grammaire. Retourne le texte corrigÃ© sans explication ni guillemets. INTERDIT: ajouter des mots, changer le sens, reformuler. Si le texte est correct, retourne-le identique.",
+    fr: "Tu es un correcteur orthographique. Corrige UNIQUEMENT les fautes d'orthographe et de grammaire. Retourne le texte corrigé sans explication ni guillemets. INTERDIT: ajouter des mots, changer le sens, reformuler. Si le texte est correct, retourne-le identique.",
     en: "You are a spell-checker. Fix ONLY spelling and grammar mistakes. Return the corrected text without explanation or quotes. FORBIDDEN: adding words, changing meaning, rephrasing. If already correct, return as-is.",
-    es: "Eres un corrector ortogrÃ¡fico. Corrige SOLO errores ortogrÃ¡ficos y gramaticales. Devuelve el texte corrigÃ© sans explication. PROHIBIDO: aÃ±adir palabras, cambiar el sentido.",
-    de: "Du bist ein RechtschreibprÃ¼fer. Korrigiere NUR Rechtschreib- und Grammatikfehler. Gib den korrigierten Text ohne ErklÃ¤rung zurÃ¼ck. VERBOTEN: WÃ¶rter hinzufÃ¼gen, Bedeutung Ã¤ndern.",
+    es: "Eres un corrector ortográfico. Corrige SOLO errores ortográficos y gramaticales. Devuelve el texte corrigé sans explication. PROHIBIDO: añadir palabras, cambiar el sentido.",
+    de: "Du bist ein Rechtschreibprüfer. Korrigiere NUR Rechtschreib- und Grammatikfehler. Gib den korrigierten Text ohne Erklärung zurück. VERBOTEN: Wörter hinzufügen, Bedeutung ändern.",
     it: "Sei un correttore ortografico. Correggi SOLO errori ortografici e grammaticali. Restituisci il testo corretto senza spiegazioni. VIETATO: aggiungere parole, cambiare il significato.",
-    pt: "VocÃª Ã© um corretor ortogrÃ¡fico. Corrija SOMENTE erros ortogrÃ¡ficos e gramaticais. Retorne o texto corrigido sem explicaÃ§Ã£o. PROIBIDO: adicionar palavras, mudar o sentido.",
+    pt: "Você é um corretor ortográfico. Corrija SOMENTE erros ortográficos e gramaticais. Retorne o texto corrigido sem explicação. PROIBIDO: adicionar palavras, mudar o sentido.",
 };
 
 const AGGR_SUFFIX: Record<string, string> = {
@@ -79,19 +79,19 @@ async function correctText(text: string): Promise<string> {
             ],
             temperature: 0,
             maxTokens: 512,
-            // Forcer un modÃ¨le lÃ©ger pour la correction â€” Ã©conomise le quota du 70B pour l'IA
+            // Forcer un modèle léger pour la correction â€” économise le quota du 70B pour l'IA
             forceModel: "llama-3.1-8b-instant",
         });
 
         if (!corrected || corrected.trim() === "" || corrected === text) return text;
 
-        // SÃ©curitÃ© contre les rÃ©pÃ©titions infinies ou les hallucinations
+        // Sécurité contre les répétitions infinies ou les hallucinations
         if (corrected.toLowerCase().includes("correction:") || corrected.toLowerCase().includes("text:")) return text;
 
-        // SÃ©curitÃ© : rÃ©ponse trop diffÃ©rente â†’ on n'applique pas
+        // Sécurité : réponse trop différente â†’ on n'applique pas
         if (corrected.length > text.length * 1.5 || corrected.length < text.length * 0.4) return text;
 
-        // En mode low : vÃ©rification plus stricte du nombre de mots
+        // En mode low : vérification plus stricte du nombre de mots
         if (aggr === "low") {
             const srcWords = text.trim().split(/\s+/).filter(w => w.length > 0).length;
             const corrWords = corrected.trim().split(/\s+/).filter(w => w.length > 0).length;
@@ -101,7 +101,7 @@ async function correctText(text: string): Promise<string> {
                 return text;
             }
         }
-        return corrected.replace(/^"(.*)"$/, "$1").trim(); // Nettoie les guillemets Ã©ventuels
+        return corrected.replace(/^"(.*)"$/, "$1").trim(); // Nettoie les guillemets éventuels
     } catch (e: any) {
         console.warn("[AutoCorrect] Error correction:", e.message);
         return text; // En cas d'error, envoyer le texte original
@@ -135,7 +135,7 @@ const AutoCorrectChatBarButton: ChatBarButtonFactory = ({ type }) => {
 
     const toggle = async () => {
         if (!enabled) {
-            // VÃ©rifie que la clÃ© API est configurÃ©e avant d'activer
+            // Vérifie que la clé API est configurée avant d'activer
             const key = await getGroqKey();
             if (!key) {
                 showApiKeyWarning("AutoCorrect");

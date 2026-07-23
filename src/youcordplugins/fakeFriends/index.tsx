@@ -888,10 +888,10 @@ export default definePlugin({
         addContextMenuPatch("user-context", userContextPatch);
         addContextMenuPatch("guild-context", guildContextPatch);
 
-        // Charger l'Ã©tat persistant puis rÃ©appliquer les dispatches
+        // Charger l'état persistant puis réappliquer les dispatches
         await loadState();
         if (fakeState.size > 0) {
-            // DÃ©lai pour laisser Discord se charger complÃ¨tement
+            // Délai pour laisser Discord se charger complètement
             setTimeout(() => reapplyFakeStates(), 3000);
         }
     },

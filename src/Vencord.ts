@@ -302,7 +302,7 @@ async function runUpdateCheck() {
         if (notifiedForUpdatesThisSession) return;
         notifiedForUpdatesThisSession = true;
 
-        // Affiche la banniÃ¨re verte avec auto-install (compte Ã  rebours 10s)
+        // Affiche la bannière verte avec auto-install (compte à rebours 10s)
         setTimeout(() => showGreenUpdateBanner(), 8_000);
     } catch (err) {
         UpdateLogger.error("Failed to check for updates", err);

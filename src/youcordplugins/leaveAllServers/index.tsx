@@ -66,7 +66,7 @@ function LeaveAllServersModal({ rootProps }: { rootProps: any; }) {
         return availableGuilds.filter(g => g.name.toLowerCase().includes(q));
     }, [availableGuilds, search]);
 
-    // SÃ©lectionner tout par dÃ©faut
+    // Sélectionner tout par défaut
     useEffect(() => {
         setSelected(new Set(availableGuilds.map(g => g.id)));
     }, [availableGuilds]);

@@ -29,7 +29,7 @@ if (location.protocol !== "data:") {
     invoke(IpcEvents.INIT_FILE_WATCHERS);
 
     if (IS_DISCORD_DESKTOP) {
-        // Intercepte les AbortError non catchÃ©es (ex: video.play() interrompue au scroll)
+        // Intercepte les AbortError non catchées (ex: video.play() interrompue au scroll)
         // Ces erreurs uncaught peuvent crasher le renderer Electron au scroll rapide
         webFrame.executeJavaScript(`
             window.addEventListener('unhandledrejection', function(event) {
@@ -48,8 +48,8 @@ if (location.protocol !== "data:") {
         // Not supported in sandboxed preload scripts but Discord doesn't support it either so who cares
         require(process.env.DISCORD_PRELOAD!);
 
-        // Remplace "Discord" par "YouCord" dans le titre de la fenÃªtre (document.title)
-        // Discord change le titre dynamiquement depuis le renderer â€” on intercepte Ã§a ici
+        // Remplace "Discord" par "YouCord" dans le titre de la fenêtre (document.title)
+        // Discord change le titre dynamiquement depuis le renderer â€” on intercepte ça ici
         webFrame.executeJavaScript(`
             (function() {
                 function patchTitle(t) {

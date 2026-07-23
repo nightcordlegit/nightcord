@@ -166,7 +166,7 @@ function ExcludedPluginsList({ search }: { search: string; }) {
 
 import { SearchStatus, TUTORIAL_CACHE } from "./components/Common";
 
-// Fallback select natif si le composant Discord n'est pas trouvÃ©
+// Fallback select natif si le composant Discord n'est pas trouvé
 function NativeSelect({ options, select, isSelected }: any) {
     const currentVal = options.find((o: any) => isSelected(o.value))?.value ?? options.find((o: any) => o.default)?.value ?? options[0]?.value;
     return (
@@ -491,7 +491,7 @@ export default function PluginSettings({ premiumOnly = false }: PluginSettingsPr
             for (const pluginName in Plugins) {
                 const plugin = Plugins[pluginName];
 
-                // Les plugins APIs ne peuvent pas Ãªtre configurÃ©s directement
+                // Les plugins APIs ne peuvent pas être configurés directement
                 if (pluginName.endsWith("API")) continue;
 
                 const shouldBeEnabled = Boolean(plugin.required) || Boolean(plugin.enabledByDefault);

@@ -237,7 +237,7 @@ function applyWallpaper(channelId?: string) {
         const style = document.createElement("style");
         style.id = STYLE_ID;
         style.textContent = `
-/* Zone messages : rendre le fond transparent pour laisser le wallpaper apparaÃ®tre */
+/* Zone messages : rendre le fond transparent pour laisser le wallpaper apparaître */
 [class*="messagesWrapper"],
 [class*="chatContent"],
 [class*="chat-messages"],
@@ -336,7 +336,7 @@ async function setWallpaperFromFile(channelId: string) {
         saveWallpaper(channelId, imgurUrl, false);
         showToast("Wallpaper uploaded and synced!", Toasts.Type.SUCCESS);
     } else {
-        // Fallback local si l'upload Ã©choue
+        // Fallback local si l'upload échoue
         const reader = new FileReader();
         reader.onload = () => {
             const dataUrl = reader.result as string;
@@ -431,10 +431,10 @@ function initVPSSync() {
     }
 }
 
-// Clic droit sur un user â†’ trouve le DM channel avec cet user spÃ©cifique
+// Clic droit sur un user â†’ trouve le DM channel avec cet user spécifique
 const userContextMenuPatch: NavContextMenuPatchCallback = (children, { user }: any) => {
     if (!user?.id) return;
-    // RÃ©soudre le channel DM avec cet user (pas le channel courant !)
+    // Résoudre le channel DM avec cet user (pas le channel courant !)
     const channelId = (ChannelStore as any).getDMFromUserId?.(user.id);
     if (!channelId) return;
 

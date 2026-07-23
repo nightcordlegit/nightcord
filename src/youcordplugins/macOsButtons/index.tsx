@@ -125,7 +125,7 @@ function injectMacOsButtons() {
     container.appendChild(btnMin);
     container.appendChild(btnMax);
 
-    // Pousser les icÃ´nes Discord Ã  gauche pour ne pas se chevaucher
+    // Pousser les icônes Discord à gauche pour ne pas se chevaucher
     pushToolbarLeft();
 
     // Focus / unfocus
@@ -135,7 +135,7 @@ function injectMacOsButtons() {
 }
 
 function pushToolbarLeft() {
-    // Largeur occupÃ©e par nos boutons : sep(1) + gap(8) + 3Ã—btn(13) + gaps(16) + padding(24) â‰ˆ 90px
+    // Largeur occupée par nos boutons : sep(1) + gap(8) + 3×btn(13) + gaps(16) + padding(24) â‰ˆ 90px
     const W = 90;
     const styleId = "macos-toolbar-push";
     if (document.getElementById(styleId)) return;

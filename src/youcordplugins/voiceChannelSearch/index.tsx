@@ -156,7 +156,7 @@ function VoiceSearchModal({ rootProps, channels }: { rootProps: any; channels: V
         setJoiningId(ch.channelId);
         try {
             ChannelActions.selectVoiceChannel(ch.channelId);
-            // Petit dÃ©lai pour l'effet visuel avant de fermer
+            // Petit délai pour l'effet visuel avant de fermer
             await new Promise(r => setTimeout(r, 400));
         } catch { }
         setJoiningId(null);

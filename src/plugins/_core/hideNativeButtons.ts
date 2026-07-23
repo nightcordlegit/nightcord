@@ -10,13 +10,13 @@ import definePlugin from "@utils/types";
 const STYLE_ID = "youcord-hide-native-buttons";
 
 const CSS = `
-/* â”€â”€ YouCord : suppression boutons natifs Discord non dÃ©sirÃ©s â”€â”€ */
+/* â”€â”€ YouCord : suppression boutons natifs Discord non désirés â”€â”€ */
 [aria-label="Open Logs"],
 [aria-label="Help"],
 [aria-label="Aide"],
 [aria-label="DevTools"],
-[aria-label="BoÃ®te de rÃ©ception"],
-[aria-label="Boite de rÃ©ception"],
+[aria-label="Boîte de réception"],
+[aria-label="Boite de réception"],
 [aria-label="Inbox"],
 [aria-label="Last Meadow Online"] {
     display: none !important;

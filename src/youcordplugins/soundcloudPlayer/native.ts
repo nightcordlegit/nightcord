@@ -44,13 +44,13 @@ async function netGet(url: string, headers?: Record<string, string>): Promise<st
 }
 
 // â”€â”€â”€ Fetch dynamique du client_id SoundCloud â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// MÃªme logique que sc_fetch_client_id / sc_parse_js_for_clientid en C :
-//   Ã‰tape 1 : GET soundcloud.com â†’ extraire les <script src="...">
-//   Ã‰tape 2 : GET le dernier bundle JS â†’ chercher client_id:"XXXXXXXX"
+// Même logique que sc_fetch_client_id / sc_parse_js_for_clientid en C :
+//   Étape 1 : GET soundcloud.com â†’ extraire les <script src="...">
+//   Étape 2 : GET le dernier bundle JS â†’ chercher client_id:"XXXXXXXX"
 
 export async function fetchSoundCloudClientId(_?: any): Promise<string | null> {
     try {
-        // Ã‰tape 1 : charger soundcloud.com
+        // Étape 1 : charger soundcloud.com
         const html = await netGet("https://soundcloud.com/", {
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             "Accept-Language": "en-US,en;q=0.5",
@@ -68,12 +68,12 @@ export async function fetchSoundCloudClientId(_?: any): Promise<string | null> {
 
         if (scriptUrls.length === 0) return null;
 
-        // Ã‰tape 2 : tester les bundles JS (on cherche dans les plus rÃ©cents)
+        // Étape 2 : tester les bundles JS (on cherche dans les plus récents)
         for (const jsUrl of scriptUrls.slice(-5).reverse()) {
             try {
                 const js = await netGet(jsUrl);
 
-                // Patterns mis Ã  jour pour 2024/2025
+                // Patterns mis à jour pour 2024/2025
                 const patterns = [
                     /client_id\s*:\s*"([a-zA-Z0-9]{32})"/,
                     /client_id\s*=\s*"([a-zA-Z0-9]{32})"/,
@@ -106,12 +106,12 @@ export async function searchSoundCloud(
         const url = `https://api-v2.soundcloud.com/search/tracks?q=${encodeURIComponent(query)}&client_id=${clientId}&limit=50`;
         return await netGet(url);
     } catch (e: any) {
-        // Retourner le code HTTP pour dÃ©tecter l'expiration du client_id
+        // Retourner le code HTTP pour détecter l'expiration du client_id
         throw new Error(e?.message ?? String(e));
     }
 }
 
-// â”€â”€â”€ RÃ©solution de l'URL de stream â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â”€â”€â”€ Résolution de l'URL de stream â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function resolveStreamUrl(_: any, url: string, clientId: string): Promise<string | null> {
     try {

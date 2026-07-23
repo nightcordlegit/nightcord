@@ -74,7 +74,7 @@ async function fetchHiddenBadgeSources(userId: string) {
 export async function loadOwnHiddenBadgeSources(userId: string) {
     myUserId = userId;
 
-    // 1. Charge la sauvegarde locale en premier pour Ã©viter que Ã§a clignote ou disparaisse sans compte
+    // 1. Charge la sauvegarde locale en premier pour éviter que ça clignote ou disparaisse sans compte
     try {
         const localData = localStorage.getItem("youcord_hidden_badges");
         if (localData) {
@@ -95,7 +95,7 @@ export async function loadOwnHiddenBadgeSources(userId: string) {
         const result = await getOwnPluginConfig(PLUGIN_KEY, token);
         const hidden: BadgeSource[] = Array.isArray(result?.config?.settings?.hidden) ? result.config.settings.hidden : [];
 
-        // La version cloud a prioritÃ© si elle existe (et on met Ã  jour le local)
+        // La version cloud a priorité si elle existe (et on met à jour le local)
         if (result?.config?.settings?.hidden !== undefined) {
             myHiddenSources = hidden;
             localStorage.setItem("youcord_hidden_badges", JSON.stringify(hidden));
@@ -115,7 +115,7 @@ export async function loadOwnHiddenBadgeSources(userId: string) {
 export async function setOwnHiddenBadgeSources(hidden: BadgeSource[]) {
     myHiddenSources = hidden;
 
-    // Sauvegarde locale immÃ©diate
+    // Sauvegarde locale immédiate
     try {
         localStorage.setItem("youcord_hidden_badges", JSON.stringify(hidden));
     } catch { }

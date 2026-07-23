@@ -298,7 +298,7 @@ const userContextPatch = (children: any) => {
         const channelId = SelectedChannelStore.getChannelId();
         if (!channelId) return;
 
-        // On cherche le bon endroit pour insÃ©rer le menu (Ã  la fin gÃ©nÃ©ralement)
+        // On cherche le bon endroit pour insérer le menu (à la fin généralement)
         children.push(
             <Menu.MenuGroup key="nc-encryption-user-group">
                 <Menu.MenuItem
@@ -312,7 +312,7 @@ const userContextPatch = (children: any) => {
                             if (!m.content || !isEncrypted(m.content)) continue;
                             const setter = DecryptionSetters.get(m.id);
                             if (setter) {
-                                // Si on a dÃ©jÃ  un setter (le composant est rendu)
+                                // Si on a déjà un setter (le composant est rendu)
                                 const found = autoDecrypt(m.content);
                                 if (found !== null) {
                                     setter(found.text);

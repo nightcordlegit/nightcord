@@ -10,7 +10,7 @@ import { React, useRef, useState } from "@YouCord/types/webpack/common";
 import { cl } from "./Settings";
 
 function detectSource(json: any): "equicord" | "vencord" | "youcord" | "unknown" {
-    // Heuristiques basÃ©es sur les clÃ©s prÃ©sentes dans le JSON
+    // Heuristiques basées sur les clés présentes dans le JSON
     if (!json || typeof json !== "object") return "unknown";
 
     const { settings } = json;
@@ -19,11 +19,11 @@ function detectSource(json: any): "equicord" | "vencord" | "youcord" | "unknown"
     const plugins = settings.plugins || {};
     const pluginNames = Object.keys(plugins);
 
-    // Plugins spÃ©cifiques Ã  Equicord
+    // Plugins spécifiques à Equicord
     if (pluginNames.some(p => ["EquicordHelper", "EquicordCSS"].includes(p))) return "equicord";
-    // Plugins spÃ©cifiques Ã  YouCord
+    // Plugins spécifiques à YouCord
     if (pluginNames.some(p => ["YouCordHelper", "equicordHelper"].includes(p))) return "youcord";
-    // Fallback : si le fichier contient des clÃ©s Vencord communes
+    // Fallback : si le fichier contient des clés Vencord communes
     if (pluginNames.length > 0) return "vencord";
 
     return "unknown";
@@ -37,7 +37,7 @@ function cleanForYouCord(json: any): any {
 
     if (!settings?.plugins) return cleaned;
 
-    // Supprimer les plugins propres Ã  Equicord/Vencord qui n'existent pas dans YouCord
+    // Supprimer les plugins propres à Equicord/Vencord qui n'existent pas dans YouCord
     const legacyOnlyPlugins = ["EquicordHelper", "EquicordCSS", "VencordHelper"];
     for (const name of legacyOnlyPlugins) {
         delete settings.plugins[name];
@@ -68,7 +68,7 @@ export function ImportLegacySettingsButton({ settings }: { settings: any; }) {
 
             const cleaned = cleanForYouCord(json);
 
-            // Envoie au main process via IPC pour Ã©crire les settings
+            // Envoie au main process via IPC pour écrire les settings
             await VencordNative.settings.set(cleaned.settings ?? {});
 
             if (cleaned.quickCss) {
@@ -76,7 +76,7 @@ export function ImportLegacySettingsButton({ settings }: { settings: any; }) {
             }
 
             setStatus("success");
-            setMessage(`âœ… Settings ${sourceLabel} importÃ©s avec succÃ¨s ! RedÃ©marre YouCord pour appliquer.`);
+            setMessage(`âœ… Settings ${sourceLabel} importés avec succès ! Redémarre YouCord pour appliquer.`);
         } catch (err: any) {
             setStatus("error");
             setMessage(`âŒ Erreur : ${err?.message ?? String(err)}`);
@@ -125,7 +125,7 @@ export function ImportLegacySettingsButton({ settings }: { settings: any; }) {
                 <div style={{ fontSize: "32px", marginBottom: "8px" }}>ðŸ“‚</div>
                 <BaseText size="sm" style={{ opacity: 0.6 }}>
                     {dragging
-                        ? "RelÃ¢che pour importer..."
+                        ? "Relâche pour importer..."
                         : "Drag & drop ton fichier JSON ici, ou clique pour parcourir"}
                 </BaseText>
                 <input

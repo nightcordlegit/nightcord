@@ -23,7 +23,7 @@ const settings = definePluginSettings({
         description: "Language for the date/time display",
         options: [
             { label: "English", value: "en", default: true },
-            { label: "FranÃ§ais", value: "fr" }
+            { label: "Français", value: "fr" }
         ]
     }
 });
@@ -67,11 +67,11 @@ function formatDate(ts: number): string {
     yesterday.setDate(now.getDate() - 1);
     const isYesterday = date.toDateString() === yesterday.toDateString();
 
-    if (isToday) return lang === "fr" ? `Aujourd'hui Ã  ${timeStr}` : `Today at ${timeStr}`;
-    if (isYesterday) return lang === "fr" ? `Hier Ã  ${timeStr}` : `Yesterday at ${timeStr}`;
+    if (isToday) return lang === "fr" ? `Aujourd'hui à ${timeStr}` : `Today at ${timeStr}`;
+    if (isYesterday) return lang === "fr" ? `Hier à ${timeStr}` : `Yesterday at ${timeStr}`;
 
     const dateStr = date.toLocaleDateString(locale, { day: "numeric", month: "short" });
-    return lang === "fr" ? `Le ${dateStr} Ã  ${timeStr}` : `${dateStr} at ${timeStr}`;
+    return lang === "fr" ? `Le ${dateStr} à ${timeStr}` : `${dateStr} at ${timeStr}`;
 }
 
 // â”€â”€ Handlers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -161,13 +161,13 @@ function LastSeenText({ userId }: { userId: string; }) {
 
     if (isOnline) {
         if (status === "idle") content = settings.store.language === "fr" ? "Inactif en ce moment" : "Idle";
-        else if (status === "dnd") content = settings.store.language === "fr" ? "Ne pas dÃ©ranger" : "Do Not Disturb";
+        else if (status === "dnd") content = settings.store.language === "fr" ? "Ne pas déranger" : "Do Not Disturb";
         else if (status === "streaming") content = settings.store.language === "fr" ? "En direct en ce moment" : "Streaming";
         else content = settings.store.language === "fr" ? "En ligne" : "Online";
     } else if (lastSeen) {
         content = formatDate(lastSeen);
     } else {
-        content = settings.store.language === "fr" ? "Pas encore tracÃ©" : "Not tracked yet";
+        content = settings.store.language === "fr" ? "Pas encore tracé" : "Not tracked yet";
     }
 
     return (

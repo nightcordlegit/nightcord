@@ -14,7 +14,7 @@ import { ChannelStore, ContextMenuApi, FluxDispatcher, Forms, GuildStore, IconUt
 
 import { t, useTranslation } from "../autoTranslateYouCord";
 
-// StratÃ©gie de navigation alternative via Dispatcher
+// Stratégie de navigation alternative via Dispatcher
 const navigateTo = (path: string) => {
     try {
         const Router = findByPropsLazy("transitionTo") || findByPropsLazy("push");
@@ -157,10 +157,10 @@ function authorFrom(msg: any) {
     return { authorId: id, authorName: name, authorAvatar: av };
 }
 
-// FIX CRASH DM SCROLL: msgCache rÃ©duit de 8000 â†’ 3000 entrÃ©es, purge de 1000 â†’ 500
-// La purge brutale de 1000 entrÃ©es d'un coup pendant le scroll provoquait un pic de
+// FIX CRASH DM SCROLL: msgCache réduit de 8000 â†’ 3000 entrées, purge de 1000 â†’ 500
+// La purge brutale de 1000 entrées d'un coup pendant le scroll provoquait un pic de
 // travail synchrone qui bloquait le thread principal au moment critique du re-render.
-// Taille rÃ©duite + purge plus petite = moins d'impact pendant le scroll.
+// Taille réduite + purge plus petite = moins d'impact pendant le scroll.
 const MSG_CACHE_MAX = 3000;
 const MSG_CACHE_PURGE = 500;
 const msgCache = new Map<string, { content: string; authorId: string; authorName: string; authorAvatar: string | null; }>();
@@ -180,7 +180,7 @@ function pruneMsgCache() {
 function cacheMsg(msg: any) {
     if (!msg?.id) return;
     // FIX: Ne pas purger le cache pendant un chargement de messages (scroll DM)
-    // La purge en plein milieu d'un LOAD_MESSAGES_SUCCESS forÃ§ait un recalcul des
+    // La purge en plein milieu d'un LOAD_MESSAGES_SUCCESS forçait un recalcul des
     // globalPaths Node qui entrait en conflit avec la virtualisation Discord.
     if (!isLoadingMessages) pruneMsgCache();
     const a = authorFrom(msg);
@@ -200,14 +200,14 @@ const CFG: Record<LogType, { label: string; color: string; }> = {
     friend_add: { label: t("Friend +"), color: "#3ba55c" },
     friend_remove: { label: t("Friend -"), color: "#ed4245" },
     friend_request: { label: t("Request"), color: "#5865f2" },
-    friend_request_cancel: { label: t("AnnulÃ©"), color: "#747f8d" },
+    friend_request_cancel: { label: t("Annulé"), color: "#747f8d" },
     block: { label: t("Blocked"), color: "#ed4245" },
     guild_member_add: { label: t("Joined"), color: "#3ba55c" },
     guild_member_remove: { label: t("Left"), color: "#ed4245" },
     guild_ban: { label: t("Banned"), color: "#ed4245" },
     guild_timeout: { label: t("Exclu"), color: "#faa61a" },
     guild_kick: { label: t("Kick"), color: "#ed4245" },
-    user_disconnect: { label: t("DÃ©co"), color: "#747f8d" },
+    user_disconnect: { label: t("Déco"), color: "#747f8d" },
     ping: { label: t("Ping"), color: "#eb459f" },
 };
 
@@ -442,7 +442,7 @@ function LogsModal({ rootProps }: { rootProps: any; }) {
         return () => { updateListeners.delete(fn); };
     }, []);
 
-    // Debounce search Ã  200ms
+    // Debounce search à 200ms
     useEffect(() => {
         const t = setTimeout(() => { setDebouncedSearch(search); setPage(0); }, 200);
         return () => clearTimeout(t);
@@ -561,7 +561,7 @@ function LogsModal({ rootProps }: { rootProps: any; }) {
 
                 <div className="el-list">
                     {slice.length === 0
-                        ? <div className="el-empty">{t("Aucun Ã©vÃ©nement")}</div>
+                        ? <div className="el-empty">{t("Aucun événement")}</div>
                         : slice.map(e => <LogRow key={e.id} e={e} />)}
                 </div>
 
@@ -657,7 +657,7 @@ function subscribeToEvents() {
     sub("LOAD_MESSAGES_SUCCESS", d => {
         if (!d) return;
         // FIX CRASH DM SCROLL: isLoadingMessages bloque la purge du msgCache pendant
-        // le traitement du batch â€” Ã©vite un pic synchrone sur le thread principal.
+        // le traitement du batch â€” évite un pic synchrone sur le thread principal.
         const msgs = [
             ...(Array.isArray(d.messages) ? d.messages : []),
             ...(Array.isArray(d.jump) ? d.jump : []),
@@ -666,12 +666,12 @@ function subscribeToEvents() {
         ];
         if (msgs.length === 0) return;
 
-        // requestIdleCallback est idÃ©al pour le scan en arriÃ¨re-plan sans lag
+        // requestIdleCallback est idéal pour le scan en arrière-plan sans lag
         if (typeof requestIdleCallback !== "undefined") {
             requestIdleCallback(() => {
                 isLoadingMessages = true;
                 try { for (const m of msgs) cacheMsg(m); } finally { isLoadingMessages = false; }
-                // Purge diffÃ©rÃ©e si le cache dÃ©passe la limite
+                // Purge différée si le cache dépasse la limite
                 pruneMsgCache();
             }, { timeout: 3000 });
         } else {
@@ -806,7 +806,7 @@ function subscribeToEvents() {
         }
     });
     sub("GUILD_BAN_ADD", d => { const b = uInfo(d.user?.id); const g = getGuild(d.guildId); pushLog({ type: "guild_ban", content: t("Banned"), ...b, guildId: d.guildId, guildName: g?.name }); });
-    sub("GUILD_BAN_REMOVE", d => { const b = uInfo(d.user?.id); const g = getGuild(d.guildId); pushLog({ type: "friend_remove", content: t("DÃ©banni"), ...b, guildId: d.guildId, guildName: g?.name }); });
+    sub("GUILD_BAN_REMOVE", d => { const b = uInfo(d.user?.id); const g = getGuild(d.guildId); pushLog({ type: "friend_remove", content: t("Débanni"), ...b, guildId: d.guildId, guildName: g?.name }); });
 
     sub("GUILD_MEMBER_UPDATE", d => {
         if (!d.guildId || !d.user?.id) return;
@@ -828,8 +828,8 @@ function subscribeToEvents() {
         if (changed) scheduleFlush();
     });
 
-    // Capture logout/disconnect (partiel car le plugin s'arrÃªte si dÃ©co totale)
-    sub("LOGOUT", () => { pushLog({ type: "user_disconnect", content: t("DÃ©connexion du account"), authorName: "System" }); });
+    // Capture logout/disconnect (partiel car le plugin s'arrête si déco totale)
+    sub("LOGOUT", () => { pushLog({ type: "user_disconnect", content: t("Déconnexion du account"), authorName: "System" }); });
 }
 
 export default definePlugin({

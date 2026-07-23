@@ -34,8 +34,8 @@ const FLAG_ICONS: Record<Language, string | undefined> = {
 
 const LANG_PREVIEW: Record<Language, { label: string; sample: string; }> = {
     en: { label: "English", sample: "Plugins Â· Themes Â· Updater Â· Sync" },
-    fr: { label: "FranÃ§ais", sample: "Plugins Â· ThÃ¨mes Â· Mises Ã  jour Â· Synchronisation" },
-    es: { label: "EspaÃ±ol", sample: "Plugins Â· Temas Â· Actualizador Â· SincronizaciÃ³n" },
+    fr: { label: "Français", sample: "Plugins Â· Thèmes Â· Mises à jour Â· Synchronisation" },
+    es: { label: "Español", sample: "Plugins Â· Temas Â· Actualizador Â· Sincronización" },
     ru: { label: "Ð ÑƒÑÑÐºÐ¸Ð¹", sample: "ÐŸÐ»Ð°Ð³Ð¸Ð½Ñ‹ Â· Ð¢ÐµÐ¼Ñ‹ Â· ÐžÐ±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ñ Â· Ð¡Ð¸Ð½Ñ…Ñ€Ð¾Ð½Ð¸Ð·Ð°Ñ†Ð¸Ñ" },
     zh: { label: "ä¸­æ–‡", sample: "æ’ä»¶ Â· ä¸»é¢˜ Â· æ›´æ–° Â· åŒæ­¥" },
     ar: { label: "Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©", sample: "Ø¥Ø¶Ø§ÙØ§Øª Â· Ø³Ù…Ø§Øª Â· Ù…Ø­Ø¯Ø« Â· Ù…Ø²Ø§Ù…Ù†Ø©" },
@@ -72,7 +72,7 @@ function LanguageTab() {
                 {t("Translations are community-maintained and may be incomplete. If you'd like to help translate YouCord, contributions are welcome!")}
             </Notice.Info>
 
-            {/* Dropdown sÃ©lectif â€” mÃªme composant/pattern que "Cloud Backend" dans CloudTab */}
+            {/* Dropdown sélectif â€” même composant/pattern que "Cloud Backend" dans CloudTab */}
             <div className={Margins.bottom8}>
                 <SearchableSelect
                     options={languageOptions}

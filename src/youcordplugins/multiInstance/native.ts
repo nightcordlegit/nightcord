@@ -13,22 +13,22 @@ import { registerMediaPermissionsForSession } from "../../youcord/main/mediaPerm
 const openWindows = new Map<string, BrowserWindow>();
 
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// Intercepte les IPC de contrÃ´le de fenÃªtre pour une instance multi.
+// Intercepte les IPC de contrôle de fenêtre pour une instance multi.
 //
 // Discord natif utilise ipcMain.handle("DISCORD_WINDOW_CLOSE" | "DISCORD_WINDOW_MINIMIZE" | ...)
-// Ces handlers sont enregistrÃ©s GLOBALEMENT par Discord sur ipcMain, donc ils
-// attrapent tous les Ã©vÃ©nements de toutes les fenÃªtres et appellent injectedGetWindow(key)
-// qui retourne toujours la fenÃªtre principale.
+// Ces handlers sont enregistrés GLOBALEMENT par Discord sur ipcMain, donc ils
+// attrapent tous les événements de toutes les fenêtres et appellent injectedGetWindow(key)
+// qui retourne toujours la fenêtre principale.
 //
-// Pour contourner Ã§a, on utilise webContents.ipc.handle sur le webContents
-// de chaque fenÃªtre multi-instance â€” ces handlers sont LOCAUX Ã  ce webContents
-// et ont prioritÃ© sur les handlers globaux ipcMain pour ce sender.
+// Pour contourner ça, on utilise webContents.ipc.handle sur le webContents
+// de chaque fenêtre multi-instance â€” ces handlers sont LOCAUX à ce webContents
+// et ont priorité sur les handlers globaux ipcMain pour ce sender.
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function registerWindowControlIpc(win: BrowserWindow): () => void {
     const wc = win.webContents as any; // webContents.ipc existe depuis Electron 20
 
-    // Canaux Discord natif (dÃ©couverts dans _core_extracted/bundle.js)
+    // Canaux Discord natif (découverts dans _core_extracted/bundle.js)
     const CLOSE = "DISCORD_WINDOW_CLOSE";
     const MINIMIZE = "DISCORD_WINDOW_MINIMIZE";
     const MAXIMIZE = "DISCORD_WINDOW_MAXIMIZE";
@@ -94,7 +94,7 @@ function registerWindowControlIpc(win: BrowserWindow): () => void {
 }
 
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// CrÃ©e le script de prÃ©chargement qui injecte le token
+// Crée le script de préchargement qui injecte le token
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function createTokenPreload(token: string): string {
@@ -102,18 +102,18 @@ function createTokenPreload(token: string): string {
     const dir = join(app.getPath("userData"), "youcord-mi-preloads");
     mkdirSync(dir, { recursive: true });
 
-    const safeToken = JSON.stringify(token); // Ã©chappe proprement le token
+    const safeToken = JSON.stringify(token); // échappe proprement le token
 
     const script = `
 // YouCord MultiInstance â€” token preload
-// S'exÃ©cute dans le main world AVANT Discord
+// S'exécute dans le main world AVANT Discord
 (function() {
     const TOKEN = ${safeToken};
     try {
-        // DÃ©finit le token dans localStorage
+        // Définit le token dans localStorage
         Object.defineProperty(window, '__youcord_token', { value: TOKEN, writable: false });
 
-        // Patch localStorage.getItem pour toujours retourner le token si demandÃ©
+        // Patch localStorage.getItem pour toujours retourner le token si demandé
         const _origGetItem = Storage.prototype.getItem;
         const _origSetItem = Storage.prototype.setItem;
 
@@ -124,7 +124,7 @@ function createTokenPreload(token: string): string {
             return _origGetItem.call(this, key);
         };
 
-        // PrÃ©-remplit aussi
+        // Pré-remplit aussi
         try { localStorage.setItem("token", JSON.stringify(TOKEN)); } catch(_) {}
 
         console.log("[YouCordMI] Token preload active âœ“");
@@ -140,7 +140,7 @@ function createTokenPreload(token: string): string {
 }
 
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// Ouvre une nouvelle fenÃªtre Discord isolÃ©e
+// Ouvre une nouvelle fenêtre Discord isolée
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // Compteur d'icones detached : tourne de 1 a 5
@@ -255,7 +255,7 @@ export async function openInstanceWindow(
             win.setFullScreen(false);
         });
 
-        // Avant fermeture : dÃ©sinscrit les service workers et coupe le gateway
+        // Avant fermeture : désinscrit les service workers et coupe le gateway
         // pour stopper toutes les notifications push
         win.on("close", () => {
             wc.executeJavaScript(`
@@ -273,15 +273,15 @@ export async function openInstanceWindow(
             `).catch(() => {});
         });
 
-        // Enregistre les handlers IPC de contrÃ´le de fenÃªtre (DISCORD_WINDOW_*) sur ce webContents
-        // Doit Ãªtre fait AVANT que Discord charge son JS (dom-ready)
+        // Enregistre les handlers IPC de contrôle de fenêtre (DISCORD_WINDOW_*) sur ce webContents
+        // Doit être fait AVANT que Discord charge son JS (dom-ready)
         const wc = win.webContents;
         const cleanupIpc = registerWindowControlIpc(win);
 
         win.once("closed", () => {
             cleanupIpc();
             openWindows.delete(userId);
-            // Nettoie les service workers de la session pour couper dÃ©finitivement les notifs
+            // Nettoie les service workers de la session pour couper définitivement les notifs
             ses.clearStorageData({ storages: ["serviceworkers"] }).catch(() => {});
         });
 
@@ -324,7 +324,7 @@ export async function openInstanceWindow(
 }
 
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// Fenetres Â« groupÃ©es Â» â€” meme groupe que YouCord dans la barre des taches
+// Fenetres Â« groupées Â» â€” meme groupe que YouCord dans la barre des taches
 // Principe : on ne touche PAS a setAppDetails => la fenetre herite de l'AppId
 // du processus principal (com.youcord.fr), Windows la groupe automatiquement
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -399,7 +399,7 @@ export async function openInstanceWindowGrouped(
             win.setFullScreen(false);
         });
 
-        // Avant fermeture : dÃ©sinscrit les service workers et coupe le gateway
+        // Avant fermeture : désinscrit les service workers et coupe le gateway
         win.on("close", () => {
             wc.executeJavaScript(`
                 (async () => {
@@ -415,7 +415,7 @@ export async function openInstanceWindowGrouped(
             `).catch(() => {});
         });
 
-        // Enregistre les handlers IPC de contrÃ´le de fenÃªtre pour cette instance groupÃ©e
+        // Enregistre les handlers IPC de contrôle de fenêtre pour cette instance groupée
         const wc = win.webContents;
         const cleanupIpc = registerWindowControlIpc(win);
 
@@ -461,7 +461,7 @@ export async function openInstanceWindowGrouped(
 }
 
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// Split screen : positionne les deux fenÃªtres cÃ´te Ã  cÃ´te
+// Split screen : positionne les deux fenêtres côte à côte
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export async function arrangeSplit(_: any, userId: string): Promise<void> {

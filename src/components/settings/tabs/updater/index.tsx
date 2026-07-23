@@ -21,7 +21,7 @@ import { React, Toasts, useState } from "@webpack/common";
 
 import { domain } from "../../../../../DOMAIN.json";
 
-// Version locale depuis package.json (injectÃ©e au build)
+// Version locale depuis package.json (injectée au build)
 declare const VERSION: string;
 
 function UpdaterTab() {
@@ -125,7 +125,7 @@ function UpdaterTab() {
                 </Card>
             )}
 
-            {/* RÃ©sultat vÃ©rification */}
+            {/* Résultat vérification */}
             {checked && !error && (
                 outdated ? (
                     <Card style={{ padding: "10px 16px", marginBottom: 12, borderLeft: "3px solid var(--status-warning)" }}>

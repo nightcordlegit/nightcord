@@ -101,7 +101,7 @@ handle(IpcEvents.RELAUNCH, async () => {
     app.exit();
 });
 
-// Handler pour VencordNative.youcord.relaunch() â€” utilisÃ© par les boutons Restart dans les settings plugins
+// Handler pour VencordNative.youcord.relaunch() â€” utilisé par les boutons Restart dans les settings plugins
 handle(IpcEvents.RELAUNCH_APP, async () => {
     setBadgeCount(0);
 
@@ -117,9 +117,9 @@ handle(IpcEvents.RELAUNCH_APP, async () => {
         return;
     }
 
-    // Sur Windows packagÃ© (NSIS/Squirrel), app.relaunch() peut Ã©chouer silencieusement
+    // Sur Windows packagé (NSIS/Squirrel), app.relaunch() peut échouer silencieusement
     // car process.execPath pointe vers le binaire Electron interne et non le launcher.
-    // On utilise spawn pour relancer directement l'exÃ©cutable principal.
+    // On utilise spawn pour relancer directement l'exécutable principal.
     if (app.isPackaged && process.platform === "win32") {
         const { spawn } = await import("node:child_process");
         spawn(process.execPath, [], {

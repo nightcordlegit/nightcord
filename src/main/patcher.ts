@@ -76,18 +76,18 @@ if (!IS_VANILLA) {
 
     class BrowserWindow extends electron.BrowserWindow {
         constructor(options: BrowserWindowConstructorOptions) {
-            // On n'injecte le preload YouCord QUE dans les fenÃªtres Discord/YouCord lÃ©gitimes.
+            // On n'injecte le preload YouCord QUE dans les fenêtres Discord/YouCord légitimes.
             // Toutes les autres (overlay in-game, popups OAuth/connexion Spotify/Steam/GitHub/etc.,
-            // fenÃªtres de profil tierces) passent en super() sans modification pour Ã©viter
-            // l'Ã©cran blanc / la fenÃªtre bloquÃ©e.
+            // fenêtres de profil tierces) passent en super() sans modification pour éviter
+            // l'écran blanc / la fenêtre bloquée.
             //
-            // RÃ¨gle : on injecte SEULEMENT si le preload vient de nous (pointe vers notre preload.js).
-            // Toute fenÃªtre crÃ©Ã©e par Discord avec son propre preload ou un preload tiers est laissÃ©e intacte.
+            // Règle : on injecte SEULEMENT si le preload vient de nous (pointe vers notre preload.js).
+            // Toute fenêtre créée par Discord avec son propre preload ou un preload tiers est laissée intacte.
             const ourPreload = join(__dirname, "preload.js");
             const preloadIsOurs = options.webPreferences.preload === ourPreload;
-            // Exception : la fenÃªtre principale Discord a un preload Ã  elle (l'original Discord),
-            // et c'est prÃ©cisÃ©ment ce qu'on veut remplacer â€” donc on accepte aussi le cas oÃ¹
-            // le titre est une fenÃªtre YouCord/Equicord/Discord connue.
+            // Exception : la fenêtre principale Discord a un preload à elle (l'original Discord),
+            // et c'est précisément ce qu'on veut remplacer â€” donc on accepte aussi le cas où
+            // le titre est une fenêtre YouCord/Equicord/Discord connue.
             const KNOWN_TITLES = /^(Discord|Vesktop|Equibop)$|^(YouCord|Equicord)/;
             const isTrustedTitle = !!(options.title && KNOWN_TITLES.test(options.title));
             if (options?.webPreferences?.preload && (isTrustedTitle || preloadIsOurs)) {
@@ -193,10 +193,10 @@ if (!IS_VANILLA) {
                     return superIsFullScreen();
                 };
 
-                // â”€â”€ Fullscreen via HTML5 (vidÃ©o plein Ã©cran, etc.) â”€â”€
+                // â”€â”€ Fullscreen via HTML5 (vidéo plein écran, etc.) â”€â”€
                 // On branche enter/leave-html-full-screen dans les deux modes pour que
-                // les vrais plein Ã©crans HTML5 fonctionnent correctement.
-                // DISCORD_WINDOW_TOGGLE_FULLSCREEN est neutralisÃ© plus bas â€” il ne
+                // les vrais plein écrans HTML5 fonctionnent correctement.
+                // DISCORD_WINDOW_TOGGLE_FULLSCREEN est neutralisé plus bas â€” il ne
                 // passera JAMAIS par setFullScreen natif.
                 if (isTransparent) {
                     this.on("enter-html-full-screen", () => {
@@ -214,9 +214,9 @@ if (!IS_VANILLA) {
                     });
                 }
 
-                // â”€â”€ F11 gÃ©rÃ© ici, cÃ´tÃ© main process â”€â”€
+                // â”€â”€ F11 géré ici, côté main process â”€â”€
                 // On intercepte F11 via before-input-event pour basculer le fullscreen
-                // utilisateur. C'est la SEULE source lÃ©gitime de toggle fullscreen manuel.
+                // utilisateur. C'est la SEULE source légitime de toggle fullscreen manuel.
                 this.webContents.on("before-input-event", (event, input) => {
                     if (input.type === "keyDown" && input.key === "F11" && !input.control && !input.shift && !input.alt && !input.meta) {
                         event.preventDefault();
@@ -251,9 +251,9 @@ if (!IS_VANILLA) {
                 }
 
                 // NOTE : le setWindowOpenHandler / will-navigate pour les liens externes
-                // est gÃ©rÃ© exclusivement par youcord-index.js (app.on("web-contents-created"))
-                // afin d'Ã©viter qu'un second handler ici n'Ã©crase la logique did-create-window
-                // qui patche les fenÃªtres enfants about:blank (popups TikTok, settings, etc.).
+                // est géré exclusivement par youcord-index.js (app.on("web-contents-created"))
+                // afin d'éviter qu'un second handler ici n'écrase la logique did-create-window
+                // qui patche les fenêtres enfants about:blank (popups TikTok, settings, etc.).
             } else {
                 super(options);
             }
@@ -285,18 +285,18 @@ if (!IS_VANILLA) {
 
     // â”€â”€ Neutralisation de DISCORD_WINDOW_TOGGLE_FULLSCREEN â”€â”€
     //
-    // PROBLÃˆME RACINE : Discord Ã©met cet IPC automatiquement Ã  chaque dÃ©marrage
-    // ET Ã  chaque rechargement de thÃ¨me pour "synchroniser" son Ã©tat interne.
+    // PROBLÈME RACINE : Discord émet cet IPC automatiquement à chaque démarrage
+    // ET à chaque rechargement de thème pour "synchroniser" son état interne.
     // L'ancien handler faisait `win.setFullScreen(!win.isFullScreen())` â€” un toggle
-    // aveugle. RÃ©sultat : fenÃªtre maximisÃ©e + isFullScreen()=false â†’ setFullScreen(true)
-    // â†’ overlay OS fullscreen â†’ tous les inputs bloquÃ©s, app figÃ©e. F11 sortait du
-    // fullscreen et dÃ©bloquait. Le fix du dÃ©lai de 2s ne suffisait pas car les thÃ¨mes
-    // rechargent Discord aprÃ¨s ce dÃ©lai.
+    // aveugle. Résultat : fenêtre maximisée + isFullScreen()=false â†’ setFullScreen(true)
+    // â†’ overlay OS fullscreen â†’ tous les inputs bloqués, app figée. F11 sortait du
+    // fullscreen et débloquait. Le fix du délai de 2s ne suffisait pas car les thèmes
+    // rechargent Discord après ce délai.
     //
     // SOLUTION : on intercepte le handler Discord et on le remplace par un no-op
-    // complet. Le fullscreen utilisateur est dÃ©sormais gÃ©rÃ© exclusivement via F11
-    // interceptÃ© dans before-input-event ci-dessus â€” ce qui est Ã  la fois plus propre
-    // et impossible Ã  dÃ©clencher accidentellement par Discord.
+    // complet. Le fullscreen utilisateur est désormais géré exclusivement via F11
+    // intercepté dans before-input-event ci-dessus â€” ce qui est à la fois plus propre
+    // et impossible à déclencher accidentellement par Discord.
     {
         const _originalHandle = electron.ipcMain.handle.bind(electron.ipcMain);
         const FULLSCREEN_CHANNEL = "DISCORD_WINDOW_TOGGLE_FULLSCREEN";
@@ -308,7 +308,7 @@ if (!IS_VANILLA) {
                 _fullscreenPatched = true;
                 // No-op : on enregistre un handler vide pour que Discord ne crash pas
                 // ("no handler registered"), mais on ne fait RIEN â€” le fullscreen est
-                // gÃ©rÃ© par before-input-event (F11) cÃ´tÃ© main process.
+                // géré par before-input-event (F11) côté main process.
                 _originalHandle(FULLSCREEN_CHANNEL, (_event: electron.IpcMainInvokeEvent) => {
                     // Intentionnellement vide.
                 });

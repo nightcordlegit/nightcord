@@ -62,11 +62,11 @@ export const enum IpcEvents {
 
     SET_WINDOW_BACKGROUND_MATERIAL = "YouCordSetWindowBackgroundMaterial",
 
-    // SoundCord Player Ã¢â‚¬â€ thumbnail toolbar Windows
+    // SoundCord Player — thumbnail toolbar Windows
     SET_THUMBAR_BUTTONS = "SoundCordSetThumbarButtons",
     THUMBAR_BUTTON_CLICK = "SoundCordThumbarButtonClick",
 
-    // YouCord Updater Ã¢â‚¬â€ tÃƒÂ©lÃƒÂ©charge un exe depuis une URL et le lance
+    // YouCord Updater — télécharge un exe depuis une URL et le lance
     YOUCORD_DOWNLOAD_AND_RUN = "YouCordDownloadAndRun",
 
     // Relaunch de l'app Electron

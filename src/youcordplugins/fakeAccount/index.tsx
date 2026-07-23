@@ -41,8 +41,8 @@ function isMultiAccountStore(mod: any): boolean {
         const users = mod.getUsers();
         if (!Array.isArray(users)) return false;
 
-        // Si des users sont prÃ©sents, ils doivent avoir une structure de account Discord
-        // (id string + tokenStatus number) â€” caractÃ©ristique exclusive du MultiAccountStore
+        // Si des users sont présents, ils doivent avoir une structure de account Discord
+        // (id string + tokenStatus number) â€” caractéristique exclusive du MultiAccountStore
         if (users.length > 0) {
             const first = users[0];
             if (typeof first !== "object" || first === null) return false;
@@ -58,7 +58,7 @@ function isMultiAccountStore(mod: any): boolean {
             }
         }
 
-        // VÃ©rification finale anti-EmojiStore : EmojiStore a souvent "getFrequentlyUsedEmojis"
+        // Vérification finale anti-EmojiStore : EmojiStore a souvent "getFrequentlyUsedEmojis"
         if (typeof mod.getFrequentlyUsedEmojis === "function") return false;
 
         return true;
