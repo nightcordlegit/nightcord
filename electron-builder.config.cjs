@@ -219,5 +219,27 @@ module.exports = {
         installerIcon: "youcord.ico",
         uninstallerIcon: "youcord.ico",
         license: "LICENSE"
+    },
+    mac: {
+        target: [
+            { target: "dmg", arch: ["x64", "arm64"] },
+            { target: "zip", arch: ["x64", "arm64"] },
+            { target: "dir", arch: ["x64", "arm64"] }
+        ],
+        icon: "installer-src/assets/icon.icns",
+        category: "public.app-category.social-networking",
+        hardenedRuntime: true,
+        gatekeeperAssess: false,
+        artifactName: "${name}-${version}-mac-${arch}.${ext}"
+    },
+    dmg: {
+        title: "YouCord ${version}",
+        icon: "installer-src/assets/icon.icns",
+        background: null,
+        contents: [
+            { x: 130, y: 220, type: "file" },
+            { x: 410, y: 220, type: "link", path: "/Applications" }
+        ],
+        window: { width: 540, height: 380 }
     }
 };
