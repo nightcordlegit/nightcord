@@ -16,8 +16,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-// DO NOT REMOVE UNLESS YOU WISH TO FACE THE WRATH OF THE CIRCULAR DEPENDENCY DEMON!!!!!!!
-import "~plugins";
 console.log("%c[YouCord]", "color: #5865f2; font-weight: bold;", "Injection successful! Starting services...");
 
 export * as Api from "./api";
@@ -52,6 +50,14 @@ import { patches } from "./webpack/patchWebpack";
 
 if (IS_REPORTER) {
     require("./debug/runReporter");
+}
+
+function scheduleIdleCallback(fn: () => void, timeout = 2000) {
+    if ("requestIdleCallback" in window) {
+        (window as any).requestIdleCallback(fn, { timeout });
+    } else {
+        setTimeout(fn, 1);
+    }
 }
 
 async function syncSettings() {
@@ -388,21 +394,21 @@ document.addEventListener("DOMContentLoaded", () => {
     startAllPlugins(StartAt.DOMContentLoaded);
 
     // Reposition Discord's titlebar to the left by default (90px)
-    // When stealth mode or compact mode is enabled, it falls back to Discord's default center position.
-    createAndAppendStyle("youcord-titlebar-position", coreStyleRootNode).textContent = `
-        body:not(.youcord-stealth):not(.youcord-compact) [class*="title_c38"] {
-            position: absolute !important;
-            left: 90px !important;
-            right: auto !important;
-            top: 50% !important;
-            transform: translateY(-50%) !important;
-            text-align: left !important;
-            margin: 0 !important;
-        }
-    `;
+    scheduleIdleCallback(() => {
+        createAndAppendStyle("youcord-titlebar-position", coreStyleRootNode).textContent = `
+            body:not(.youcord-stealth):not(.youcord-compact) [class*="title_c38"] {
+                position: absolute !important;
+                left: 90px !important;
+                right: auto !important;
+                top: 50% !important;
+                transform: translateY(-50%) !important;
+                text-align: left !important;
+                margin: 0 !important;
+            }
+        `;
 
-    // FIXME
-    if (IS_DISCORD_DESKTOP && Settings.winNativeTitleBar && IS_WINDOWS) {
-        createAndAppendStyle("vencord-native-titlebar-style", coreStyleRootNode).textContent = "[class*=titleBar]{display: none!important}";
-    }
+        if (IS_DISCORD_DESKTOP && Settings.winNativeTitleBar && IS_WINDOWS) {
+            createAndAppendStyle("vencord-native-titlebar-style", coreStyleRootNode).textContent = "[class*=titleBar]{display: none!important}";
+        }
+    });
 }, { once: true });

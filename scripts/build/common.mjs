@@ -88,7 +88,6 @@ export async function buildOrWatchAll(buildConfigs) {
     }
 }
 
-const PluginDefinitionNameMatcher = /definePlugin\(\{\s*(["'])?name\1:\s*(["'`])(.+?)\2/;
 /**
  * @param {string} base
  * @param {import("fs").Dirent} dirent
@@ -131,6 +130,156 @@ export const makeAllPackagesExternalPlugin = {
         build.onResolve({ filter }, args => ({ path: args.path, external: true }));
     }
 };
+
+const PluginDefinitionNameMatcher = /definePlugin\(\{\s*(["'])?name\1:\s*(["'`])(.+?)\2/;
+
+const PluginMetaFieldRe = {
+    description: /description:\s*(["'`])(.+?)\1/,
+    dependencies: /dependencies:\s*\[([^\]]+)\]/,
+    required: /required:\s*(true|false)/,
+    enabledByDefault: /enabledByDefault:\s*(true|false)/,
+    startAt: /startAt:\s*StartAt\.(\w+)/,
+    hasPatches: /patches:\s*\[/,
+    hasCommands: /commands:\s*\[/,
+    hasChatBarButton: /chatBarButton:|renderChatBarButton:/,
+    hasMessagePopover: /messagePopoverButton:|renderMessagePopoverButton:/,
+    hasMemberListDecorator: /renderMemberListDecorator:/,
+    hasMessageAccessory: /renderMessageAccessory:/,
+    hasMessageDecoration: /renderMessageDecoration:/,
+    hasNicknameIcon: /renderNicknameIcon:/,
+    hasHeaderBarButton: /headerBarButton:/,
+    hasAudioProcessor: /audioProcessor:/,
+    hasUserAreaButton: /userAreaButton:/,
+    hasBadges: /userProfileBadge[s]?:/,
+    hasMessageEvents: /onBeforeMessageEdit:|onBeforeMessageSend:|onMessageClick:/,
+};
+
+function extractPluginMeta(content) {
+    const name = content.match(PluginDefinitionNameMatcher)?.[3] || "";
+    const description = content.match(PluginMetaFieldRe.description)?.[2] || "";
+    const depsMatch = content.match(PluginMetaFieldRe.dependencies);
+    const dependencies = depsMatch ? depsMatch[1].split(",").map(s => s.trim().replace(/["'`]/g, "")).filter(Boolean) : [];
+    const required = content.match(PluginMetaFieldRe.required)?.[1] === "true";
+    const enabledByDefault = content.match(PluginMetaFieldRe.enabledByDefault)?.[1] === "true";
+    const startAt = content.match(PluginMetaFieldRe.startAt)?.[1] || "WebpackReady";
+
+    return { name, description, dependencies, required, enabledByDefault, startAt };
+}
+
+function hasPluginFeatures(content) {
+    return {
+        patches: PluginMetaFieldRe.hasPatches.test(content),
+        commands: PluginMetaFieldRe.hasCommands.test(content),
+        chatBarButton: PluginMetaFieldRe.hasChatBarButton.test(content),
+        messagePopover: PluginMetaFieldRe.hasMessagePopover.test(content),
+        memberListDecorator: PluginMetaFieldRe.hasMemberListDecorator.test(content),
+        messageAccessory: PluginMetaFieldRe.hasMessageAccessory.test(content),
+        messageDecoration: PluginMetaFieldRe.hasMessageDecoration.test(content),
+        nicknameIcon: PluginMetaFieldRe.hasNicknameIcon.test(content),
+        headerBarButton: PluginMetaFieldRe.hasHeaderBarButton.test(content),
+        audioProcessor: PluginMetaFieldRe.hasAudioProcessor.test(content),
+        userAreaButton: PluginMetaFieldRe.hasUserAreaButton.test(content),
+        badges: PluginMetaFieldRe.hasBadges.test(content),
+        messageEvents: PluginMetaFieldRe.hasMessageEvents.test(content),
+    };
+}
+
+/**
+ * @type {(kind: "web" | "discordDesktop" | "vesktop" | "equibop") => import("esbuild").Plugin}
+ */
+export const globPluginMeta = kind => ({
+    name: "glob-plugin-meta",
+    setup: build => {
+        const filter = /^~pluginMeta$/;
+        build.onResolve({ filter }, args => ({
+            namespace: "plugin-meta",
+            path: args.path,
+        }));
+
+        build.onLoad({ filter, namespace: "plugin-meta" }, async () => {
+            const pluginDirs = ["plugins/_api", "plugins/_core", "plugins", "userplugins", "youcordplugins", "youcordplugins/_api"];
+
+            let blacklist = [];
+            try {
+                const blacklistContent = await readFile(join(process.cwd(), "blacklist.txt"), "utf-8");
+                blacklist = blacklistContent.split("\n").map(l => l.trim()).filter(l => l);
+            } catch (e) { }
+
+            let metaEntries = "\n";
+            let excludedEntries = "\n";
+            const seenPluginNames = new Set();
+
+            for (const dir of pluginDirs) {
+                const fullDir = `./src/${dir}`;
+                if (!await exists(fullDir)) continue;
+                const files = await readdir(fullDir, { withFileTypes: true });
+                for (const file of files) {
+                    const fileName = file.name;
+                    if (fileName.startsWith("_") || fileName.startsWith(".")) continue;
+                    if (fileName === "index.ts") continue;
+                    if (fileName.endsWith(".ini")) continue;
+
+                    const isDir = file.isDirectory();
+                    const isSupportedFile = /\.(tsx?|jsx?|css)$/.test(fileName);
+                    if (!isDir && !isSupportedFile) continue;
+
+                    const target = getPluginTarget(fileName);
+                    const cleanFileName = fileName.replace(/\.tsx?$/, "").replace(/\.jsx?$/, "").replace(/\.css$/, "");
+
+                    try {
+                        const content = await (async () => {
+                            if (fileName.endsWith(".css")) return "";
+                            const entryPath = isDir
+                                ? join(fullDir, fileName, await (async () => {
+                                    for (const f of ["index.ts", "index.tsx", "index.js", "index.jsx"]) {
+                                        if (await exists(join(fullDir, fileName, f))) return f;
+                                    }
+                                    throw new Error("no entry");
+                                })())
+                                : join(fullDir, fileName);
+                            return await readFile(entryPath, "utf-8");
+                        })();
+
+                        const isCss = fileName.endsWith(".css");
+                        const meta = isCss ? { name: cleanFileName, description: "User style", dependencies: [], required: false, enabledByDefault: false, startAt: "WebpackReady" } : extractPluginMeta(content);
+                        const features = isCss ? {} : hasPluginFeatures(content);
+
+                        if (!meta.name) continue;
+
+                        // Skip duplicates (first directory wins)
+                        if (seenPluginNames.has(meta.name)) continue;
+                        seenPluginNames.add(meta.name);
+
+                        if (kind === "web" && blacklist.includes(cleanFileName)) {
+                            excludedEntries += `${JSON.stringify(meta.name)}:${JSON.stringify(target || "web")},\n`;
+                            continue;
+                        }
+
+                        if (target && !IS_REPORTER) {
+                            const excluded =
+                                (target === "dev" && !IS_DEV) ||
+                                (target === "web" && kind === "discordDesktop") ||
+                                (target === "desktop" && kind === "web") ||
+                                (target === "discordDesktop" && kind !== "discordDesktop") ||
+                                (target === "vesktop" && kind !== "vesktop" && kind !== "equibop") ||
+                                (target === "equibop" && kind !== "equibop" && kind !== "vesktop");
+                            if (excluded) {
+                                excludedEntries += `${JSON.stringify(meta.name)}:${JSON.stringify(target)},\n`;
+                                continue;
+                            }
+                        }
+
+                        metaEntries += `${JSON.stringify(meta.name)}:${JSON.stringify({ ...meta, features, folderName: `src/${dir}/${fileName}`, userPlugin: dir === "userplugins" })},\n`;
+                    } catch { continue; }
+                }
+            }
+
+            const code = `export const PluginMeta = {${metaEntries}};export const ExcludedPlugins = {${excludedEntries}};`;
+
+            return { contents: code, resolveDir: "./src" };
+        });
+    }
+});
 
 /**
  * @type {(kind: "web" | "discordDesktop" | "vesktop" | "equibop") => import("esbuild").Plugin}
@@ -439,7 +588,7 @@ export const commonOpts = {
     legalComments: "linked",
     banner,
     plugins: [fileUrlPlugin, gitHashPlugin, gitRemotePlugin, stylePlugin],
-    external: ["~plugins", "~git-hash", "~git-remote", "/assets/*"],
+    external: ["~plugins", "~pluginMeta", "~git-hash", "~git-remote", "/assets/*"],
     inject: [join(dirname(fileURLToPath(import.meta.url)), "inject/react.mjs")],
     jsx: "transform",
     jsxFactory: "VencordCreateElement",

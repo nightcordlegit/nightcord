@@ -26,6 +26,36 @@ declare module "~plugins" {
     export const ExcludedPlugins: Record<string, "web" | "discordDesktop" | "vesktop" | "equibop" | "desktop" | "dev">;
 }
 
+declare module "~pluginMeta" {
+    interface PluginMetaEntry {
+        name: string;
+        description: string;
+        dependencies: string[];
+        required: boolean;
+        enabledByDefault: boolean;
+        startAt: "Init" | "DOMContentLoaded" | "WebpackReady";
+        features: {
+            patches: boolean;
+            commands: boolean;
+            chatBarButton: boolean;
+            messagePopover: boolean;
+            memberListDecorator: boolean;
+            messageAccessory: boolean;
+            messageDecoration: boolean;
+            nicknameIcon: boolean;
+            headerBarButton: boolean;
+            audioProcessor: boolean;
+            userAreaButton: boolean;
+            badges: boolean;
+            messageEvents: boolean;
+        };
+        folderName: string;
+        userPlugin: boolean;
+    }
+    export const PluginMeta: Record<string, PluginMetaEntry>;
+    export const ExcludedPlugins: Record<string, "web" | "discordDesktop" | "vesktop" | "equibop" | "desktop" | "dev">;
+}
+
 declare module "~git-hash" {
     const hash: string;
     export default hash;

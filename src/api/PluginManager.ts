@@ -36,6 +36,8 @@ import { FluxEvents } from "@vencord/discord-types";
 import { FluxDispatcher } from "@webpack/common";
 import { patches } from "@webpack/patcher";
 
+import { PluginMeta } from "~pluginMeta";
+export { PluginMeta as pluginMeta };
 import Plugins from "~plugins";
 export { Plugins as plugins };
 
@@ -48,19 +50,31 @@ const logger = new Logger("PluginManager", "#a6d189");
 
 export const PMLogger = logger;
 
+/** Tracks plugins auto-enabled as dependencies of other plugins */
+const dependencyPlugins = new Set<string>();
+
 /** Whether we have subscribed to flux events of all the enabled plugins when FluxDispatcher was ready */
 let enabledPluginsSubscribedFlux = false;
 const subscribedFluxEventsPlugins = new Set<string>();
 
 export function isPluginEnabled(p: string) {
-    const plugin = Plugins[p];
-    if (!plugin) return false;
+    const meta = PluginMeta[p];
+    if (!meta) return false;
 
     return (
-        plugin.required ||
-        plugin.isDependency ||
+        meta.required ||
+        dependencyPlugins.has(p) ||
         (Settings as any)?.plugins?.[p]?.enabled
     ) ?? false;
+}
+
+/** Schedule a function to run during browser idle time, falling back to setTimeout */
+function scheduleIdleCallback(fn: () => void, timeout = 2000) {
+    if ("requestIdleCallback" in window) {
+        (window as any).requestIdleCallback(fn, { timeout });
+    } else {
+        setTimeout(fn, 1);
+    }
 }
 
 export function isSettingDisabled(definedSettings: any, setting: any): boolean {
@@ -123,16 +137,33 @@ export function pluginRequiresRestart(p: Plugin) {
 }
 
 export const startAllPlugins = traceFunction("startAllPlugins", function startAllPlugins(target: StartAt) {
-    logger.info(`Starting plugins (stage ${target})`);
-    for (const name in Plugins) {
-        if (isPluginEnabled(name) && (!IS_REPORTER || isReporterTestable(Plugins[name], ReporterTestable.Start))) {
-            const p = Plugins[name];
+    const names = Object.keys(Plugins);
+    const enabled = names.filter(n => isPluginEnabled(n));
+    logger.info(`Starting plugins (stage ${target}, ${enabled.length} enabled)`);
 
-            const startAt = p.startAt ?? StartAt.WebpackReady;
-            if (startAt !== target) continue;
-
-            startPlugin(Plugins[name]);
+    if (target === StartAt.DOMContentLoaded) {
+        // Defer non-critical plugin startup to idle time
+        const deferred = enabled.filter(n => (Plugins[n].startAt ?? StartAt.WebpackReady) === target);
+        if (deferred.length > 0) {
+            scheduleIdleCallback(() => {
+                for (const name of deferred) {
+                    if (!isPluginEnabled(name)) continue;
+                    const p = Plugins[name];
+                    if (p.started) continue;
+                    startPlugin(p);
+                }
+            });
         }
+        return;
+    }
+
+    for (const name of enabled) {
+        const p = Plugins[name];
+        const startAt = p.startAt ?? StartAt.WebpackReady;
+        if (startAt !== target) continue;
+        if (p.started) continue;
+        if (IS_REPORTER && !isReporterTestable(p, ReporterTestable.Start)) continue;
+        startPlugin(p);
     }
 });
 
@@ -146,9 +177,8 @@ export function startDependenciesRecursive(p: Plugin) {
             const dep = Plugins[d];
             startDependenciesRecursive(dep);
 
-            // If the plugin has patches, don't start the plugin, just enable it.
             settings[d].enabled = true;
-            dep.isDependency = true;
+            dependencyPlugins.add(d);
 
             if (pluginRequiresRestart(dep)) {
                 logger.warn(`Enabling dependency ${d} requires restart.`);
@@ -364,13 +394,11 @@ export const stopPlugin = traceFunction("stopPlugin", function stopPlugin(p: Plu
 }, p => `stopPlugin ${p.name}`);
 
 export const initPluginManager = onlyOnce(function init() {
-    const pluginsValues = Object.values(Plugins);
     const settings = Settings.plugins;
 
     const pluginKeysToBind: Array<keyof PluginDef & `${"on" | "render"}${string}`> = [
         "onBeforeMessageEdit", "onBeforeMessageSend", "onMessageClick",
         "renderChatBarButton", "renderMemberListDecorator", "renderMessageAccessory", "renderMessageDecoration", "renderMessagePopoverButton",
-        // Custom
         "renderNicknameIcon"
     ];
 
@@ -379,10 +407,11 @@ export const initPluginManager = onlyOnce(function init() {
     // Migration: force tous les plugins a OFF sauf required/enabledByDefault
     const MIGRATION_FLAG = "__youcord_default_off_v1__";
     if (!(SettingsStore.plain as any)[MIGRATION_FLAG]) {
-        for (const p of pluginsValues) {
-            const shouldBeOn = p.required || p.enabledByDefault;
+        for (const name in PluginMeta) {
+            const meta = PluginMeta[name];
+            const shouldBeOn = meta.required || meta.enabledByDefault;
             if (!shouldBeOn) {
-                const s = SettingsStore.plain.plugins[p.name];
+                const s = SettingsStore.plain.plugins[name];
                 if (s) s.enabled = false;
             }
         }
@@ -390,80 +419,69 @@ export const initPluginManager = onlyOnce(function init() {
         SettingsStore.markAsChanged();
     }
 
-    // First round-trip to mark and force enable dependencies
-    //
-    // FIXME: might need to revisit this if there's ever nested (dependencies of dependencies) dependencies since this only
-    // goes for the top level and their children, but for now this works okay with the current API plugins
-    for (const p of pluginsValues) if (isPluginEnabled(p.name)) {
-        p.dependencies?.forEach(d => {
-            const dep = Plugins[d];
+    // Use PluginMeta for dependency resolution and API detection (no plugin module eval)
+    for (const name in PluginMeta) {
+        if (!isPluginEnabled(name)) continue;
+        const meta = PluginMeta[name];
 
-            if (!dep) {
-                const error = new Error(`Plugin ${p.name} has unresolved dependency ${d}`);
-
-                if (IS_DEV) {
-                    throw error;
-                }
-
-                logger.warn(error);
-                return;
-            }
-
+        meta.dependencies?.forEach(d => {
             settings[d].enabled = true;
-            dep.isDependency = true;
+            dependencyPlugins.add(d);
         });
 
-        if (p.commands?.length) neededApiPlugins.add("CommandsAPI");
-        if (p.onBeforeMessageEdit || p.onBeforeMessageSend || p.onMessageClick) neededApiPlugins.add("MessageEventsAPI");
-        if (p.chatBarButton || p.renderChatBarButton) neededApiPlugins.add("ChatInputButtonAPI");
-        if (p.renderMemberListDecorator) neededApiPlugins.add("MemberListDecoratorsAPI");
-        if (p.renderMessageAccessory) neededApiPlugins.add("MessageAccessoriesAPI");
-        if (p.renderMessageDecoration) neededApiPlugins.add("MessageDecorationsAPI");
-        if (p.messagePopoverButton || p.renderMessagePopoverButton) neededApiPlugins.add("MessagePopoverAPI");
-        if (p.userProfileBadge) neededApiPlugins.add("BadgeAPI");
-
-        // Custom
-        if (p.renderNicknameIcon) neededApiPlugins.add("NicknameIconsAPI");
-        if (p.headerBarButton) neededApiPlugins.add("HeaderBarAPI");
-        if (p.audioProcessor) neededApiPlugins.add("AudioPlayerAPI");
-        if (p.userAreaButton) neededApiPlugins.add("UserAreaAPI");
-
-        for (const key of pluginKeysToBind) {
-           p[key] &&= (p[key] as Function).bind(p) as any;
-        }
+        const f = meta.features;
+        if (f.commands) neededApiPlugins.add("CommandsAPI");
+        if (f.messageEvents) neededApiPlugins.add("MessageEventsAPI");
+        if (f.chatBarButton) neededApiPlugins.add("ChatInputButtonAPI");
+        if (f.memberListDecorator) neededApiPlugins.add("MemberListDecoratorsAPI");
+        if (f.messageAccessory) neededApiPlugins.add("MessageAccessoriesAPI");
+        if (f.messageDecoration) neededApiPlugins.add("MessageDecorationsAPI");
+        if (f.messagePopover) neededApiPlugins.add("MessagePopoverAPI");
+        if (f.badges) neededApiPlugins.add("BadgeAPI");
+        if (f.nicknameIcon) neededApiPlugins.add("NicknameIconsAPI");
+        if (f.headerBarButton) neededApiPlugins.add("HeaderBarAPI");
+        if (f.audioProcessor) neededApiPlugins.add("AudioPlayerAPI");
+        if (f.userAreaButton) neededApiPlugins.add("UserAreaAPI");
     }
 
     for (const p of neededApiPlugins) {
-        Plugins[p].isDependency = true;
+        dependencyPlugins.add(p);
         settings[p].enabled = true;
     }
 
-    for (const p of pluginsValues) {
+    // Second pass: settings init and patch registration for enabled plugins only
+    for (const name in PluginMeta) {
+        if (!isPluginEnabled(name)) continue;
+        const p = Plugins[name];
+        if (!p) continue;
+
+        for (const key of pluginKeysToBind) {
+            p[key] &&= (p[key] as Function).bind(p) as any;
+        }
+
         if (p.settings) {
             p.options ??= {};
 
             p.settings.pluginName = p.name;
-            for (const name in p.settings.def) {
-                const def = p.settings.def[name];
-                const checks = p.settings.checks?.[name];
-                p.options[name] = { ...def, ...checks };
+            for (const sName in p.settings.def) {
+                const def = p.settings.def[sName];
+                const checks = p.settings.checks?.[sName];
+                p.options[sName] = { ...def, ...checks };
             }
         }
 
         if (p.options) {
-            for (const name in p.options) {
-                const opt = p.options[name];
+            for (const optName in p.options) {
+                const opt = p.options[optName];
                 if (opt.onChange != null) {
-                    SettingsStore.addChangeListener(`plugins.${p.name}.${name}`, opt.onChange);
+                    SettingsStore.addChangeListener(`plugins.${p.name}.${optName}`, opt.onChange);
                 }
             }
         }
 
-        if (p.patches && isPluginEnabled(p.name)) {
-            if (!IS_REPORTER || isReporterTestable(p, ReporterTestable.Patches)) {
-                for (const patch of p.patches) {
-                    addPatch(patch, p.name);
-                }
+        if (p.patches && (!IS_REPORTER || isReporterTestable(p, ReporterTestable.Patches))) {
+            for (const patch of p.patches) {
+                addPatch(patch, p.name);
             }
         }
     }
