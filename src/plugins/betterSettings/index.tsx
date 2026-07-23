@@ -12,7 +12,7 @@ import { Logger } from "@utils/Logger";
 import definePlugin, { OptionType } from "@utils/types";
 import { findCssClassesLazy } from "@webpack";
 import { ComponentDispatch, FocusLock, Menu, useEffect, useRef } from "@webpack/common";
-import { buildPluginMenuEntries, buildThemeMenuEntries } from "@youcordplugins/equicordToolbox/menu";
+import { BuildPluginMenuEntries, BuildThemeMenuEntries } from "@youcordplugins/equicordToolbox/menu";
 import type { HTMLAttributes, ReactNode } from "react";
 
 import fullHeightStyle from "./fullHeightContext.css?managed";
@@ -186,9 +186,9 @@ export default definePlugin({
 
             if (key === "equicord_plugins" || key === "equicord_themes") {
                 const children = key === "equicord_plugins"
-                    ? buildPluginMenuEntries()
-                    : buildThemeMenuEntries();
+                    ? <BuildPluginMenuEntries />
 
+                    : <BuildThemeMenuEntries />;
                 items.push(
                     <Menu.MenuItem key={key} label={props.label} id={props.label} {...props}>
                         {children}

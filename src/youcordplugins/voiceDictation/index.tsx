@@ -293,24 +293,6 @@ const VoiceDictationButton: ChatBarButtonFactory = ({ isMainChat }) => {
         nativeTimerRef.current = setInterval(() => cycleNative(), chunkMs);
     }
 
-    async function stopNative(discordVoice: any) {
-        if (nativeTimerRef.current) {
-            clearInterval(nativeTimerRef.current);
-            nativeTimerRef.current = null;
-        }
-        if (nativeRecordingRef.current) {
-            discordVoice.stopLocalAudioRecording(async (filePath: string) => {
-                nativeRecordingRef.current = false;
-                if (filePath) {
-                    try {
-                        const buf = await (VencordNative as any).pluginHelpers?.VoiceMessages?.readRecording?.(filePath);
-                        if (buf) await processBlob(new Blob([new Uint8Array(buf)], { type: "audio/ogg; codecs=opus" }));
-                    } catch { /* ignore */ }
-                }
-            });
-        }
-    }
-
     async function startFallback() {
         if (!navigator.mediaDevices?.getUserMedia) {
             throw new Error("getUserMedia not available in this context");
@@ -364,32 +346,6 @@ const VoiceDictationButton: ChatBarButtonFactory = ({ isMainChat }) => {
 
         setErrorMsg("Could not access microphone");
         activeRef.current = false;
-    }
-
-    function stopDictation() {
-        activeRef.current = false;
-
-        const discordVoice = getDiscordVoice();
-        if (discordVoice && nativeRecordingRef.current) {
-            stopNative(discordVoice);
-        }
-        if (nativeTimerRef.current) {
-            clearInterval(nativeTimerRef.current);
-            nativeTimerRef.current = null;
-        }
-
-        if (timerRef.current) {
-            clearInterval(timerRef.current);
-            timerRef.current = null;
-        }
-        if (recorderRef.current?.state === "recording") recorderRef.current.stop();
-        recorderRef.current = null;
-        chunksRef.current = [];
-        streamRef.current?.getTracks().forEach(t => t.stop());
-        streamRef.current = null;
-
-        setRecording(false);
-        setProcessing(false);
     }
 
     function toggle() {
