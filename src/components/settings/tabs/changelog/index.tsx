@@ -251,7 +251,7 @@ function ChangelogContent() {
             }
         };
         init();
-    }, []);
+    }, [loadChangelogHistory]);
 
     React.useEffect(() => {
         if (repoErr) {
@@ -434,7 +434,7 @@ function ChangelogContent() {
         } finally {
             setIsLoading(false);
         }
-    }, [repoPending, repoErr, loadNewPlugins, loadChangelogHistory]);
+    }, [repoPending, repoErr, loadChangelogHistory, ensureLocalUpdateLogged]);
 
     React.useEffect(() => {
         const loadInitialData = async () => {

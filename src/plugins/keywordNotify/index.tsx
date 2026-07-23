@@ -335,7 +335,7 @@ export default definePlugin({
                 },
                 {
                     match: /:(\i)===\i\.\i\.MENTIONS\?\(0,.{0,500}onJump:(\i)}\)/,
-                    replace: ": $1 === 8 ? $self.tryKeywordMenu($2) $&"
+                    replace: ": $1 === 8 ? $self.TryKeywordMenu($2) $&"
                 }
             ]
         },
@@ -522,7 +522,7 @@ export default definePlugin({
         );
     },
 
-    tryKeywordMenu(onJump) {
+    TryKeywordMenu(onJump) {
         const channel = ChannelStore.getChannel(SelectedChannelStore.getChannelId());
 
         const [tempLogs, setKeywordLog] = useState(keywordLog);

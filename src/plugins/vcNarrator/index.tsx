@@ -209,58 +209,60 @@ export default definePlugin({
 
     },
 
-    settingsAboutComponent() {
-        const [hasVoices, hasEnglishVoices] = useMemo(() => {
-            const voices = speechSynthesis.getVoices();
-            return [voices.length !== 0, voices.some(v => v.lang.startsWith("en"))];
-        }, []);
-
-        const types = useMemo(
-            () => Object.keys(settings.def).filter(k => k.endsWith("Message")).map(k => k.slice(0, -7)),
-            [],
-        );
-
-        let errorComponent: ReactElement<any> | null = null;
-        if (!hasVoices) {
-            let error = "No narrator voices found. ";
-            error += IS_LINUX
-                ? "Install speech-dispatcher or espeak and run Discord with the --enable-speech-dispatcher flag"
-                : "Try installing some in the Narrator settings of your Operating System";
-            errorComponent = <ErrorCard>{error}</ErrorCard>;
-        } else if (!hasEnglishVoices) {
-            errorComponent = <ErrorCard>You don't have any English voices installed, so the narrator might sound weird</ErrorCard>;
-        }
-
-        return (
-            <section>
-                <Paragraph>
-                    You can customise the spoken messages below. You can disable specific messages by setting them to nothing
-                </Paragraph>
-                <Paragraph>
-                    The special placeholders <code>{"{{USER}}"}</code>, <code>{"{{DISPLAY_NAME}}"}</code>, <code>{"{{NICKNAME}}"}</code> and <code>{"{{CHANNEL}}"}</code>{" "}
-                    will be replaced with the user's name (nothing if it's yourself), the user's display name, the user's nickname on current server and the channel's name respectively
-                </Paragraph>
-                {hasEnglishVoices && (
-                    <>
-                        <HeadingSecondary className={Margins.top20}>Play Example Sounds</HeadingSecondary>
-                        <div
-                            style={{
-                                display: "grid",
-                                gridTemplateColumns: "repeat(4, 1fr)",
-                                gap: "1rem",
-                            }}
-                            className={"vc-narrator-buttons"}
-                        >
-                            {types.map(t => (
-                                <Button key={t} onClick={() => playSample(t)}>
-                                    {wordsToTitle([t])}
-                                </Button>
-                            ))}
-                        </div>
-                    </>
-                )}
-                {errorComponent}
-            </section>
-        );
-    }
+    settingsAboutComponent: () => <SettingsAboutComponent />,
 });
+
+function SettingsAboutComponent() {
+    const [hasVoices, hasEnglishVoices] = useMemo(() => {
+        const voices = speechSynthesis.getVoices();
+        return [voices.length !== 0, voices.some(v => v.lang.startsWith("en"))];
+    }, []);
+
+    const types = useMemo(
+        () => Object.keys(settings.def).filter(k => k.endsWith("Message")).map(k => k.slice(0, -7)),
+        [],
+    );
+
+    let errorComponent: ReactElement<any> | null = null;
+    if (!hasVoices) {
+        let error = "No narrator voices found. ";
+        error += IS_LINUX
+            ? "Install speech-dispatcher or espeak and run Discord with the --enable-speech-dispatcher flag"
+            : "Try installing some in the Narrator settings of your Operating System";
+        errorComponent = <ErrorCard>{error}</ErrorCard>;
+    } else if (!hasEnglishVoices) {
+        errorComponent = <ErrorCard>You don't have any English voices installed, so the narrator might sound weird</ErrorCard>;
+    }
+
+    return (
+        <section>
+            <Paragraph>
+                You can customise the spoken messages below. You can disable specific messages by setting them to nothing
+            </Paragraph>
+            <Paragraph>
+                The special placeholders <code>{"{{USER}}"}</code>, <code>{"{{DISPLAY_NAME}}"}</code>, <code>{"{{NICKNAME}}"}</code> and <code>{"{{CHANNEL}}"}</code>{" "}
+                will be replaced with the user's name (nothing if it's yourself), the user's display name, the user's nickname on current server and the channel's name respectively
+            </Paragraph>
+            {hasEnglishVoices && (
+                <>
+                    <HeadingSecondary className={Margins.top20}>Play Example Sounds</HeadingSecondary>
+                    <div
+                        style={{
+                            display: "grid",
+                            gridTemplateColumns: "repeat(4, 1fr)",
+                            gap: "1rem",
+                        }}
+                        className={"vc-narrator-buttons"}
+                    >
+                        {types.map(t => (
+                            <Button key={t} onClick={() => playSample(t)}>
+                                {wordsToTitle([t])}
+                            </Button>
+                        ))}
+                    </div>
+                </>
+            )}
+            {errorComponent}
+        </section>
+    );
+}

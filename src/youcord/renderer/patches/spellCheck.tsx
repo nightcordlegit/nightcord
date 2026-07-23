@@ -47,7 +47,7 @@ addContextMenuPatch("textarea-context", children => {
     const spellCheckEnabled = useStateFromStores([SpellCheckStore], () => SpellCheckStore.isEnabled());
     const hasCorrections = Boolean(word && corrections?.length);
 
-    const availableLanguages = useMemo(VesktopNative.spellcheck.getAvailableLanguages, []);
+    const availableLanguages = useMemo(() => VesktopNative.spellcheck.getAvailableLanguages(), []);
 
     const settings = useSettings();
     const spellCheckLanguages = (settings.spellCheckLanguages ??= [...new Set(navigator.languages)]);

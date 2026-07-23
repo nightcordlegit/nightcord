@@ -12,7 +12,7 @@ import { RenderModalProps } from "@vencord/discord-types";
 import { Modal, openModal, TextInput, useCallback, useEffect, useMemo, useRef, useState } from "@webpack/common";
 
 import {
-    type CommandEntry, getCategoryGroupLabel, getCategoryWeight, getCommandSearchText, getRecentRank, getRegistryVersion, listCommands, subscribeRegistry
+    type CommandEntry, getCategoryGroupLabel, getCategoryWeight, getCommandSearchText, getRecentRank, listCommands, subscribeRegistry
 } from "./registry";
 
 type PickerItem =
@@ -59,7 +59,6 @@ export function openCommandPicker(props: CommandPickerProps) {
 
 function CommandPickerModal({ modalProps, commands: providedCommands, allowMultiple = false, initialQuery = "", initialSelectedIds = [], includeHiddenInSearch = false, emptyStateText = "No commands found", filter: filterPredicate, onSelect, onComplete, onClose }: CommandPickerProps & { modalProps: RenderModalProps; }) {
     const [query, setQuery] = useState(initialQuery);
-    const [registryVersion, setRegistryVersion] = useState(() => getRegistryVersion());
     const [selectedIndex, setSelectedIndex] = useState(-1);
     const normalizedInitialSelected = useMemo(() => Array.from(new Set(initialSelectedIds)), [initialSelectedIds]);
     const [pickedIds, setPickedIds] = useState<string[]>(() => normalizedInitialSelected);
@@ -67,19 +66,23 @@ function CommandPickerModal({ modalProps, commands: providedCommands, allowMulti
     const pickedIdsRef = useRef<string[]>([]);
     const listRef = useRef<any>(null);
 
+    const [commands, setCommands] = useState<CommandEntry[]>(() =>
+        providedCommands ?? listCommands()
+    );
+
     useEffect(() => {
-        if (providedCommands) return;
-        return subscribeRegistry(setRegistryVersion);
+        if (providedCommands) {
+            setCommands(providedCommands);
+            return;
+        }
+        return subscribeRegistry(() => {
+            setCommands(listCommands());
+        });
     }, [providedCommands]);
 
     useEffect(() => {
         pickedIdsRef.current = pickedIds;
     }, [pickedIds]);
-
-    const commands = useMemo(() => {
-        if (providedCommands) return providedCommands;
-        return listCommands();
-    }, [providedCommands, registryVersion]);
     const commandMap = useMemo(() => new Map(commands.map(entry => [entry.id, entry])), [commands]);
     const availableCommands = useMemo(() => {
         if (!filterPredicate) return commands;

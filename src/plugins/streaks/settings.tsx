@@ -13,38 +13,40 @@ import { UserStore } from "@webpack/common";
 import { useAuthorizationStore } from "./stores/AuthorizationStore";
 import { useStreaksStore } from "./stores/StreaksStore";
 
+function AccountComponent() {
+    const { isAuthorized, authorize, remove } = useAuthorizationStore();
+
+    if (isAuthorized()) {
+        return (
+            <Flex>
+                <Button
+                    onClick={() => remove(UserStore.getCurrentUser()?.id)}
+                    variant="dangerPrimary"
+                >
+                    Log Out of Streaks API
+                </Button>
+            </Flex>
+        );
+    } else {
+        return (
+            <Flex>
+                <Button onClick={async () => {
+                    await authorize();
+                    await useStreaksStore.getState().migrate();
+                    await useStreaksStore.getState().fetch();
+                }}>
+                    Log In to Streaks API
+                </Button>
+            </Flex>
+        );
+    }
+}
+
 export const settings = definePluginSettings({
     account: {
         type: OptionType.COMPONENT,
         description: "Log in or out of the Streaks API.",
-        component() {
-            const { isAuthorized, authorize, remove } = useAuthorizationStore();
-
-            if (isAuthorized()) {
-                return (
-                    <Flex>
-                        <Button
-                            onClick={() => remove(UserStore.getCurrentUser()?.id)}
-                            variant="dangerPrimary"
-                        >
-                            Log Out of Streaks API
-                        </Button>
-                    </Flex>
-                );
-            } else {
-                return (
-                    <Flex>
-                        <Button onClick={async () => {
-                            await authorize();
-                            await useStreaksStore.getState().migrate();
-                            await useStreaksStore.getState().fetch();
-                        }}>
-                            Log In to Streaks API
-                        </Button>
-                    </Flex>
-                );
-            }
-        }
+        component: AccountComponent
     },
     eliteColor: {
         type: OptionType.STRING,

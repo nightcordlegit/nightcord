@@ -270,7 +270,7 @@ export function useListScroller() {
 
         rowHeights.current.set(key, height);
         update();
-    }, []);
+    }, [update]);
 
     return [rowHeights.current, handleResize] as const;
 }

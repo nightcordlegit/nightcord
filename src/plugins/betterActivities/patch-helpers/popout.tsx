@@ -14,10 +14,7 @@ import { settings } from "../settings";
 import { AllActivitiesProps } from "../types";
 import { ActivityView, getActivityApplication } from "../utils";
 
-export function showAllActivitiesComponent({ activity, user, ...props }: Readonly<AllActivitiesProps>): JSX.Element | null {
-    const currentUser = UserStore.getCurrentUser();
-    if (!currentUser) return null;
-
+export function ShowAllActivitiesComponent({ activity, user, ...props }: Readonly<AllActivitiesProps>): JSX.Element | null {
     const [currentActivity, setCurrentActivity] = useState<Activity | null>(
         activity?.type !== 4 ? activity! : null
     );
@@ -39,14 +36,15 @@ export function showAllActivitiesComponent({ activity, user, ...props }: Readonl
         } else if (existing !== currentActivity) {
             setCurrentActivity(existing);
         }
-    }, [activities]);
+    }, [activities, currentActivity]);
 
-    // we use these for other activities, it would be better to somehow get the corresponding activity props
     const generalProps = useMemo(() => Object.keys(props).reduce((acc, key) => {
-        // exclude activity specific props to prevent copying them to all activities (e.g. buttons)
         if (key !== "renderActions" && key !== "application") acc[key] = props[key];
         return acc;
     }, {}), [props]);
+
+    const currentUser = UserStore.getCurrentUser();
+    if (!currentUser) return null;
 
     if (!activities.length) return null;
 
@@ -66,7 +64,6 @@ export function showAllActivitiesComponent({ activity, user, ...props }: Readonl
                         <ActivityView
                             activity={currentActivity}
                             user={user}
-                            // fetch optional application
                             application={getActivityApplication(currentActivity!)}
                             currentUser={currentUser}
                             {...generalProps}

@@ -226,7 +226,7 @@ function CloneModal({ data }: { data: Sticker | Emoji; }) {
 
     const [x, invalidateMemo] = React.useReducer(x => x + 1, 0);
 
-    const guilds = React.useMemo(() => getGuildCandidates(data), [data.id, x]);
+    const guilds = React.useMemo(() => getGuildCandidates(data), [data]);
 
     return (
         <>

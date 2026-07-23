@@ -700,6 +700,53 @@ function parseKeybind(str: string) {
     return (str || "control+l").toLowerCase().split("+").map(k => k.trim());
 }
 
+function Render() {
+    const ref = useRef<HTMLDivElement>(null);
+    return (
+        <HeaderBarButton
+            ref={ref as any}
+            icon={LockIcon}
+            iconSize={20}
+            tooltip="Lock Discord"
+            onClick={() => {
+                if (root && !document.querySelector(".PCL--layout")) {
+                    forceReset("header button clicked while root was set but no overlay was actually in the DOM");
+                }
+                lock(ref.current ?? document.body);
+            }}
+        />
+    );
+}
+
+function SettingsAboutComponent() {
+    const [, force] = useState(0);
+    return (
+        <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+            <button
+                style={{ padding: "8px 14px", borderRadius: "4px", background: "var(--brand-experiment, #5865F2)", color: "#fff", border: "none", cursor: "pointer" }}
+                onClick={() => {
+                    if (root && !document.querySelector(".PCL--layout")) {
+                        forceReset("settings button clicked while root was set but no overlay was actually in the DOM");
+                    }
+                    openLocker("editor", document.body, () => force(n => n + 1));
+                }}
+            >
+                {data.hash ? "Edit Passcode" : "Set Up Passcode"}
+            </button>
+            <button
+                style={{ padding: "8px 14px", borderRadius: "4px", background: "transparent", color: "var(--text-normal, #fff)", border: "1px solid var(--background-modifier-accent, #555)", cursor: "pointer" }}
+                onClick={() => {
+                    if (root && !document.querySelector(".PCL--layout")) {
+                        forceReset("settings button clicked while root was set but no overlay was actually in the DOM");
+                    }
+                    lock(document.body);
+                }}>
+                Lock Discord Now
+            </button>
+        </div>
+    );
+}
+
 export default definePlugin({
     name: "PasscodeLock",
     description: "Protect Discord with a passcode.",
@@ -708,57 +755,10 @@ export default definePlugin({
 
     headerBarButton: {
         icon: LockIcon,
-        render: () => {
-            const ref = useRef<HTMLDivElement>(null);
-            return (
-                <HeaderBarButton
-                    ref={ref as any}
-                    icon={LockIcon}
-                    iconSize={20}
-                    tooltip="Lock Discord"
-                    onClick={() => {
-                        // If a previous overlay somehow got stuck (root still set but
-                        // nothing visible / unresponsive), this button doubles as a
-                        // manual recovery: clicking it when nothing should be open
-                        // but root is non-null force-clears it first.
-                        if (root && !document.querySelector(".PCL--layout")) {
-                            forceReset("header button clicked while root was set but no overlay was actually in the DOM");
-                        }
-                        lock(ref.current ?? document.body);
-                    }}
-                />
-            );
-        },
+        render: Render,
     } as any,
 
-    settingsAboutComponent: () => {
-        const [, force] = useState(0);
-        return (
-            <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
-                <button
-                    style={{ padding: "8px 14px", borderRadius: "4px", background: "var(--brand-experiment, #5865F2)", color: "#fff", border: "none", cursor: "pointer" }}
-                    onClick={() => {
-                        if (root && !document.querySelector(".PCL--layout")) {
-                            forceReset("settings button clicked while root was set but no overlay was actually in the DOM");
-                        }
-                        openLocker("editor", document.body, () => force(n => n + 1));
-                    }}
-                >
-                    {data.hash ? "Edit Passcode" : "Set Up Passcode"}
-                </button>
-                <button
-                    style={{ padding: "8px 14px", borderRadius: "4px", background: "transparent", color: "var(--text-normal, #fff)", border: "1px solid var(--background-modifier-accent, #555)", cursor: "pointer" }}
-                    onClick={() => {
-                        if (root && !document.querySelector(".PCL--layout")) {
-                            forceReset("settings button clicked while root was set but no overlay was actually in the DOM");
-                        }
-                        lock(document.body);
-                    }}>
-                    Lock Discord Now
-                </button>
-            </div>
-        );
-    },
+    settingsAboutComponent: SettingsAboutComponent,
 
     async start() {
         await loadData();

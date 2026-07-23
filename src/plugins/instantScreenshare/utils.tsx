@@ -145,7 +145,7 @@ function ScreenSetting() {
         }
         fetchMedia();
         return () => { active = false; };
-    }, [includeVideoDevices]);
+    }, [includeVideoDevices, media]);
 
     if (loading) return <Paragraph>Loading media sources...</Paragraph>;
     if (!streamMediaSelection.length) return <Paragraph>No Media found.</Paragraph>;

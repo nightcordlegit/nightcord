@@ -86,7 +86,7 @@ function TagConfigCard(props) {
         }
         SetData();
         update();
-    }, [tagName]);
+    }, [tagName, tag.tagName, update]);
 
     useEffect(() => {
         const dataTag = SavedData.find(obj => obj.userIds === tag.userIds);
@@ -95,7 +95,7 @@ function TagConfigCard(props) {
         }
         SetData();
         update();
-    }, [userIds]);
+    }, [userIds, tag.userIds, update]);
 
     return (
         <>

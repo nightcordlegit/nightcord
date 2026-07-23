@@ -164,7 +164,7 @@ const TimestampComponent = ErrorBoundary.wrap(({ userId, timestamp, type }: Prop
 
     useEffect(() => {
         setTimezone(resolveUserTimezone(userId));
-    }, [userId, settings.store.useDatabase, settings.store.preferDatabaseOverLocal]);
+    }, [userId]);
 
     useEffect(() => {
         if (type !== "profile") return;

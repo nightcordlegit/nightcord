@@ -1349,7 +1349,7 @@ function ImpactAnalysisPage() {
     const elapsed = useFixedTimer({ interval: refreshMs });
     const items = React.useMemo(
         () => buildImpactAnalysis(buildRows(false, false, "impact")),
-        [elapsed]
+        []
     );
     const filteredItems = React.useMemo(
         () => items.filter(item => matchesPluginSearch(item.row.name, searchQuery)),
@@ -1415,7 +1415,7 @@ function PluginMonitorPage() {
     const memory = getMemory();
     const rows = React.useMemo(
         () => buildRows(showDisabled, showApiPlugins, "impact"),
-        [elapsed, showDisabled, showApiPlugins]
+        [showDisabled, showApiPlugins]
     );
     const normalizedQuery = query.trim().toLowerCase();
     const filteredRows = React.useMemo(
@@ -1550,7 +1550,7 @@ function DiagnosticsPage() {
     const memory = getMemory();
     const rows = React.useMemo(
         () => buildRows(showDisabled, showApiPlugins, sortBy as SortBy),
-        [elapsed, showDisabled, showApiPlugins, sortBy]
+        [showDisabled, showApiPlugins, sortBy]
     );
     const filteredRows = React.useMemo(
         () => rows.filter(row => matchesPluginSearch(row.name, searchQuery)),

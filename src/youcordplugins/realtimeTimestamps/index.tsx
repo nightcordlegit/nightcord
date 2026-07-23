@@ -85,13 +85,13 @@ function useSecondTick() {
 // those other internal usages intact while still updating live every second
 // via useSecondTick().
 
-function renderCozyText(date: Date) {
+function RenderCozyText(date: Date) {
     useSecondTick();
     const fmt = settings.store.format ?? "HH:mm:ss";
     return moment(date).format(fmt);
 }
 
-function renderCompactText(date: Date) {
+function RenderCompactText(date: Date) {
     useSecondTick();
     const fmt = settings.store.format ?? "HH:mm:ss";
     return settings.store.showInCompact
@@ -99,7 +99,7 @@ function renderCompactText(date: Date) {
         : moment(date).format("LT");
 }
 
-function renderTooltipText(date: Date) {
+function RenderTooltipText(date: Date) {
     useSecondTick();
     const fmt = settings.store.format ?? "HH:mm:ss";
     return settings.store.showInTooltip
@@ -121,13 +121,13 @@ export default definePlugin({
     // element, since these substitute for values Discord later treats as text
     // (and in some cases re-parses with .match()).
     renderCozy(date: Date) {
-        return renderCozyText(date);
+        return RenderCozyText(date);
     },
     renderCompact(date: Date) {
-        return renderCompactText(date);
+        return RenderCompactText(date);
     },
     renderTooltip(date: Date) {
-        return renderTooltipText(date);
+        return RenderTooltipText(date);
     },
 
     stop() {

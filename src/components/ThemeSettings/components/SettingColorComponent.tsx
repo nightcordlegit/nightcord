@@ -28,7 +28,8 @@ export function SettingColorComponent({ label, name, themeSettings }: Props) {
         themeSettings[name] = corrected;
     }
 
-    const normalizedValue = useMemo(() => parseInt(TinyColor(themeSettings[name]).toHex(), 16), [themeSettings[name]]);
+    const colorValue = themeSettings[name];
+    const normalizedValue = useMemo(() => parseInt(TinyColor(colorValue).toHex(), 16), [colorValue]);
 
     return (
         <section>

@@ -254,7 +254,7 @@ export default function PluginSettings({ premiumOnly = false }: PluginSettingsPr
                 onConfirm: () => relaunch()
             });
         };
-    }, []);
+    }, [changes]);
 
     const depMap = useMemo(() => {
         const o = {} as Record<string, string[]>;
@@ -383,7 +383,7 @@ export default function PluginSettings({ premiumOnly = false }: PluginSettingsPr
             plugin.description.toLowerCase().includes(search) ||
             plugin.tags?.some(t => t.toLowerCase().includes(search))
         );
-    }, [searchValue, search]);
+    }, [searchValue, search, premiumOnly]);
 
     const [newPluginsSet] = useAwaiter(() => DataStore.get("Vencord_existingPlugins").then((cachedPlugins: Record<string, number> | undefined) => {
         const now = Date.now() / 1000;
@@ -574,7 +574,7 @@ export default function PluginSettings({ premiumOnly = false }: PluginSettingsPr
         const enabledStockPlugins = enabledPlugins.filter(p => !PluginMeta[p].userPlugin).length;
         const enabledUserPlugins = enabledPlugins.filter(p => PluginMeta[p].userPlugin).length;
         return { totalStockPlugins, totalUserPlugins, enabledStockPlugins, enabledUserPlugins, enabledPlugins };
-    }, [settings.plugins]);
+    }, []);
 
     // Slice DATA first, then create JSX only for visible items
     const youcordVisibleData = youcordData.slice(0, Math.min(visibleCount, youcordData.length));
@@ -648,7 +648,7 @@ export default function PluginSettings({ premiumOnly = false }: PluginSettingsPr
         const total = plugins.length;
         const enabled = plugins.filter(p => isPluginEnabled(p)).length;
         return { total, enabled };
-    }, [settings.plugins, searchValue.status]);
+    }, [searchValue.status]);
 
     const percent = categoryStats.total > 0 ? Math.round((categoryStats.enabled / categoryStats.total) * 100) : 0;
     const strokeDashoffset = 62.83 - (62.83 * percent / 100);

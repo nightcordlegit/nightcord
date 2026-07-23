@@ -478,7 +478,7 @@ function ServerClonerUI({ initialSourceId = "" }: { initialSourceId?: string }) 
     // Auto-scroll logs
     React.useEffect(() => {
         if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
-    }, [_logs.length]);
+    }, []);
 
     const allGuilds = useMemo(() =>
         Object.values(GuildStore.getGuilds() as Record<string, any>)

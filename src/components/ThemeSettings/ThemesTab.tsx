@@ -46,7 +46,7 @@ import { getThemeInfo, stripBOM, type UserThemeHeader } from "@utils/themes/bd";
 import { usercssParse } from "@utils/themes/usercss";
 import { getStylusWebStoreUrl } from "@utils/web";
 import { findComponentByCodeLazy, findLazy } from "@webpack";
-import { Alerts, Menu, React, Select, showToast, TextInput, Toasts, Tooltip, useEffect, useMemo, useState } from "@webpack/common";
+import { Alerts, Menu, React, Select, showToast, TextInput, Toasts, Tooltip, useCallback, useEffect, useMemo, useState } from "@webpack/common";
 import { ContextMenuApi } from "@webpack/common/menu";
 import type { ComponentType, Ref, SyntheticEvent } from "react";
 import type { UserstyleHeader } from "usercss-meta";
@@ -387,23 +387,22 @@ function ThemesTab() {
     const [filter, setFilter] = useState(ThemeFilter.All);
 
     useEffect(() => {
+        async function updateThemes() {
+            await changeThemeLibraryURLs();
+            refreshLocalThemes();
+            refreshOnlineThemes();
+        }
         updateThemes();
-    }, []);
+    }, [changeThemeLibraryURLs, refreshOnlineThemes]);
 
-    async function updateThemes() {
-        await changeThemeLibraryURLs();
-        refreshLocalThemes();
-        refreshOnlineThemes();
-    }
-
-    async function changeThemeLibraryURLs() {
+    const changeThemeLibraryURLs = useCallback(async () => {
         settings.themeLinks = settings.themeLinks.map(link => {
             if (link.startsWith("https://discord-themes.com/api")) {
                 return link.replace("https://discord-themes.com/api", "https://themes.equicord.org/api");
             }
             return link;
         });
-    }
+    }, [settings]);
 
     async function refreshLocalThemes() {
         const themes = await VencordNative.themes.getThemesList();
@@ -498,7 +497,7 @@ function ThemesTab() {
         refreshOnlineThemes();
     }
 
-    async function refreshOnlineThemes() {
+    const refreshOnlineThemes = useCallback(async () => {
         const themes = await Promise.all(
             settings.themeLinks.map(async link => {
                 try {
@@ -513,7 +512,7 @@ function ThemesTab() {
             })
         );
         setOnlineThemes(themes.filter(theme => theme !== null));
-    }
+    }, [settings.themeLinks, setOnlineThemes]);
 
     function onThemeLinkEnabledChange(link: string, enabled: boolean) {
         if (enabled) {
@@ -867,10 +866,10 @@ function ThemesTab() {
 }
 
 export function CspErrorCard() {
-    if (IS_WEB) return null;
-
     const errors = useCspErrors();
     const forceUpdate = useForceUpdater();
+
+    if (IS_WEB) return null;
 
     if (!errors.length) return null;
 

@@ -27,7 +27,7 @@ export default function DecorSection({ hideTitle = false, hideDivider = false, n
 
     useEffect(() => {
         if (authorization.isAuthorized()) fetchDecorations();
-    }, [authorization.token]);
+    }, [authorization, authorization.token, fetchDecorations]);
 
     return <CustomizationSection
         title={!hideTitle && "Decor"}

@@ -139,7 +139,7 @@ export function showQuestButton(displayMode: QuestButtonDisplayMode, badgeCount:
 }
 
 export function disguiseHomeButton(pathname: string): boolean {
-    const buttonSettings = useQuestifySettings(["questButtonDisplay", "questButtonBadgeCount", "isOnQuestsPage"]);
+    const buttonSettings = getQuestifySettings();
 
     if (!showQuestButton(buttonSettings.questButtonDisplay, buttonSettings.questButtonBadgeCount, buttonSettings.isOnQuestsPage)) {
         return false;

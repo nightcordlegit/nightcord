@@ -106,7 +106,7 @@ function ChangeDecorationModal(props: RenderModalProps) {
 
     useEffect(() => {
         fetchUserDecorations();
-    }, []);
+    }, [fetchUserDecorations]);
 
     const activeSelectedDecoration = isTryingDecoration ? tryingDecoration : selectedDecoration;
     const activeDecorationHasAuthor = typeof activeSelectedDecoration?.authorId !== "undefined";

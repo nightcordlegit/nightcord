@@ -76,7 +76,7 @@ export default definePlugin({
 
             setIsPlaying(true);
             jumpscareAudio.play();
-        }, [isPlaying]);
+        }, [isPlaying, jumpscareAudio]);
 
         useEffect(() => {
             FluxDispatcher.subscribe("CHANNEL_SELECT", jumpscare);

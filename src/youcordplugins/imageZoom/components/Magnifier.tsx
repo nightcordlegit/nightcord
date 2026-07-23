@@ -41,7 +41,6 @@ export const Magnifier = ErrorBoundary.wrap<MagnifierProps>(({ instance, size: i
     const originalVideoElementRef = useRef<HTMLVideoElement | null>(null);
     const imageRef = useRef<HTMLImageElement | null>(null);
 
-    // since we accessing document im gonna use useLayoutEffect
     useLayoutEffect(() => {
         const onKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Shift") {
@@ -80,7 +79,6 @@ export const Magnifier = ErrorBoundary.wrap<MagnifierProps>(({ instance, size: i
                 zoom.current = settings.store.zoom;
                 size.current = settings.store.size;
 
-                // close context menu if open
                 if (document.getElementById("image-context")) {
                     FluxDispatcher.dispatch({ type: "CONTEXT_MENU_CLOSE" });
                 }
@@ -136,20 +134,21 @@ export const Magnifier = ErrorBoundary.wrap<MagnifierProps>(({ instance, size: i
             document.removeEventListener("mouseup", onMouseUp);
             document.removeEventListener("wheel", onWheel);
         };
-    }, []);
+    }, [instance]);
 
+    const { props: { src } } = instance;
     const imageSrc = useMemo(() => {
         try {
-            const imageUrl = new URL(instance.props.src);
+            const imageUrl = new URL(src);
             if (imageUrl.pathname.startsWith("/attachments/"))
                 imageUrl.hostname = "cdn.discordapp.com";
 
             imageUrl.searchParams.set("animated", "true");
             return imageUrl.toString();
         } catch {
-            return instance.props.src;
+            return src;
         }
-    }, [instance.props.src]);
+    }, [src]);
 
     if (!ready) return null;
 

@@ -55,7 +55,7 @@ export const AttachmentPreview = proxyLazyWebpack(() => {
     return function AttachmentPreview({ attachment }: AttachmentsComponentProps) {
         const message = useMemo(
             () => createPreviewMessage(attachment, channel.id),
-            [attachment, channel.id]
+            [attachment]
         );
 
         return (
@@ -85,7 +85,7 @@ export function FilePicker({ onSelectItem }: FilePickerProps) {
 
     const [rowHeights, handleResize] = useListScroller();
 
-    const handleSubmit = useCallback((url: string) => onSelectItem({ url }), []);
+    const handleSubmit = useCallback((url: string) => onSelectItem({ url }), [onSelectItem]);
 
     const renderRow = (row: number) => {
         const item = favs?.[row];
@@ -210,7 +210,7 @@ export function FilePickerItem({ url, file, channel, onResize, onSubmit, reduceP
             default:
                 return null;
         }
-    }, [attachment, canAttachFiles, canSendMessages, channel, url]);
+    }, [attachment, canAttachFiles, canSendMessages, channel, url, onSubmit]);
 
     return (
         <div ref={ref} className={cl("attachment-container", reducePadding && "reduced-padding")}>

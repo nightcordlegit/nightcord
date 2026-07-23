@@ -75,7 +75,7 @@ export function FloodModal({ channel, rootProps, onRunningChange }: Props) {
 
     const delayOptions = useMemo(() => DELAY_OPTIONS, []);
 
-    useEffect(() => { onRunningChange(running); }, [running]);
+    useEffect(() => { onRunningChange(running); }, [running, onRunningChange]);
     useEffect(() => {
         return () => {
             runningRef.current = false;

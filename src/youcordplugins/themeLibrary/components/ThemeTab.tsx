@@ -17,7 +17,7 @@ import { Logger } from "@utils/Logger";
 import { Margins } from "@utils/margins";
 import { classes } from "@utils/misc";
 import { findCssClassesLazy } from "@webpack";
-import { Button, React, SearchableSelect, TextInput, useEffect, useState } from "@webpack/common";
+import { Button, React, SearchableSelect, TextInput, useCallback, useEffect, useState } from "@webpack/common";
 import { SearchStatus, Theme, ThemeLikeProps } from "@youcordplugins/themeLibrary/types";
 
 import { ThemeCard } from "./ThemeCard";
@@ -68,7 +68,7 @@ function ThemeTab() {
     const onSearch = (query: string) => setSearchValue(prev => ({ ...prev, value: query }));
     const onStatusChange = (status: SearchStatus) => setSearchValue(prev => ({ ...prev, status }));
 
-    const themeFilter = (theme: Theme) => {
+    const themeFilter = useCallback((theme: Theme) => {
         const enabled = enabledThemeLinks.includes(`${apiUrl}/${theme.id}`);
 
         const tags = new Set(theme.tags.map(tag => tag?.toLowerCase()));
@@ -89,9 +89,9 @@ function ThemeTab() {
             (Array.isArray(theme.author) ? theme.author.some(author => author.discord_name?.toLowerCase()?.includes(v)) : theme.author.discord_name?.toLowerCase()?.includes(v)) ||
             tags.has(v)
         );
-    };
+    }, [enabledThemeLinks, searchValue]);
 
-    const fetchLikes = async () => {
+    const fetchLikes = useCallback(async () => {
         try {
             const token = await DataStore.get("ThemeLibrary_uniqueToken");
             const response = await themeRequest("/likes/get", {
@@ -104,7 +104,7 @@ function ThemeTab() {
         } catch (err) {
             logger.error(err);
         }
-    };
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -120,7 +120,7 @@ function ThemeTab() {
             }
         };
         fetchData();
-    }, []);
+    }, [fetchLikes]);
 
     useEffect(() => {
         setEnabledThemeLinks(Settings.enabledThemeLinks);
@@ -138,7 +138,7 @@ function ThemeTab() {
             const filteredThemes = sortedThemes.filter(themeFilter);
             setFilteredThemes(filteredThemes);
         }
-    }, [searchValue, themes]);
+    }, [searchValue, themes, themeFilter]);
 
     return (
         <div>

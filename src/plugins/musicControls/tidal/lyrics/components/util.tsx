@@ -61,7 +61,7 @@ export function useLyrics({ scroll = true }: { scroll?: boolean; } = {}) {
             setCurrLrcIndex(currentIndex);
             setNextLyric(nextLyric);
         }
-    }, [currentLyrics, position]);
+    }, [currentLyrics, position, lyricDelay]);
 
     useEffect(() => {
         if (scroll && currLrcIndex !== null) {
@@ -72,7 +72,7 @@ export function useLyrics({ scroll = true }: { scroll?: boolean; } = {}) {
                 lyricRefs[nextLyric]?.current?.scrollIntoView({ behavior: "smooth", block: "center" });
             }
         }
-    }, [currLrcIndex, nextLyric, scroll]);
+    }, [currLrcIndex, nextLyric, scroll, lyricRefs]);
 
     useEffect(() => {
         if (isPlaying) {

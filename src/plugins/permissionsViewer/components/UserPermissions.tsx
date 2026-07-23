@@ -86,7 +86,7 @@ function GrantedByTooltip({ roleName, roleColor }: GrantedByTooltipProps) {
 function UserPermissionsComponent({ guild, guildMember, closePopout }: { guild: Guild; guildMember: GuildMember; closePopout: () => void; }) {
     const { permissionsSortOrder } = settings.use(["permissionsSortOrder"]);
 
-    const guildPermissionSpecMap = useMemo(() => getGuildPermissionSpecMap(guild), [guild.id]);
+    const guildPermissionSpecMap = useMemo(() => getGuildPermissionSpecMap(guild), [guild]);
 
     const [rolePermissions, userPermissions] = useMemo(() => {
         const userPermissions: UserPermissions = [];
@@ -133,7 +133,7 @@ function UserPermissionsComponent({ guild, guildMember, closePopout }: { guild: 
         userPermissions.sort((a, b) => b.rolePosition - a.rolePosition);
 
         return [rolePermissions, userPermissions];
-    }, [permissionsSortOrder]);
+    }, [guild, guildMember, guildPermissionSpecMap]);
 
     return <div>
         <div className={cl("user-header-container")}>

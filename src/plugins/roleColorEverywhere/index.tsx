@@ -196,10 +196,11 @@ export default definePlugin({
     },
 
     useMessageColorsStyle(message: any) {
-        try {
-            const { messageSaturation } = settings.use(["messageSaturation"]);
-            const author = useMessageAuthor(message);
+        // Hooks must be called unconditionally
+        const author = useMessageAuthor(message);
+        const { messageSaturation } = settings.use(["messageSaturation"]);
 
+        try {
             // Do not apply role color if the send fails, otherwise it becomes indistinguishable
             if (message.state === "SEND_FAILED") return;
 

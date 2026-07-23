@@ -132,7 +132,7 @@ function CustomProfileSyncToggle() {
             setChecking(false);
         });
         return () => { isMounted = false; };
-    }, []);
+    }, [settings]);
 
     const isEnabled = !!token;
 

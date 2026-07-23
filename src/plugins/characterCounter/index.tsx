@@ -71,7 +71,7 @@ export default definePlugin({
 
             document.addEventListener("selectionchange", listener);
             return () => document.removeEventListener("selectionchange", listener);
-        }, []);
+        }, [editorRef]);
 
         if (!text.length) return null;
 

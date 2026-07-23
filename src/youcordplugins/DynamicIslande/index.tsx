@@ -370,9 +370,9 @@ function ParticipantRow({ p, channel, currentUser }: { p: { user: any; member: a
     const isSelf = currentUser && p.user.id === currentUser.id;
     const { showParticipantButtons } = settings.use(["showParticipantButtons"]);
 
-    const isMuted = isSelf
-        ? useStateFromStores([MediaEngineStore], () => MediaEngineStore.isSelfMute())
-        : useStateFromStores([MediaEngineStore], () => MediaEngineStore.isLocalMute(p.user.id), [p.user.id]);
+    const selfMuted = useStateFromStores([MediaEngineStore], () => MediaEngineStore.isSelfMute());
+    const localMuted = useStateFromStores([MediaEngineStore], () => MediaEngineStore.isLocalMute(p.user.id), [p.user.id]);
+    const isMuted = isSelf ? selfMuted : localMuted;
 
     const avatarUrl = typeof p.user.getAvatarURL === "function"
         ? p.user.getAvatarURL(channel?.guild_id, 32)

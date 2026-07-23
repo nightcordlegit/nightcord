@@ -57,10 +57,11 @@ function useCategory(categoryId: string | null, initalChannelId: string | null) 
 
 export function NewCategoryModal({ categoryId, modalProps, initialChannelId }: Props) {
     const category = useCategory(categoryId, initialChannelId);
-    if (!category) return null;
 
-    const [name, setName] = useState(category.name);
-    const [color, setColor] = useState(category.color);
+    const [name, setName] = useState(category?.name ?? "");
+    const [color, setColor] = useState(category?.color ?? DEFAULT_COLOR);
+
+    if (!category) return null;
 
     const onSave = () => {
         category.name = name;

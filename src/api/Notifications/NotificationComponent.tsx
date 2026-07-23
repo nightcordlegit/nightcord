@@ -70,7 +70,7 @@ export default ErrorBoundary.wrap(function NotificationComponent({
         }, 10);
 
         return () => clearInterval(intervalId);
-    }, [timeout, isHover, permanent]);
+    }, [timeout, isHover, permanent, onClose]);
 
     const timeoutProgress = elapsed / timeout;
 

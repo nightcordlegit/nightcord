@@ -853,7 +853,7 @@ function VoiceSelectModal({ modalProps, user }: { modalProps: RenderModalProps; 
             { label: `Default (${settings.store.customVoice})`, value: DEFAULT_VALUE },
             ...VOICE_OPTIONS.map(v => ({ label: v.label, value: v.value })),
         ];
-    }, [settings.store.customVoice]);
+    }, []);
 
     const [currentValue, setCurrentValue] = React.useState<string>(DEFAULT_VALUE);
     const [busy, setBusy] = React.useState(false);
@@ -861,7 +861,7 @@ function VoiceSelectModal({ modalProps, user }: { modalProps: RenderModalProps; 
     React.useEffect(() => {
         const map = parseUserVoiceMap(settings.store.userVoiceMap ?? "");
         setCurrentValue(map.get(user.id) ?? DEFAULT_VALUE);
-    }, [user.id, settings.store.userVoiceMap]);
+    }, [user.id]);
 
     const displayName = user.globalName ?? user.username;
 
@@ -1207,7 +1207,7 @@ export default definePlugin({
 
     },
 
-    settingsAboutComponent({ tempSettings: s }: { tempSettings?: any; }) {
+    SettingsAboutComponent({ tempSettings: s }: { tempSettings?: any; }) {
         const allTypes = ["mute", "unmute", "deafen", "undeafen", "streamStart", "streamStop", "join", "leave", "move"];
 
         const [busy, setBusy] = React.useState(isQueueBusy());

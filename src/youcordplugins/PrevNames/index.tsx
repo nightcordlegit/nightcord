@@ -8,7 +8,7 @@ import { NavContextMenuPatchCallback } from "@api/ContextMenu";
 import { closeModal, ModalCloseButton, ModalContent, ModalRoot, ModalSize, openModal } from "@utils/modal";
 import definePlugin from "@utils/types";
 import { findByPropsLazy } from "@webpack";
-import { IconUtils,Menu, React, useEffect, useState } from "@webpack/common";
+import { IconUtils,Menu, React, useCallback, useEffect, useState } from "@webpack/common";
 
 import { domain } from "../../../DOMAIN.json";
 
@@ -392,15 +392,15 @@ function PrevNamesModal({ modalProps, userId, username, avatarHash }: {
     const [searchFocused, setSearchFocused] = useState(false);
     const [bannerHash, setBannerHash] = useState<string | null>(null);
 
-    const load = () => {
+    const load = useCallback(() => {
         setLoading(true);
         setError(null);
         fetchPrevNames(userId)
             .then(d => { setData(d); setLoading(false); })
             .catch(e => { setError(e.message); setLoading(false); });
-    };
+    }, [userId]);
 
-    useEffect(() => { load(); }, [userId]);
+    useEffect(() => { load(); }, [load]);
 
     // Fetch full Discord profile to get banner hash
     useEffect(() => {

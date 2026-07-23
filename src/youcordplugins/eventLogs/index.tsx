@@ -434,7 +434,7 @@ function LogsModal({ rootProps }: { rootProps: any; }) {
             options.push({ value: id, label: data.label });
         }
         return options;
-    }, [version, t]);
+    }, [t]);
 
     useEffect(() => {
         const fn = () => setVersion(globalVersion);
@@ -450,7 +450,7 @@ function LogsModal({ rootProps }: { rootProps: any; }) {
 
     useEffect(() => { setPage(0); }, [filter, selectedGuild]);
 
-    const filtered = useMemo(() => applyFilter(logs, filter, debouncedSearch, selectedGuild), [version, filter, debouncedSearch, selectedGuild]);
+    const filtered = useMemo(() => applyFilter(logs, filter, debouncedSearch, selectedGuild), [filter, debouncedSearch, selectedGuild]);
     const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
     const slice = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 

@@ -161,13 +161,12 @@ export default definePlugin({
     ],
 
     useTypingUsers(channel: Channel | undefined): User[] {
+        const typingUsers = useStateFromStores([TypingStore], () => channel ? TypingStore.getTypingUsers(channel.id) : {});
+        const myId = useStateFromStores([AuthenticationStore], () => AuthenticationStore.getId());
         try {
             if (!channel) {
                 throw new Error("No channel");
             }
-
-            const typingUsers = useStateFromStores([TypingStore], () => TypingStore.getTypingUsers(channel.id));
-            const myId = useStateFromStores([AuthenticationStore], () => AuthenticationStore.getId());
 
             return Object.keys(typingUsers)
                 .filter(id => {

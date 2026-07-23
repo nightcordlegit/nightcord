@@ -103,7 +103,7 @@ export default function ChannelsTabsContainer(props: BasicChannelTabsProps) {
     const update = useCallback((save = true) => {
         _update();
         if (save) saveTabs(userId);
-    }, [userId]);
+    }, [userId, _update]);
 
     const ref = useRef<HTMLDivElement>(null);
     const scrollerRef = useRef<HTMLDivElement>(null);
@@ -122,7 +122,7 @@ export default function ChannelsTabsContainer(props: BasicChannelTabsProps) {
         return () => {
             FluxDispatcher.unsubscribe("CONNECTION_OPEN_SUPPLEMENTAL", onLogin);
         };
-    }, []);
+    }, [props, update, userId]);
 
     useEffect(() => {
         if (ref.current) {
@@ -134,7 +134,7 @@ export default function ChannelsTabsContainer(props: BasicChannelTabsProps) {
 
     useEffect(() => {
         _update();
-    }, [widerTabsAndBookmarks]);
+    }, [widerTabsAndBookmarks, _update]);
     useEffect(() => {
         const scroller = scrollerRef.current;
         if (!scroller) return;
@@ -154,7 +154,7 @@ export default function ChannelsTabsContainer(props: BasicChannelTabsProps) {
         observer.observe(scroller);
 
         return () => observer.disconnect();
-    }, [openedTabs.length, newTabButtonBehavior]);
+    }, [newTabButtonBehavior]);
 
     useEffect(() => {
         const matchesKeybind = (event: KeyboardEvent, keybindString: string): boolean => {
@@ -265,8 +265,7 @@ export default function ChannelsTabsContainer(props: BasicChannelTabsProps) {
         enableTabCycleShortcut,
         cycleTabForwardKeybind,
         cycleTabBackwardKeybind,
-        props,
-        openedTabs
+        props
     ]);
 
     useEffect(() => {
@@ -284,7 +283,7 @@ export default function ChannelsTabsContainer(props: BasicChannelTabsProps) {
             // Clean up any stale navigation contexts
             clearStaleNavigationContext();
         }
-    }, [userId, props.channelId, props.guildId]);
+    }, [userId, props]);
 
     if (!userId) return null;
 
@@ -352,13 +351,13 @@ export default function ChannelsTabsContainer(props: BasicChannelTabsProps) {
 
 export function ChannelTabsPreview(p: { setValue: (v: TabSet) => void; }) {
     const id = UserStore.getCurrentUser()?.id;
-    if (!id) return <Paragraph>there's no logged in account?????</Paragraph>;
-
     const { setValue } = p;
     const { tabSet }: { tabSet: TabSet; } = settings.use(["tabSet"]);
 
     const placeholder = [{ guildId: "@me", channelId: undefined as any }];
     const [currentTabs, setCurrentTabs] = useState(tabSet?.[id] ?? placeholder);
+
+    if (!id) return <Paragraph>there's no logged in account?????</Paragraph>;
 
     return (
         <>

@@ -28,7 +28,7 @@ export default definePluginSettings({
     guildsList: {
         type: OptionType.COMPONENT,
         description: "Remove hidden servers",
-        component: () => {
+        component: function SettingsGuildsList() {
             const detail = useStateFromStores([HiddenServersStore], () => HiddenServersStore.hiddenGuildsDetail());
             return <HiddenServersMenu guilds={detail} />;
         }
@@ -36,16 +36,18 @@ export default definePluginSettings({
     resetHidden: {
         type: OptionType.COMPONENT,
         description: "Remove all hidden guilds from the list",
-        component: () => (
-            <div>
-                <Button
-                    size={Button.Sizes.SMALL}
-                    color={Button.Colors.RED}
-                    onClick={() => HiddenServersStore.clearHidden()}
-                >
-                    Reset Hidden Servers
-                </Button>
-            </div>
-        ),
+        component: function SettingsResetHidden() {
+            return (
+                <div>
+                    <Button
+                        size={Button.Sizes.SMALL}
+                        color={Button.Colors.RED}
+                        onClick={() => HiddenServersStore.clearHidden()}
+                    >
+                        Reset Hidden Servers
+                    </Button>
+                </div>
+            );
+        },
     },
 });

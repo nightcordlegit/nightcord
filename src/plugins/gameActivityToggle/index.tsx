@@ -95,6 +95,22 @@ function GameActivityToggleButton({ iconForeground, hideTooltips, nameplate }: U
     );
 }
 
+function GameActivityToggleToolboxItem() {
+    const { location } = settings.use(["location"]);
+    const showCurrentGame = ShowCurrentGame.useSetting();
+
+    if (location !== "TOOLBOX") return null;
+
+    return (
+        <Menu.MenuCheckboxItem
+            id="game-activity-toggle-toolbox"
+            label="Enable Game Activity"
+            checked={showCurrentGame}
+            action={() => ShowCurrentGame.updateSetting(old => !old)}
+        />
+    );
+}
+
 export default definePlugin({
     name: "GameActivityToggle",
     description: "Adds a button next to the mic and deafen button to toggle game activity.",
@@ -109,18 +125,6 @@ export default definePlugin({
     },
 
     toolboxActions() {
-        const { location } = settings.use(["location"]);
-        const showCurrentGame = ShowCurrentGame.useSetting();
-
-        if (location !== "TOOLBOX") return null;
-
-        return (
-            <Menu.MenuCheckboxItem
-                id="game-activity-toggle-toolbox"
-                label="Enable Game Activity"
-                checked={showCurrentGame}
-                action={() => ShowCurrentGame.updateSetting(old => !old)}
-            />
-        );
+        return <GameActivityToggleToolboxItem />;
     },
 });

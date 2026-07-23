@@ -21,7 +21,7 @@ import { useAwaiter } from "@utils/react";
 import definePlugin, { OptionType } from "@utils/types";
 import { chooseFile } from "@utils/web";
 import { CloudUploadPlatform } from "@vencord/discord-types/enums";
-import { Button, CloudUploader, Constants, FluxDispatcher, Forms, lodash, Menu, MessageActions, Modal, openModal, PendingReplyStore, PermissionsBits, PermissionStore, RestAPI, SelectedChannelStore, showToast, SnowflakeUtils, Toasts, useEffect, useState } from "@webpack/common";
+import { Button, CloudUploader, Constants, FluxDispatcher, Forms, lodash, Menu, MessageActions, Modal, openModal, PendingReplyStore, PermissionsBits, PermissionStore, RestAPI, SelectedChannelStore, showToast, SnowflakeUtils, Toasts, useCallback, useEffect, useState } from "@webpack/common";
 import { ComponentType } from "react";
 
 import { VoiceRecorderDesktop } from "./components/DesktopRecorder";
@@ -226,7 +226,7 @@ function VoiceMessageModal({ modalProps }: { modalProps: any; }) {
 
     const isUnsupportedFormat = blob && (!blob.type.startsWith("audio/ogg") || blob.type.includes("codecs") && !blob.type.includes("opus"));
 
-    const downloadBlob = () => {
+    const downloadBlob = useCallback(() => {
         if (!blob) return;
         const url = URL.createObjectURL(blob);
         const anchor = document.createElement("a");
@@ -236,7 +236,7 @@ function VoiceMessageModal({ modalProps }: { modalProps: any; }) {
         anchor.click();
         document.body.removeChild(anchor);
         setTimeout(() => URL.revokeObjectURL(url), 1000);
-    };
+    }, [blob]);
     useEffect(() => {
         const handler = (e: Event) => {
             try {
@@ -258,7 +258,7 @@ function VoiceMessageModal({ modalProps }: { modalProps: any; }) {
 
         document.addEventListener("click", handler, true);
         return () => document.removeEventListener("click", handler, true);
-    }, [blob]);
+    }, [blob, downloadBlob]);
 
     return (
         <Modal

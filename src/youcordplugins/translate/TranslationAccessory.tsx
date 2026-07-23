@@ -37,7 +37,7 @@ export function TranslationAccessory({ message }: { message: Message; }) {
         TranslationSetters.set(message.id, setTranslation);
 
         return () => void TranslationSetters.delete(message.id);
-    }, []);
+    }, [message]);
 
     if (!translation) return null;
 

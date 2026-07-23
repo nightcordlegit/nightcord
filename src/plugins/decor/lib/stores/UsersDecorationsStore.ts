@@ -94,35 +94,35 @@ export const useUsersDecorationsStore = proxyLazy(() => zustandCreate((set: any,
 } as UsersDecorationsState)));
 
 export function useUserDecorAvatarDecoration(user?: User): AvatarDecoration | null | undefined {
-    try {
-        const [decorAvatarDecoration, setDecorAvatarDecoration] = useState<string | null>(user ? useUsersDecorationsStore.getState().getAsset(user.id) ?? null : null);
+    const [decorAvatarDecoration, setDecorAvatarDecoration] = useState<string | null>(user ? useUsersDecorationsStore.getState().getAsset(user.id) ?? null : null);
 
-        useEffect(() => {
-            const destructor = (() => {
-                try {
-                    return useUsersDecorationsStore.subscribe(
-                        state => {
-                            if (!user) return;
-                            const newDecorAvatarDecoration = state.getAsset(user.id);
-                            if (!newDecorAvatarDecoration) return;
-                            if (decorAvatarDecoration !== newDecorAvatarDecoration) setDecorAvatarDecoration(newDecorAvatarDecoration);
-                        }
-                    );
-                } catch {
-                    return () => { };
-                }
-            })();
-
+    useEffect(() => {
+        const destructor = (() => {
             try {
-                if (user) {
-                    const { fetch: fetchUserDecorAvatarDecoration } = useUsersDecorationsStore.getState();
-                    fetchUserDecorAvatarDecoration(user.id);
-                }
-            } catch { }
+                return useUsersDecorationsStore.subscribe(
+                    state => {
+                        if (!user) return;
+                        const newDecorAvatarDecoration = state.getAsset(user.id);
+                        if (!newDecorAvatarDecoration) return;
+                        if (decorAvatarDecoration !== newDecorAvatarDecoration) setDecorAvatarDecoration(newDecorAvatarDecoration);
+                    }
+                );
+            } catch {
+                return () => { };
+            }
+        })();
 
-            return destructor;
-        }, []);
+        try {
+            if (user) {
+                const { fetch: fetchUserDecorAvatarDecoration } = useUsersDecorationsStore.getState();
+                fetchUserDecorAvatarDecoration(user.id);
+            }
+        } catch { }
 
+        return destructor;
+    }, [decorAvatarDecoration, user]);
+
+    try {
         return decorAvatarDecoration ? { asset: decorAvatarDecoration, skuId: SKU_ID } : null;
     } catch (e) {
         console.error(e);

@@ -85,13 +85,14 @@ function formatMessage(data: SongLinkResult): string | null {
 }
 
 function SongLinkerList({ urls }: { urls: string[]; }) {
+    const urlsKey = urls.join("\n");
     const [resolvedKeys, setResolvedKeys] = useState<Record<string, string | null>>(
         () => Object.fromEntries(urls.map(u => [u, null]))
     );
 
     useEffect(() => {
-        setResolvedKeys(Object.fromEntries(urls.map(u => [u, null])));
-    }, [urls.join("\n")]);
+        setResolvedKeys(Object.fromEntries(urlsKey.split("\n").map(u => [u, null])));
+    }, [urlsKey]);
 
     function onResolved(url: string, result: SongLinkResult) {
         const key = result.info

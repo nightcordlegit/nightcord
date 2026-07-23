@@ -762,7 +762,7 @@ const hoveringMessageMap = new Map<string, number>();
 const hoveringRepliesMap = new Map<string, number>();
 const hoveringReactionPopoutSet = new Set<string>();
 
-function handleHoveringMessage(message: any, isHovering: boolean) {
+function HandleHoveringMessage(message: any, isHovering: boolean) {
     const messageId = message?.id;
     const repliedId = message?.messageReference?.message_id;
     const groupId = message?.showMeYourNameGroupId ?? "";
@@ -781,7 +781,7 @@ function handleHoveringMessage(message: any, isHovering: boolean) {
             removeHoveringMessage(groupId);
             removeHoveringReply(repliedId);
         }
-    }, [messageId, groupId, effectiveIsHovering]);
+    }, [message, messageId, repliedId, groupId, effectiveIsHovering]);
 }
 
 function addHoveringMessage(id: string) {
@@ -1143,7 +1143,7 @@ export default definePlugin({
             replacement: [
                 {
                     match: /(hasHovered:\i,isHovered:(\i).{0,2000})(let \i=\i.id===\i,\i=)/,
-                    replace: "$1arguments[0].message.showMeYourNameGroupId=!!arguments[0].groupId?`g-${arguments[0].groupId}`:null;$self.handleHoveringMessage(arguments[0].message,$2);$3",
+                    replace: "$1arguments[0].message.showMeYourNameGroupId=!!arguments[0].groupId?`g-${arguments[0].groupId}`:null;$self.HandleHoveringMessage(arguments[0].message,$2);$3",
                 },
             ],
         },
@@ -1287,7 +1287,7 @@ export default definePlugin({
 
     addHoveringMessage,
     removeHoveringMessage,
-    handleHoveringMessage,
+    HandleHoveringMessage,
     addHoveringReactionPopout,
     removeHoveringReactionPopout,
     getMessageName,

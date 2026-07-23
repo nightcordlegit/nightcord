@@ -10,7 +10,7 @@ import { Devs, EquicordDevs } from "@utils/constants";
 import { getCurrentChannel } from "@utils/discord";
 import definePlugin, { OptionType } from "@utils/types";
 import { Message, RenderModalProps } from "@vencord/discord-types";
-import { IconUtils, Menu, Modal, openModal, TextInput, UploadHandler, useEffect, useState } from "@webpack/common";
+import { IconUtils, Menu, Modal, openModal, TextInput, UploadHandler, useCallback, useEffect, useState } from "@webpack/common";
 
 import { QuoteIcon } from "./components/QuoteIcon";
 import { QuoteFont } from "./types";
@@ -102,7 +102,7 @@ function QuoteModal({ message, ...props }: RenderModalProps & { message: Message
         settings.store.saveAsGif = saveAsGif;
     }, [gray, showWatermark, saveAsGif]);
 
-    const generateImage = async () => {
+    const generateImage = useCallback(async () => {
         const image = await createQuoteImage({
             avatarUrl: IconUtils.getUserAvatarURL(message.author, true, 512),
             quote: message.content,
@@ -120,9 +120,9 @@ function QuoteModal({ message, ...props }: RenderModalProps & { message: Message
         const newUrl = URL.createObjectURL(image);
         setPreviewUrl(newUrl);
         document.getElementById("quoterPreview")?.setAttribute("src", newUrl);
-    };
+    }, [message.author, message.content, gray, watermarkText, showWatermark, saveAsGif, quoteFont, previewUrl]);
 
-    useEffect(() => { generateImage(); }, [gray, showWatermark, saveAsGif, watermarkText, quoteFont]);
+    useEffect(() => { generateImage(); }, [generateImage]);
 
     useEffect(() => {
         return () => {

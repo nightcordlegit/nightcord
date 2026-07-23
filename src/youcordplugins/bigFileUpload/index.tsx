@@ -63,6 +63,10 @@ function SettingsComponent(props: { setValue(v: any): void; }) {
 
     const fileInputRef = React.useRef<HTMLInputElement>(null);
 
+    const updateSetting = React.useCallback(function updateSetting(key: keyof typeof settings.store, value: any) {
+        if (key in settings.store) settings.store[key] = value;
+    }, []);
+
     useEffect(() => {
         const unsubscribe = customUploaderStore.subscribe(() => {
             const state = customUploaderStore.get();
@@ -76,11 +80,7 @@ function SettingsComponent(props: { setValue(v: any): void; }) {
             updateSetting("customUploaderArgs", JSON.stringify(state.args));
         });
         return unsubscribe;
-    }, []);
-
-    function updateSetting(key: keyof typeof settings.store, value: any) {
-        if (key in settings.store) settings.store[key] = value;
-    }
+    }, [customUploaderStore, updateSetting]);
 
     function handleShareXConfigUpload(event: React.ChangeEvent<HTMLInputElement>) {
         const file = event.target.files?.[0];

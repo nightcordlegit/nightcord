@@ -103,7 +103,7 @@ const FormatsComponent = (componentProps: any) => {
                 </section>
             ))}
         </>);
-}
+};
 
 const settings = definePluginSettings({
     formats: {
@@ -123,6 +123,34 @@ const settings = definePluginSettings({
         sameElseFormat: string;
     };
 }>();
+
+function useRenderTimestamp(date: Date, type: "cozy" | "compact" | "tooltip" | "ariaLabel") {
+    const forceUpdater = useForceUpdater();
+    let formatTemplate: string;
+
+    switch (type) {
+        case "cozy":
+            formatTemplate = settings.store.formats?.cozyFormat || timeFormats.cozyFormat.default;
+            break;
+        case "compact":
+            formatTemplate = settings.store.formats?.compactFormat || timeFormats.compactFormat.default;
+            break;
+        case "tooltip":
+            formatTemplate = settings.store.formats?.tooltipFormat || timeFormats.tooltipFormat.default;
+            break;
+        case "ariaLabel":
+            formatTemplate = settings.store.formats?.ariaLabelFormat || timeFormats.ariaLabelFormat.default;
+    }
+
+    useEffect(() => {
+        if (formatTemplate.includes("calendar") || formatTemplate.includes("relative")) {
+            const interval = setInterval(forceUpdater, 1000);
+            return () => clearInterval(interval);
+        }
+    }, [forceUpdater, formatTemplate]);
+
+    return format(date, formatTemplate);
+}
 
 export default definePlugin({
     name: "CustomTimestamps",
@@ -175,31 +203,5 @@ export default definePlugin({
         }
     ],
 
-    useRenderTimestamp: (date: Date, type: "cozy" | "compact" | "tooltip" | "ariaLabel") => {
-        const forceUpdater = useForceUpdater();
-        let formatTemplate: string;
-
-        switch (type) {
-            case "cozy":
-                formatTemplate = settings.store.formats?.cozyFormat || timeFormats.cozyFormat.default;
-                break;
-            case "compact":
-                formatTemplate = settings.store.formats?.compactFormat || timeFormats.compactFormat.default;
-                break;
-            case "tooltip":
-                formatTemplate = settings.store.formats?.tooltipFormat || timeFormats.tooltipFormat.default;
-                break;
-            case "ariaLabel":
-                formatTemplate = settings.store.formats?.ariaLabelFormat || timeFormats.ariaLabelFormat.default;
-        }
-
-        useEffect(() => {
-            if (formatTemplate.includes("calendar") || formatTemplate.includes("relative")) {
-                const interval = setInterval(forceUpdater, 1000);
-                return () => clearInterval(interval);
-            }
-        }, [forceUpdater, formatTemplate]);
-
-        return format(date, formatTemplate);
-    }
+    useRenderTimestamp,
 });

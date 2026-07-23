@@ -52,7 +52,7 @@ function CreateDecorationModal(props: RenderModalProps) {
 
     useEffect(() => {
         if (error) setError(null);
-    }, [file]);
+    }, [error, file]);
 
     const { create: createDecoration } = useCurrentUserDecorationsStore();
 

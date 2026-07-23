@@ -74,7 +74,7 @@ export default definePlugin({
                 },
                 {
                     match: /:null,((.{1,200})===.{1,30}\.STICKER&&\w+\?(\([^()]{1,10}\)).{1,15}?(\{.*?,onSelectSticker:.*?\})\):null)/,
-                    replace: ':null,$2==="stickers+"?$3($self.moreStickersComponent,$4):null,$1'
+                    replace: ':null,$2==="stickers+"?$3($self.MoreStickersComponent,$4):null,$1'
                 }
             ]
         },
@@ -105,17 +105,13 @@ export default definePlugin({
             </button >
         );
     },
-    moreStickersComponent({
+        MoreStickersComponent({
         channel,
         closePopout
     }: {
         channel: Channel,
         closePopout: () => void;
     }) {
-        if (FFmpegStateContext === undefined) {
-            return <div>FFmpegStateContext is undefined</div>;
-        }
-
         const [query, setQuery] = React.useState<string | undefined>();
         const [stickerPackMetas, setStickerPackMetas] = React.useState<StickerPackMeta[]>([]);
         const [stickerPacks, setStickerPacks] = React.useState<StickerPack[]>([]);
@@ -124,8 +120,6 @@ export default definePlugin({
 
         const ffmpegLoaded = React.useState(false);
         const ffmpeg = React.useState<FFmpeg>(new FFmpeg());
-
-        const getMetasSignature = (m: StickerPackMeta[]) => m.map(x => x.id).sort().join(",");
 
         React.useEffect(() => {
             (async () => {
@@ -138,7 +132,7 @@ export default definePlugin({
                     .filter((x): x is Exclude<typeof x, null> => x !== null);
                 setStickerPacks(sps);
             })();
-        }, [stickerPackMetas]);
+        }, [stickerPackMetas, counter]);
 
         React.useEffect(() => {
             (async () => {
@@ -147,7 +141,7 @@ export default definePlugin({
                     setStickerPackMetas(metas);
                 }
             })();
-        }, []);
+        }, [stickerPackMetas]);
 
         React.useEffect(() => {
             if (ffmpegLoaded[0]) return;
@@ -155,7 +149,13 @@ export default definePlugin({
             loadFFmpeg(ffmpeg[0], () => {
                 ffmpegLoaded[1](true);
             });
-        }, []);
+        }, [ffmpegLoaded, ffmpeg]);
+
+        if (FFmpegStateContext === undefined) {
+            return <div>FFmpegStateContext is undefined</div>;
+        }
+
+        const getMetasSignature = (m: StickerPackMeta[]) => m.map(x => x.id).sort().join(",");
 
         return (
             <Wrapper>

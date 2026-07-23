@@ -163,13 +163,13 @@ function SearchBar({ instance, SearchBarComponent }: { instance: Instance; Searc
         props.favorites = result.map(e => e.gif);
 
         instance.forceUpdate();
-    }, [instance.state]);
+    }, [instance]);
 
     useEffect(() => {
         return () => {
             instance.dead = true;
         };
-    }, []);
+    }, [instance]);
 
     return (
         <SearchBarComponent

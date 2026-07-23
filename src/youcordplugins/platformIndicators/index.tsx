@@ -91,11 +91,11 @@ const PlatformIcon = ({ platform, status, small }) => {
 };
 
 function useEnsureOwnStatus(user: User) {
+    const sessions = useStateFromStores([SessionsStore], () => SessionsStore.getSessions());
+
     if (user.id !== AuthenticationStore.getId()) {
         return;
     }
-
-    const sessions = useStateFromStores([SessionsStore], () => SessionsStore.getSessions());
     if (typeof sessions !== "object") return null;
     const sortedSessions = Object.values(sessions).sort(({ status: a }, { status: b }) => {
         if (a === b) return 0;
@@ -124,16 +124,16 @@ interface PlatformIndicatorProps {
 }
 
 const PlatformIndicator = ({ user, isProfile, isMessage, isMemberList }: PlatformIndicatorProps) => {
+    useEnsureOwnStatus(user);
+
+    const status = useStateFromStores([PresenceStore], () => PresenceStore.getClientStatus(user.id));
+
     if (user == null || (user.bot && !settings.store.showBots)) return null;
 
     // Check if the specific indicator type is enabled in settings
     if (isProfile && !settings.store.profiles) return null;
     if (isMessage && !settings.store.messages) return null;
     if (isMemberList && !settings.store.list) return null;
-
-    useEnsureOwnStatus(user);
-
-    const status = useStateFromStores([PresenceStore], () => PresenceStore.getClientStatus(user.id));
     if (!status || Object.keys(status).length === 0) return null;
 
     const icons = Array.from(Object.entries(status), ([platform, status]) => (

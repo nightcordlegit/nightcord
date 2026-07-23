@@ -16,11 +16,10 @@ import type { ReactNode } from "react";
 
 import { settings } from ".";
 
-function buildPluginMenu() {
+function BuildPluginMenu() {
     const { showPluginMenu } = settings.use(["showPluginMenu"]);
 
-    // has to be here due to hooks
-    const pluginEntries = buildPluginMenuEntries();
+    const pluginEntries = <BuildPluginMenuEntries />;
 
     if (!showPluginMenu) return null;
 
@@ -35,7 +34,7 @@ function buildPluginMenu() {
     );
 }
 
-export function buildPluginMenuEntries(includeEmpty = false) {
+export function BuildPluginMenuEntries({ includeEmpty = false }: { includeEmpty?: boolean; }) {
     const pluginSettings = useSettings().plugins;
 
     const [search, setSearch] = useState("");
@@ -56,7 +55,7 @@ export function buildPluginMenuEntries(includeEmpty = false) {
                 const name = p.name.toLowerCase();
                 return name.includes(lowerSearch);
             }),
-        [lowerSearch]
+        [lowerSearch, sortedPlugins]
     );
 
     return (
@@ -191,12 +190,12 @@ export function buildThemeMenu() {
             label="Themes"
             action={() => openSettingsTabModal(ThemesTab)}
         >
-            {buildThemeMenuEntries()}
+            <BuildThemeMenuEntries />
         </Menu.MenuItem>
     );
 }
 
-export function buildThemeMenuEntries() {
+export function BuildThemeMenuEntries() {
     const { useQuickCss, enabledThemes } = useSettings(["useQuickCss", "enabledThemes"]);
     const [themes] = useAwaiter(VencordNative.themes.getThemesList);
 
@@ -309,7 +308,7 @@ export function renderPopout(onClose: () => void) {
             />
 
             {buildThemeMenu()}
-            {buildPluginMenu()}
+            {BuildPluginMenu()}
 
             {buildCustomPluginEntries()}
         </Menu.Menu >

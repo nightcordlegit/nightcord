@@ -271,9 +271,9 @@ function VoiceSearchModalWrapper({ rootProps }: { rootProps: any; }) {
     );
 
     useEffect(() => {
-        if (channels !== null) return; // already loaded from cache
+        if (channels !== null) return;
         scan().then(setChannels);
-    }, []);
+    }, [channels]);
 
     return <VoiceSearchModal rootProps={rootProps} channels={channels} />;
 }

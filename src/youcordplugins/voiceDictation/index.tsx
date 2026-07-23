@@ -118,14 +118,11 @@ const VoiceDictationButton: ChatBarButtonFactory = ({ isMainChat }) => {
     const chunksRef = useRef<Blob[]>([]);
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-    useEffect(() => () => { stopDictation(); }, []);
-
-    async function processBlob(blob: Blob) {
+    const processBlob = React.useCallback(async function processBlob(blob: Blob) {
         if (blob.size < 100) return;
         setProcessing(true);
         try {
             const text = await transcribe(blob);
-            console.log("[VoiceDictation] Transcribed:", text);
             if (text) {
                 const t = text.trim();
                 const isHallucination =
@@ -144,7 +141,53 @@ const VoiceDictationButton: ChatBarButtonFactory = ({ isMainChat }) => {
         } finally {
             setProcessing(false);
         }
-    }
+    }, []);
+
+    const stopNative = React.useCallback(function stopNative(discordVoice: any) {
+        if (nativeTimerRef.current) {
+            clearInterval(nativeTimerRef.current);
+            nativeTimerRef.current = null;
+        }
+        if (nativeRecordingRef.current) {
+            discordVoice.stopLocalAudioRecording(async (filePath: string) => {
+                nativeRecordingRef.current = false;
+                if (filePath) {
+                    try {
+                        const buf = await (VencordNative as any).pluginHelpers?.VoiceMessages?.readRecording?.(filePath);
+                        if (buf) await processBlob(new Blob([new Uint8Array(buf)], { type: "audio/ogg; codecs=opus" }));
+                    } catch { /* ignore */ }
+                }
+            });
+        }
+    }, [processBlob]);
+
+    const stopDictation = React.useCallback(function stopDictation() {
+        activeRef.current = false;
+
+        const discordVoice = getDiscordVoice();
+        if (discordVoice && nativeRecordingRef.current) {
+            stopNative(discordVoice);
+        }
+        if (nativeTimerRef.current) {
+            clearInterval(nativeTimerRef.current);
+            nativeTimerRef.current = null;
+        }
+
+        if (timerRef.current) {
+            clearInterval(timerRef.current);
+            timerRef.current = null;
+        }
+        if (recorderRef.current?.state === "recording") recorderRef.current.stop();
+        recorderRef.current = null;
+        chunksRef.current = [];
+        streamRef.current?.getTracks().forEach(t => t.stop());
+        streamRef.current = null;
+
+        setRecording(false);
+        setProcessing(false);
+    }, [stopNative]);
+
+    useEffect(() => () => { stopDictation(); }, [stopDictation]);
 
     function startRecorder(stream: MediaStream) {
         const mimeType =

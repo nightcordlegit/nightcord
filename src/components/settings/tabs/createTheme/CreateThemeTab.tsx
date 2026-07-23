@@ -301,18 +301,15 @@ export function CreateThemeTab() {
         }
     }
 
-    // Apply on mount
     useEffect(() => {
         if (settings.enabled) {
             applyColorVars(settings.color);
             applyColorOverrides(settings.color).catch(console.error);
             applyGlass(settings.transparency, settings.panelBlur);
         }
-        // Always restore bg if image exists in state
         if (settings.bgImage) applyBackground(settings.bgImage, settings.bgBlur, settings.bgSize);
-        // Restore window material
         if (settings.windowMaterial !== "none") applyWindowMaterial(settings.windowMaterial);
-    }, []);
+    }, [settings]);
 
     function handleImage(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];

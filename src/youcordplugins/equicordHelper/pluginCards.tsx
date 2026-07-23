@@ -37,6 +37,20 @@ export function ChatPluginCard({ url, description }: { url: string, description:
 
     useSettings([`plugins.${pluginName ?? ""}.enabled`]);
 
+    const depMap = useMemo(() => {
+        const o = {} as Record<string, string[]>;
+        for (const plugin in plugins) {
+            const deps = plugins[plugin].dependencies;
+            if (deps) {
+                for (const dep of deps) {
+                    o[dep] ??= [];
+                    o[dep].push(plugin);
+                }
+            }
+        }
+        return o;
+    }, []);
+
     if (!pluginName) return null;
 
     const p = plugins[pluginName];
@@ -64,20 +78,6 @@ export function ChatPluginCard({ url, description }: { url: string, description:
     }
 
     const onRestartNeeded = () => showToast("A restart is required for the change to take effect!");
-
-    const depMap = useMemo(() => {
-        const o = {} as Record<string, string[]>;
-        for (const plugin in plugins) {
-            const deps = plugins[plugin].dependencies;
-            if (deps) {
-                for (const dep of deps) {
-                    o[dep] ??= [];
-                    o[dep].push(plugin);
-                }
-            }
-        }
-        return o;
-    }, []);
 
     const required = isPluginRequired(pluginName);
     const dependents = depMap[p.name]?.filter(d => isPluginEnabled(d));

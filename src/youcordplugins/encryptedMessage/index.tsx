@@ -221,7 +221,7 @@ function DecryptionAccessory({ message }: { message: Message; }) {
         if ((message as any).vencordEmbeddedBy) return;
         DecryptionSetters.set(message.id, setDecrypted);
         return () => void DecryptionSetters.delete(message.id);
-    }, []);
+    }, [message]);
 
     if (!decrypted) return null;
 

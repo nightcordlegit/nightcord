@@ -43,7 +43,7 @@ function getRoleIconSrc(role: Role) {
 }
 
 function RolesAndUsersPermissionsComponent({ permissions, guild, modalProps, header }: { permissions: Array<RoleOrUserPermission>; guild: Guild; modalProps: RenderModalProps; header: string; }) {
-    const guildPermissionSpecMap = useMemo(() => getGuildPermissionSpecMap(guild), [guild.id]);
+    const guildPermissionSpecMap = useMemo(() => getGuildPermissionSpecMap(guild), [guild]);
 
     useStateFromStores(
         [GuildMemberStore],
@@ -66,7 +66,7 @@ function RolesAndUsersPermissionsComponent({ permissions, guild, modalProps, hea
             guildIds: [guild.id],
             userIds: usersToRequest
         });
-    }, []);
+    }, [guild.id, permissions]);
 
     const [selectedItemIndex, selectItem] = useState(0);
     const selectedItem = permissions[selectedItemIndex];

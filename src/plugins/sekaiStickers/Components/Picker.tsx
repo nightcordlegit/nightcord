@@ -27,7 +27,7 @@ export default function CharSelectModal({ modalProps, setCharacter }: { modalPro
 
             return null;
         });
-    }, [search, characters]);
+    }, [search, modalProps, setCharacter]);
     return (
         <Modal {...modalProps} size="lg" title="Select character menu">
             <Flex flexDirection="column" style={{ paddingTop: 12 }}>

@@ -13,7 +13,7 @@ import type { Message } from "@vencord/discord-types";
 import { Menu, showToast, Toasts } from "@webpack/common";
 import type { ReactElement } from "react";
 
-import { openSecureBookmarksModal, renderSecureBookmarksToolboxMenu } from "./components";
+import { openSecureBookmarksModal, RenderSecureBookmarksToolboxMenu } from "./components";
 import { settings } from "./settings";
 import { DURATIONS, prepareBookmarks, saveMessageBookmark } from "./store";
 
@@ -85,7 +85,7 @@ export default definePlugin({
     },
 
     toolboxActions() {
-        return renderSecureBookmarksToolboxMenu();
+        return RenderSecureBookmarksToolboxMenu();
     },
 
     start() {

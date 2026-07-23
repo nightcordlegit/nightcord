@@ -21,6 +21,7 @@ import {
     showToast,
     SnowflakeUtils,
     Toasts,
+    useCallback,
 } from "@webpack/common";
 
 import { encodeGIF } from "./gifEncoder";
@@ -139,31 +140,7 @@ function GifConvertorPopover({ position, onClose }: PopoverProps) {
     const [filename, setFilename] = React.useState("converted.gif");
     const fileInputRef = React.useRef<HTMLInputElement>(null);
 
-    // Cleanup preview URL
-    React.useEffect(() => {
-        return () => { if (previewUrl) URL.revokeObjectURL(previewUrl); };
-    }, [previewUrl]);
-
-    // Paste support
-    React.useEffect(() => {
-        const onPaste = (e: ClipboardEvent) => {
-            const items = e.clipboardData?.items;
-            if (!items) return;
-            for (const item of items) {
-                if (item.kind === "file" && (item.type.startsWith("image/") || item.type.startsWith("video/"))) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const file = item.getAsFile();
-                    if (file) processFile(file);
-                    break;
-                }
-            }
-        };
-        document.addEventListener("paste", onPaste, { capture: true });
-        return () => document.removeEventListener("paste", onPaste, { capture: true });
-    }, []);
-
-    async function processFile(file: File) {
+    const processFile = useCallback(async (file: File) => {
         if (!file.type.startsWith("image/") && !file.type.startsWith("video/")) {
             setErrorMsg("Only image and video files are supported.");
             setStage("error");
@@ -189,7 +166,31 @@ function GifConvertorPopover({ position, onClose }: PopoverProps) {
             setErrorMsg(e?.message ?? "Conversion failed.");
             setStage("error");
         }
-    }
+    }, [previewUrl]);
+
+    // Cleanup preview URL
+    React.useEffect(() => {
+        return () => { if (previewUrl) URL.revokeObjectURL(previewUrl); };
+    }, [previewUrl]);
+
+    // Paste support
+    React.useEffect(() => {
+        const onPaste = (e: ClipboardEvent) => {
+            const items = e.clipboardData?.items;
+            if (!items) return;
+            for (const item of items) {
+                if (item.kind === "file" && (item.type.startsWith("image/") || item.type.startsWith("video/"))) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const file = item.getAsFile();
+                    if (file) processFile(file);
+                    break;
+                }
+            }
+        };
+        document.addEventListener("paste", onPaste, { capture: true });
+        return () => document.removeEventListener("paste", onPaste, { capture: true });
+    }, [processFile]);
 
     async function handleSend() {
         if (!gifBlob) return;
@@ -334,6 +335,26 @@ const GifConvertorChatBarButton: ChatBarButtonFactory = ({ isMainChat }) => {
     const [pos, setPos] = React.useState<PopoverPosition | null>(null);
     const btnWrapRef = React.useRef<HTMLSpanElement>(null);
 
+    // Close on outside click
+    React.useEffect(() => {
+        if (!open) return;
+        const handler = (e: MouseEvent) => {
+            const t = e.target as HTMLElement;
+            if (!t.closest(".nc-gifconv-popover") && !t.closest(".nc-gifconv-btn-wrap"))
+                setOpen(false);
+        };
+        const id = setTimeout(() => document.addEventListener("mousedown", handler), 10);
+        return () => { clearTimeout(id); document.removeEventListener("mousedown", handler); };
+    }, [open]);
+
+    // Close on Escape
+    React.useEffect(() => {
+        if (!open) return;
+        const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+        document.addEventListener("keydown", handler);
+        return () => document.removeEventListener("keydown", handler);
+    }, [open]);
+
     if (!isMainChat) return null;
 
     const toggle = () => {
@@ -350,26 +371,6 @@ const GifConvertorChatBarButton: ChatBarButtonFactory = ({ isMainChat }) => {
     };
 
     const close = () => setOpen(false);
-
-    // Close on outside click
-    React.useEffect(() => {
-        if (!open) return;
-        const handler = (e: MouseEvent) => {
-            const t = e.target as HTMLElement;
-            if (!t.closest(".nc-gifconv-popover") && !t.closest(".nc-gifconv-btn-wrap"))
-                close();
-        };
-        const id = setTimeout(() => document.addEventListener("mousedown", handler), 10);
-        return () => { clearTimeout(id); document.removeEventListener("mousedown", handler); };
-    }, [open]);
-
-    // Close on Escape
-    React.useEffect(() => {
-        if (!open) return;
-        const handler = (e: KeyboardEvent) => { if (e.key === "Escape") close(); };
-        document.addEventListener("keydown", handler);
-        return () => document.removeEventListener("keydown", handler);
-    }, [open]);
 
     return (
         <>

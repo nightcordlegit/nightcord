@@ -264,15 +264,17 @@ function IgnoredUserTab({ guild, setCount }: RelationshipProps) {
 }
 
 function UserList(type: "friends" | "blocked" | "ignored", guild: Guild, ids: string[], setCount: (count: number) => void) {
-    const missing = [] as string[];
-    const members = [] as string[];
-
-    for (const id of ids) {
-        if (GuildMemberStore.isMember(guild.id, id))
-            members.push(id);
-        else
-            missing.push(id);
-    }
+    const { missing, members } = useMemo(() => {
+        const missing = [] as string[];
+        const members = [] as string[];
+        for (const id of ids) {
+            if (GuildMemberStore.isMember(guild.id, id))
+                members.push(id);
+            else
+                missing.push(id);
+        }
+        return { missing, members };
+    }, [guild.id, ids]);
 
     // Used for side effects (rerender on member request success)
     useStateFromStores(
@@ -291,9 +293,9 @@ function UserList(type: "friends" | "blocked" | "ignored", guild: Guild, ids: st
                 userIds: missing
             });
         }
-    }, []);
+    }, [guild.id, missing, type]);
 
-    useEffect(() => setCount(members.length), [members.length]);
+    useEffect(() => setCount(members.length), [members.length, setCount]);
 
     const sortedMembers = members
         .map(id => UserStore.getUser(id) as User & { globalName: string; })
@@ -400,7 +402,7 @@ function MutualMembersTab({ guild, setCount }: RelationshipProps) {
 
         setMembers(membersWithMutuals);
         setCount(membersWithMutuals.length);
-    }, [guild.id]);
+    }, [guild.id, currentUserId, setCount]);
 
     return (
         <ScrollerThin fade className={cl("scroller")}>

@@ -118,7 +118,8 @@ export function useAwaiter<T>(factory: () => Promise<T>, providedOpts?: AwaiterO
             });
 
         return () => void (isAlive = false);
-    }, opts.deps);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [...opts.deps, factory, opts]);
 
     return [state.value, state.error, state.pending];
 }
@@ -140,7 +141,9 @@ interface TimerOpts {
 
 export function useTimer({ interval = 1000, deps = [] }: TimerOpts) {
     const [time, setTime] = useState(0);
-    const start = useMemo(() => Date.now(), deps);
+    const start = useMemo(() => Date.now(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [...deps]);
 
     useEffect(() => {
         const intervalId = setInterval(() => setTime(Date.now() - start), interval);
@@ -149,7 +152,8 @@ export function useTimer({ interval = 1000, deps = [] }: TimerOpts) {
             setTime(0);
             clearInterval(intervalId);
         };
-    }, deps);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [...deps, interval, start]);
 
     return time;
 }
@@ -167,7 +171,7 @@ export function useFixedTimer({ interval = 1000, initialTime = Date.now() }: Fix
         return () => {
             clearInterval(intervalId);
         };
-    }, [initialTime]);
+    }, [initialTime, interval]);
 
     return time;
 }
@@ -176,5 +180,6 @@ export function useCleanupEffect(
     effect: () => void,
     deps?: React.DependencyList
 ): void {
-    useEffect(() => effect, deps);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => effect, [...(deps ?? []), effect]);
 }

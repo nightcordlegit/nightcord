@@ -95,11 +95,11 @@ function PickerContentRowGrid({
     onSend = () => { },
     isHovered = false
 }: PickerContentRowGrid) {
+    const ffmpegState = React.useContext(FFmpegStateContext);
+
     if (FFmpegStateContext === undefined) {
         return <div>FFmpegStateContext is undefined</div>;
     }
-
-    const ffmpegState = React.useContext(FFmpegStateContext);
 
     return (
         <div
@@ -197,7 +197,7 @@ export function PickerContentHeader({
 
             afterScroll();
         }
-    }, [isSelected]);
+    }, [isSelected, afterScroll, beforeScroll]);
 
     return (
         <span>
@@ -278,7 +278,7 @@ export function PickerContent({ stickerPacks, selectedStickerPackId, setSelected
         if (currentStickerPack?.id !== currentSticker?.stickerPackId) {
             setCurrentStickerPack(stickerPacks.find(p => p.id === currentSticker?.stickerPackId) ?? currentStickerPack);
         }
-    }, [currentSticker]);
+    }, [currentSticker, currentStickerPack, stickerPacks]);
 
     const stickersToRows = (stickers: Sticker[]): JSX.Element[] => stickers
         .reduce((acc, sticker, i) => {

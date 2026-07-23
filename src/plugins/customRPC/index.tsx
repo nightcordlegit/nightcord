@@ -281,7 +281,7 @@ export default definePlugin({
         }
     ],
 
-    settingsAboutComponent: () => {
+    settingsAboutComponent: function SettingsAboutComponent() {
         const [activity] = useAwaiter(createActivity, { fallbackValue: undefined, deps: Object.values(settings.store) });
         const gameActivityEnabled = ShowCurrentGame.useSetting();
         const { profileThemeStyle } = useProfileThemeStyle({});

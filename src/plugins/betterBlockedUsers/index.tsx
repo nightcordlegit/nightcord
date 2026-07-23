@@ -26,7 +26,7 @@ export default definePlugin({
             replacement: [
                 {
                     match: /(?<=\(0,\i\.jsx\)\(\i,\{listType:(\i),numberOfUsers:\i\.length\}\),)/,
-                    replace: "$1==='blocked'?$self.renderSearchInput():null,"
+                    replace: "$1==='blocked'?$self.RenderSearchInput():null,"
                 },
                 {
                     match: /(?<=\{userId:(\i).*?\.globalName.{0,25}\}\)\]\}\),)(\(.*?loading:\i\}\))/,
@@ -43,7 +43,7 @@ export default definePlugin({
             ]
         }
     ],
-    renderSearchInput() {
+    RenderSearchInput() {
         const [value, setValue] = React.useState(lastSearch);
 
         React.useEffect(() => {

@@ -21,14 +21,12 @@ import { hash as h64 } from "@intrnl/xxhash64";
 import { getCustomColorString } from "@plugins/customUserColors";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
-import { useMemo, UserStore } from "@webpack/common";
+import { UserStore } from "@webpack/common";
 
 // Calculate a CSS color string based on the user ID
 function calculateNameColorForUser(id?: string) {
-    const { lightness } = settings.use(["lightness"]);
-    const idHash = useMemo(() => id ? h64(id) : null, [id]);
-
-    return idHash && `hsl(${idHash % 360n}, 100%, ${lightness}%)`;
+    const idHash = id ? h64(id) : null;
+    return idHash && `hsl(${idHash % 360n}, 100%, ${settings.store.lightness}%)`;
 }
 
 const settings = definePluginSettings({

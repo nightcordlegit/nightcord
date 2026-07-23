@@ -23,7 +23,7 @@ export default definePlugin({
     TypingIcon() {
         return <ThreeDots className={cl("dots")} dotRadius={3} themed={true} />;
     },
-    isTyping() {
+    useIsTyping() {
         return useStateFromStores([TypingStore], () =>
             PrivateChannelSortStore.getPrivateChannelIds().some(id =>
                 Object.keys(TypingStore.getTypingUsers(id)).some(userId => userId !== UserStore.getCurrentUser().id)
@@ -39,10 +39,9 @@ export default definePlugin({
                         match: /(\(0,\i.jsxs?\)\(\i,{}\))/,
                         replace: "arguments[0].user == null ? null : (vcIsTyping ? $self.TypingIcon() : $1)"
                     },
-                    // define isTyping earlier in the function so i dont bReAk ThE rUlEs Of HoOkS
                     {
                         match: /if\(null==\i\)return null;/,
-                        replace: "let vcIsTyping = $self.isTyping();$&"
+                        replace: "let vcIsTyping = $self.useIsTyping();$&"
                     }
                 ],
             group: true

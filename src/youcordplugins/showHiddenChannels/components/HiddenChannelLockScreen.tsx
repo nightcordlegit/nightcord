@@ -141,7 +141,7 @@ function HiddenChannelLockScreen({ channel }: { channel: Channel; }) {
                 overwriteDeny: overwrite.deny
             })), guild_id));
         }
-    }, [channelId]);
+    }, [channelId, guild_id, permissionOverwrites, setPermissions]);
 
     return (
         <div className={classes(ChatScrollClasses.auto, ChatScrollClasses.customTheme, ChatScrollClasses.managedReactiveScroller)}>

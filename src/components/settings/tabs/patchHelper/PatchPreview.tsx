@@ -116,7 +116,7 @@ export function PatchPreview({ module, match, replacement, setReplacementError }
 
         const m = src.match(canonicalMatch);
         return [patched, m, makeDiff(src, patched, m)];
-    }, [id, match, replacement]);
+    }, [fact, match, replacement, setReplacementError]);
 
     return (
         <>

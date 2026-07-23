@@ -417,7 +417,7 @@ export function openSecureBookmarksModal(): void {
     activeModalKey = key;
 }
 
-export function renderSecureBookmarksToolboxMenu() {
+export function RenderSecureBookmarksToolboxMenu() {
     const [count, setCount] = useState(0);
 
     useEffect(() => {

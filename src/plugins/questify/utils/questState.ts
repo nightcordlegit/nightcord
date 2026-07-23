@@ -8,7 +8,7 @@ import type { Quest } from "@vencord/discord-types";
 import { QuestTaskType } from "@vencord/discord-types/enums";
 import { QuestStore } from "@webpack/common";
 
-import { getQuestifySettings, useQuestifySettings } from "../settings/access";
+import { getQuestifySettings } from "../settings/access";
 import { ignoredQuestIDsKey } from "../settings/def";
 import { getActiveAutoCompletes, getAutoCompleteQuestTarget, getQuestAutoCompleteEntry } from "./completion";
 import { type QuestIncludedTypes, questMatchesIncludedTypes } from "./filtering";
@@ -208,7 +208,7 @@ function getMostRecentlyCompletedUnclaimedQuest(): Quest | null {
 }
 
 export function getQuestPanelOverride(quest: Quest | null): Quest | null {
-    const panelState = useQuestifySettings(["disableQuestsEverything", "disableAccountPanelPromo", "disableAccountPanelQuestProgress"]);
+    const panelState = getQuestifySettings();
 
     if (panelState.disableQuestsEverything) {
         return null;

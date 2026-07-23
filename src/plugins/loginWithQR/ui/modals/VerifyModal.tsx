@@ -39,7 +39,7 @@ function VerifyModal({
     const [state, setState] = useState(
         !token ? VerifyState.NotFound : VerifyState.Verifying
     );
-    useEffect(() => () => void (state !== VerifyState.LoggedIn && onAbort()), []);
+    useEffect(() => () => void (state !== VerifyState.LoggedIn && onAbort()), [onAbort, state]);
 
     const [inProgress, setInProgress] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null);
@@ -103,7 +103,7 @@ function VerifyModal({
 
         if (state === VerifyState.Verifying) requestAnimationFrame(update);
         return () => cancelAnimationFrame(frame);
-    }, [state]);
+    }, [state, controllerRef]);
 
     return (
         <Modal size="sm" {...props} title="Verify Login">

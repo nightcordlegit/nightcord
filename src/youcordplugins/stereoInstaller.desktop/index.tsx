@@ -190,7 +190,7 @@ function StereoInstallerPanel() {
         }
     }
 
-    async function autoDetect(): Promise<void> {
+    const autoDetect = React.useCallback(async () => {
         const detected = await runNative(() => Native.autoDetect());
         if (!detected) return;
 
@@ -198,7 +198,7 @@ function StereoInstallerPanel() {
         setRoot(detected.discordRoot);
         setStatus(detected.repatchWarning || t("Discord install detected."));
         notifyRepatchIfNeeded(detected);
-    }
+    }, []);
 
     async function loadLogs(): Promise<void> {
         const result = await Native.readLogs();
@@ -324,7 +324,7 @@ function StereoInstallerPanel() {
 
     React.useEffect(() => {
         void loadLogs().then(autoDetect);
-    }, []);
+    }, [autoDetect]);
 
     React.useEffect(() => {
         if (!voicePlaygroundUnavailable || installerMethod !== "method2") return;

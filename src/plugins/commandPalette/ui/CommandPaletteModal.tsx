@@ -358,7 +358,9 @@ export function CommandPaletteModal({ modalProps, instanceKey }: { modalProps: R
 
     const trimmedQuery = query.trim();
 
-    const allCommands = useMemo(() => listCommands(), [registryVersion]);
+    const allCommands = useMemo(() => {
+        return listCommands();
+    }, []);
 
     const currentCommands = useMemo(() => {
         if (navigationLevel.type === "root") return allCommands;
@@ -416,7 +418,7 @@ export function CommandPaletteModal({ modalProps, instanceKey }: { modalProps: R
 
     const recentCandidates = useMemo(() => {
         return getRecentCommandEntries(5).map(command => asCommandCandidate(command, pinnedIds.has(command.id), "Recent"));
-    }, [registryVersion, pinnedIds]);
+    }, [pinnedIds]);
     const pinnedCandidates = useMemo(() => {
         if (navigationLevel.type !== "root") return [];
         if (trimmedQuery.length > 0) return [];
@@ -749,65 +751,53 @@ export function CommandPaletteModal({ modalProps, instanceKey }: { modalProps: R
         setQuery("");
     };
 
-    const setActivePageValue = (fieldKey: string, value: string) => {
-        setPageStack(current => {
-            if (current.length === 0) return current;
-            const next = [...current];
-            const top = next[next.length - 1];
-            next[next.length - 1] = {
-                ...top,
-                state: {
-                    ...top.state,
-                    values: {
-                        ...top.state.values,
-                        [fieldKey]: value
-                    },
-                    selectedIds: {
-                        ...top.state.selectedIds,
-                        [fieldKey]: null
-                    }
-                },
-                error: null
-            };
-            return next;
-        });
-    };
-
-    const setActivePageSelectedId = (fieldKey: string, id: string | null) => {
-        setPageStack(current => {
-            if (current.length === 0) return current;
-            const next = [...current];
-            const top = next[next.length - 1];
-            next[next.length - 1] = {
-                ...top,
-                state: {
-                    ...top.state,
-                    selectedIds: {
-                        ...top.state.selectedIds,
-                        [fieldKey]: id
-                    }
-                },
-                error: null
-            };
-            return next;
-        });
-    };
-
-    const setActivePageError = (error: string | null) => {
-        setPageStack(current => {
-            if (current.length === 0) return current;
-            const next = [...current];
-            const top = next[next.length - 1];
-            next[next.length - 1] = {
-                ...top,
-                error
-            };
-            return next;
-        });
-    };
-
-    const buildActivePageContext = (): PalettePageRuntimeContext | null => {
+    const buildActivePageContext = useCallback((): PalettePageRuntimeContext | null => {
         if (!activePageState) return null;
+
+        const setActivePageValue = (fieldKey: string, value: string) => {
+            setPageStack(current => {
+                if (current.length === 0) return current;
+                const next = [...current];
+                const top = next[next.length - 1];
+                next[next.length - 1] = {
+                    ...top,
+                    state: {
+                        ...top.state,
+                        values: {
+                            ...top.state.values,
+                            [fieldKey]: value
+                        },
+                        selectedIds: {
+                            ...top.state.selectedIds,
+                            [fieldKey]: null
+                        }
+                    },
+                    error: null
+                };
+                return next;
+            });
+        };
+
+        const setActivePageSelectedId = (fieldKey: string, id: string | null) => {
+            setPageStack(current => {
+                if (current.length === 0) return current;
+                const next = [...current];
+                const top = next[next.length - 1];
+                next[next.length - 1] = {
+                    ...top,
+                    state: {
+                        ...top.state,
+                        selectedIds: {
+                            ...top.state.selectedIds,
+                            [fieldKey]: id
+                        }
+                    },
+                    error: null
+                };
+                return next;
+            });
+        };
+
         return {
             values: activePageState.values,
             selectedIds: activePageState.selectedIds,
@@ -830,6 +820,19 @@ export function CommandPaletteModal({ modalProps, instanceKey }: { modalProps: R
                 });
             }
         };
+    }, [activePageState, setPageStack]);
+
+    const setActivePageError = (error: string | null) => {
+        setPageStack(current => {
+            if (current.length === 0) return current;
+            const next = [...current];
+            const top = next[next.length - 1];
+            next[next.length - 1] = {
+                ...top,
+                error
+            };
+            return next;
+        });
     };
 
     const submitActivePage = async () => {
@@ -1349,7 +1352,7 @@ export function CommandPaletteModal({ modalProps, instanceKey }: { modalProps: R
             canDrillDown,
             drilldownCategoryId: selectedDrilldownCategoryId
         });
-    }, [activePageSpec, calculatorCanGraph, calculatorResult, calculatorViewMode, selectedCommand, canGoBack, canDrillDown, selectedDrilldownCategoryId, pinnedIds]);
+    }, [activePageSpec, calculatorCanGraph, calculatorResult, calculatorViewMode, selectedCommand, canGoBack, canDrillDown, selectedDrilldownCategoryId]);
 
     const handleActionIntent = async (intent: CommandActionIntent) => {
         await dispatchPaletteActionIntent({
@@ -1418,7 +1421,7 @@ export function CommandPaletteModal({ modalProps, instanceKey }: { modalProps: R
                 })}
             </PalettePageShell>
         );
-    }, [activePage, activePageFieldKey, activePageSpec, activePageState, activePageSuggestions]);
+    }, [activePage, activePageFieldKey, activePageSpec, activePageState, activePageSuggestions, buildActivePageContext]);
 
     return (
         <Modal

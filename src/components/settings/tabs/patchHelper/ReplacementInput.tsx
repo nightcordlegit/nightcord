@@ -8,7 +8,7 @@ import { FormSwitch } from "@components/FormSwitch";
 import { Heading } from "@components/Heading";
 import { Paragraph } from "@components/Paragraph";
 import { Margins } from "@utils/margins";
-import { Parser, TextInput, useEffect, useState } from "@webpack/common";
+import { Parser, TextInput, useCallback, useEffect, useState } from "@webpack/common";
 
 const RegexGuide = {
     "\\i": "Special regex escape sequence that matches identifiers (varnames, classnames, etc.)",
@@ -24,7 +24,7 @@ export function ReplacementInput({ replacement, setReplacement, replacementError
     const [isFunc, setIsFunc] = useState(false);
     const [error, setError] = useState<string>();
 
-    function onChange(v: string) {
+    const onChange = useCallback(function onChange(v: string) {
         setError(void 0);
 
         if (isFunc) {
@@ -42,14 +42,14 @@ export function ReplacementInput({ replacement, setReplacement, replacementError
         } else {
             setReplacement(v);
         }
-    }
+    }, [isFunc, setReplacement]);
 
     useEffect(() => {
         if (isFunc)
             onChange(replacement);
         else
             setError(void 0);
-    }, [isFunc]);
+    }, [isFunc, onChange, replacement]);
 
     return (
         <>

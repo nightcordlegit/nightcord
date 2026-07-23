@@ -51,22 +51,24 @@ export const makeEmptyAppId: () => AppIdSetting = () => ({
 
 let appIds = [makeEmptyAppId()];
 
+function ReplaceActivitySettings() {
+    const update = useForceUpdater();
+    return (
+        <>
+            <ReplaceSettings
+                appIds={appIds}
+                update={update}
+                save={async () => DataStore.set(APP_IDS_KEY, appIds)}
+            />
+        </>
+    );
+}
+
 const settings = definePluginSettings({
     replacedAppIds: {
         type: OptionType.COMPONENT,
         description: "",
-        component: () => {
-            const update = useForceUpdater();
-            return (
-                <>
-                    <ReplaceSettings
-                        appIds={appIds}
-                        update={update}
-                        save={async () => DataStore.set(APP_IDS_KEY, appIds)}
-                    />
-                </>
-            );
-        }
+        component: ReplaceActivitySettings
     },
 });
 
