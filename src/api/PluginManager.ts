@@ -142,7 +142,6 @@ export const startAllPlugins = traceFunction("startAllPlugins", function startAl
     logger.info(`Starting plugins (stage ${target}, ${enabled.length} enabled)`);
 
     if (target === StartAt.DOMContentLoaded) {
-        // Defer non-critical plugin startup to idle time
         const deferred = enabled.filter(n => (Plugins[n].startAt ?? StartAt.WebpackReady) === target);
         if (deferred.length > 0) {
             scheduleIdleCallback(() => {
@@ -153,6 +152,23 @@ export const startAllPlugins = traceFunction("startAllPlugins", function startAl
                     startPlugin(p);
                 }
             });
+        }
+        return;
+    }
+
+    // Defer StartAt.Init plugins to avoid blocking critical startup
+    if (target === StartAt.Init) {
+        const deferred = enabled.filter(n => (Plugins[n].startAt ?? StartAt.WebpackReady) === target);
+        if (deferred.length > 0) {
+            scheduleIdleCallback(() => {
+                for (const name of deferred) {
+                    if (!isPluginEnabled(name)) continue;
+                    const p = Plugins[name];
+                    if (p.started) continue;
+                    if (IS_REPORTER && !isReporterTestable(p, ReporterTestable.Start)) continue;
+                    startPlugin(p);
+                }
+            }, 1000);
         }
         return;
     }
@@ -450,39 +466,48 @@ export const initPluginManager = onlyOnce(function init() {
     }
 
     // Second pass: settings init and patch registration for enabled plugins only
-    for (const name in PluginMeta) {
-        if (!isPluginEnabled(name)) continue;
-        const p = Plugins[name];
-        if (!p) continue;
+    // Defer non-critical plugin initialization to idle time for smoother startup
+    const criticalPluginInit = () => {
+        for (const name in PluginMeta) {
+            if (!isPluginEnabled(name)) continue;
+            const p = Plugins[name];
+            if (!p) continue;
 
-        for (const key of pluginKeysToBind) {
-            p[key] &&= (p[key] as Function).bind(p) as any;
-        }
-
-        if (p.settings) {
-            p.options ??= {};
-
-            p.settings.pluginName = p.name;
-            for (const sName in p.settings.def) {
-                const def = p.settings.def[sName];
-                const checks = p.settings.checks?.[sName];
-                p.options[sName] = { ...def, ...checks };
+            for (const key of pluginKeysToBind) {
+                p[key] &&= (p[key] as Function).bind(p) as any;
             }
-        }
 
-        if (p.options) {
-            for (const optName in p.options) {
-                const opt = p.options[optName];
-                if (opt.onChange != null) {
-                    SettingsStore.addChangeListener(`plugins.${p.name}.${optName}`, opt.onChange);
+            if (p.settings) {
+                p.options ??= {};
+
+                p.settings.pluginName = p.name;
+                for (const sName in p.settings.def) {
+                    const def = p.settings.def[sName];
+                    const checks = p.settings.checks?.[sName];
+                    p.options[sName] = { ...def, ...checks };
+                }
+            }
+
+            if (p.options) {
+                for (const optName in p.options) {
+                    const opt = p.options[optName];
+                    if (opt.onChange != null) {
+                        SettingsStore.addChangeListener(`plugins.${p.name}.${optName}`, opt.onChange);
+                    }
+                }
+            }
+
+            if (p.patches && (!IS_REPORTER || isReporterTestable(p, ReporterTestable.Patches))) {
+                for (const patch of p.patches) {
+                    addPatch(patch, p.name);
                 }
             }
         }
+    };
 
-        if (p.patches && (!IS_REPORTER || isReporterTestable(p, ReporterTestable.Patches))) {
-            for (const patch of p.patches) {
-                addPatch(patch, p.name);
-            }
-        }
+    if ("requestIdleCallback" in window) {
+        (window as any).requestIdleCallback(criticalPluginInit, { timeout: 3000 });
+    } else {
+        criticalPluginInit();
     }
 });

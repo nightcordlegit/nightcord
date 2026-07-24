@@ -24,7 +24,8 @@ try {
 const CommonOpts: BuildOptions = {
     minify: !isDev,
     bundle: true,
-    sourcemap: "linked",
+    sourcemap: !isDev ? false : "linked",
+    drop: !isDev ? ["console", "debugger"] : undefined,
     logLevel: "info"
 };
 

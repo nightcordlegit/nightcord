@@ -59,8 +59,9 @@ const nodeCommonOpts = {
     external: ["electron", "original-fs", "~pluginNatives", ...commonOpts.external]
 };
 
-const sourceMapFooter = s => watch ? "" : `//# sourceMappingURL=vencord://${s}.js.map`;
-const sourcemap = watch ? "inline" : "external";
+const isProd = !watch && !IS_REPORTER;
+const sourceMapFooter = s => (isProd || watch) ? "" : `//# sourceMappingURL=vencord://${s}.js.map`;
+const sourcemap = isProd ? false : watch ? "inline" : "external";
 
 /**
  * @type {import("esbuild").Plugin}

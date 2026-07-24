@@ -200,7 +200,8 @@ module.exports = {
     productName: "YouCord",
     copyright: "Copyright 2026 YouCord",
     extraMetadata: { main: "index.js" },
-    asar: false,
+    asar: true,
+    asarUnpack: ["**/*.node", "**/*.exe", "**/*.dll", "**/*.bin/*", "mac/**/*"],
     files: ["index.js", "dist/desktop/**/*", "!**/*.map", "!**/*.ts"],
     directories: { output: "release", buildResources: "desktop/assets" },
     win: {
